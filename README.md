@@ -6,14 +6,12 @@ State your app in a nutshell, or one-sentence pitch. Give some elaboration on wh
 This browser based web application to ...
 
 ## 2. Names of Contributors
-
-List team members and/or short bio's here...
-
-- Hi, my name is Nolan. I'm excited to see what will happen to us and what we will be creating in the future together!!
-- Hi I am Matt, I like dogs and golf
-- Hi I am Jade. I'm excited to begin the journey!~
-- ...
-
+List team members and/or short bio's here... 
+* Hi, my name is Nolan. I'm excited to see what will happen to us and what we will be creating in the future together!!
+* Hi I am Matt, I like dogs and golf
+* ...
+* ...
+	
 ## 3. Technologies and Resources Used
 
 List technologies (with version numbers), API's, icons, fonts, images, media or data sources, and other resources that were used.
