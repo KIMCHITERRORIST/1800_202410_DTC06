@@ -7,10 +7,14 @@ This browser based web application to ...
 ## 2. Names of Contributors
 List team members and/or short bio's here... 
 <<<<<<< HEAD
+<<<<<<< HEAD
 * Hi I am Matt, I like dogs and golf and caffeine 
 * 
 =======
 * Hi, my name is Nolan. I'm excited to see what will happen to us and what we will be creating in the future!!
+=======
+* Hi, my name is Nolan. I'm excited to see what will happen to us and what we will be creating in the future together!!
+>>>>>>> 156e2ddf71e5575c50590dd84d483ef7dc7b993f
 * Hi I am Matt, I like dogs and golf
 * ...
 >>>>>>> 6b7e048a2f88ea23358dd4d4f6e2f3f4d59e1762
