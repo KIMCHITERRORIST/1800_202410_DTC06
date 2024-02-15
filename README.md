@@ -8,8 +8,8 @@ This browser based web application to ...
 List team members and/or short bio's here... 
 * Hi, my name is Nolan. I'm excited to see what will happen to us and what we will be creating together in the future!!
 * Hi I am Matt, I like dogs and golf
-* ...
 * Hi I am Jade. I'm excited to being the journey!~
+* ...
 * ...
 	
 ## 3. Technologies and Resources Used
@@ -17,7 +17,7 @@ List technologies (with version numbers), API's, icons, fonts, images, media or 
 * HTML, CSS, JavaScript
 * Bootstrap 5.0 (Frontend library)
 * Firebase 8.0 (BAAS - Backend as a Service)
-* ...
+* Flowbite
 
 ## 4. Complete setup/installion/usage
 State what a user needs to do when they come to your project.  How do others start using your code or application?
@@ -34,8 +34,8 @@ Here are some known bugs:
 
 ## 6. Features for Future
 What we'd like to build in the future:
-* ...
-* ...
+* fully flesh out all the links in the footer
+* sign up and lost password pages
 * ...
 	
 ## 7. Contents of Folder
