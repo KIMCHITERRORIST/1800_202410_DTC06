@@ -31,7 +31,7 @@
           <div class="flex container flex-col">
             <p class="text-xl text-center">hr</p>
             <div class="border rounded-lg p-2 shadow-xl">
-              <div class="flex container border border-[#2d58b1] rounded-lg bg-gray-200" shadow id="caret-up">
+              <div class="flex container border border-[#2d58b1] rounded-lg bg-gray-200" shadow id="caret-up-hr">
                 <svg xmlns="http://www.w3.org/2000/svg"
                   class="mx-auto icon icon-tabler icon-tabler-caret-up fill-[#2d58b1]" width="40" height="40"
                   viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="#2d58b1" stroke-linecap="round"
@@ -41,7 +41,7 @@
                 </svg>
               </div>
               <div class="text-center text-2xl font-semibold text-grey-darker">0</div>
-              <div class="flex container border border-[#2d58b1] rounded-lg bg-gray-200" shadow id="caret-down">
+              <div class="flex container border border-[#2d58b1] rounded-lg bg-gray-200" shadow id="caret-down-hr">
                 <svg xmlns="http://www.w3.org/2000/svg"
                   class="mx-auto icon icon-tabler icon-tabler-caret-down fill-[#2d58b1]" width="40" height="40"
                   viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="#2d58b1" stroke-linecap="round"
@@ -57,7 +57,7 @@
           <div class="flex container flex-col">
             <p class="text-xl text-center">min</p>
             <div class="border rounded-lg p-2 shadow-xl">
-              <div class="flex container border border-[#2d58b1] rounded-lg bg-gray-200 shadow" id="caret-up">
+              <div class="flex container border border-[#2d58b1] rounded-lg bg-gray-200 shadow" id="caret-up-min">
                 <svg xmlns="http://www.w3.org/2000/svg"
                   class="mx-auto icon icon-tabler icon-tabler-caret-up fill-[#2d58b1]" width="40" height="40"
                   viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="#2d58b1" stroke-linecap="round"
@@ -67,7 +67,7 @@
                 </svg>
               </div>
               <div class="text-center text-2xl font-semibold text-grey-darker">0</div>
-              <div class="flex container border border-[#2d58b1] rounded-lg bg-gray-200 shadow" id="caret-down">
+              <div class="flex container border border-[#2d58b1] rounded-lg bg-gray-200 shadow" id="caret-down-min">
                 <svg xmlns="http://www.w3.org/2000/svg"
                   class="mx-auto icon icon-tabler icon-tabler-caret-down fill-[#2d58b1]" width="40" height="40"
                   viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="#2d58b1" stroke-linecap="round"
@@ -83,7 +83,7 @@
           <div class="flex container flex-col">
             <p class="text-xl text-center">sec</p>
             <div class="border rounded-lg p-2 shadow-xl">
-              <div class="flex container border border-[#2d58b1] rounded-lg bg-gray-200 shadow" id="caret-up">
+              <div class="flex container border border-[#2d58b1] rounded-lg bg-gray-200 shadow" id="caret-up-sec">
                 <svg xmlns="http://www.w3.org/2000/svg"
                   class="mx-auto icon icon-tabler icon-tabler-caret-up fill-[#2d58b1]" width="40" height="40"
                   viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="#2d58b1" stroke-linecap="round"
@@ -93,7 +93,7 @@
                 </svg>
               </div>
               <div class="text-center text-2xl font-semibold text-grey-darker">0</div>
-              <div class="flex container border border-[#2d58b1] rounded-lg bg-gray-200 shadow" id="caret-down">
+              <div class="flex container border border-[#2d58b1] rounded-lg bg-gray-200 shadow" id="caret-down-sec">
                 <svg xmlns="http://www.w3.org/2000/svg"
                   class="mx-auto icon icon-tabler icon-tabler-caret-down fill-[#2d58b1]" width="40" height="40"
                   viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="#2d58b1" stroke-linecap="round"
@@ -172,32 +172,20 @@
 
       <!-- Save and Cancel Buttons -->
       <div class="flex items-center justify-between">
-        <button
-          class="bg-transparent hover:bg-blue-500 text-[#2d58b1] font-semibold hover:text-white py-2 px-4 border border-[#2d58b1] hover:border-transparent rounded"
-          onclick="history.back()">
+        <button id="cancel-btn"
+          class="bg-transparent hover:bg-blue-500 text-[#2d58b1] font-semibold hover:text-white py-2 px-4 border border-[#2d58b1] hover:border-transparent rounded">
           Cancel
         </button>
-        <button class="bg-[#2d58b1] text-white hover:bg-blue-500 font-bold py-2 px-4 rounded" onclick="saveActivity()">
+        <button id="save-btn" class="bg-[#2d58b1] text-white hover:bg-blue-500 font-bold py-2 px-4 rounded">
           Save
         </button>
       </div>
     </div>
   </div>
 
-  <script>
-    function saveActivity() {
-      // Logic to save activity
-      const activityName = document.getElementById('activity_name').value;
-      if (activityName === '') {
-        alert('Activity name cannot be empty.');
-        return false;
-      }
-      // Assuming function to handle the saving of the activity
-      // handleSaveActivity(activityName, duration, intensity);
-      // Redirect after save
-      window.location.href = '/next-page';
-    }
-  </script>
+  <script src="../scripts/duration_picker.js"></script>
+  <script src="../scripts/intensity_setter.js"></script>
+  <script src="../scripts/save_cancel.js"></script>
 
 </body>
 

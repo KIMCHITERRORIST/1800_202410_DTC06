@@ -25,3 +25,4 @@ document.addEventListener("DOMContentLoaded", () => {
     // window.location.href = 'user_settings_page_url_here';
   });
 });
+
