@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add New Activity</title>
+
+  <!-- Tailwind Library CSS CDN go here -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+  <!-- Top Navbar -->
+  <nav id="home_nav_top" class="bg-[#2d58b1] rounded-b-xl sticky top-0">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-2">
+
+      <!-- Back -->
+      <button class="inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-white hover:text-yellow-100">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left" width="40" height="40"
+          viewBox="0 0 24 24" stroke-width="1.5" stroke="#fff9e1" fill="none" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path d="M5 12l14 0" />
+          <path d="M5 12l6 6" />
+          <path d="M5 12l6 -6" />
+        </svg>
+      </button>
+
+      <!-- Logo -->
+      <a href="#" class="flex items-center justify-center mx-auto">
+        <img src="/images/FitQuest Logo.svg" class="h-8" alt="Logo" />
+        <span class="self-center text-2xl text-white font-semibold whitespace-nowrap">FitQuest</span>
+      </a>
+
+      <!-- Hamburger Menu -->
+      <button data-collapse-toggle="navbar-hamburger" type="button"
+        class="inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-white rounded-lg hover:bg-white hover:text-[#2d58b1] focus:outline-none"
+        aria-controls="navbar-hamburger" aria-expanded="false">
+        <span class="sr-only">Open main menu</span>
+        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M1 1h15M1 7h15M1 13h15" />
+        </svg>
+      </button>
+      <div class="hidden w-full" id="navbar-hamburger">
+        <ul class="flex flex-col font-medium mt-4 rounded-lg bg-white">
+          <li>
+            <a href="#" class="block py-2 px-3 text-[#2d58b1] rounded-md focus:ring-1 hover:focus:ring-[#2d58b1]"
+              aria-current="page">Home</a>
+          </li>
+          <li>
+            <a href="#"
+              class="block py-2 px-3 text-[#2d58b1] rounded-md focus:ring-1 hover:focus:ring-[#2d58b1]">History</a>
+          </li>
+          <li>
+            <a href="#"
+              class="block py-2 px-3 text-[#2d58b1] rounded-md focus:ring-1 hover:focus:ring-[#2d58b1]">Settings</a>
+          </li>
+          <li>
+            <a href="#"
+              class="block py-2 px-3 text-[#2d58b1] rounded-md focus:ring-1 hover:focus:ring-[#2d58b1]">Support</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Session -->
+  <div class="flex container justify-center items-center mx-auto pb-10">
+    <div class="bg-white flex flex-col justify-center items-center py-10 px-4">
+      <div class="w-full">
+        <!-- New Activity -->
+        <div class="mb-6">
+          <h1 class="text-center text-xl mb-6">Add new activity</h1>
+          <div>
+            <label class="block text-grey-darker text-lg font-bold mb-2" for="activity_name">Enter activity name</label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="activity_name"
+              type="text" placeholder="Activity name" required>
+          </div>
+        </div>
+        <!-- Duration -->
+        <div class="mb-10">
+          <label class="block text-grey-darker text-lg font-bold mb-2">Choose duration</label>
+          <div class="flex items-center justify-between gap-5">
+            <!-- Hour -->
+            <div class="flex container flex-col">
+              <p class="text-xl text-center">hr</p>
+              <div class="border rounded-lg p-2 shadow-xl">
+                <div class="flex container border border-[#2d58b1] rounded-lg bg-gray-200" shadow id="caret-up-hr">
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                    class="mx-auto icon icon-tabler icon-tabler-caret-up fill-[#2d58b1]" width="40" height="40"
+                    viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="#2d58b1" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M18 14l-6 -6l-6 6h12" />
+                  </svg>
+                </div>
+                <div class="text-center text-2xl font-semibold text-grey-darker">0</div>
+                <div class="flex container border border-[#2d58b1] rounded-lg bg-gray-200" shadow id="caret-down-hr">
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                    class="mx-auto icon icon-tabler icon-tabler-caret-down fill-[#2d58b1]" width="40" height="40"
+                    viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="#2d58b1" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M6 10l6 6l6 -6h-12" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <!-- Minute -->
+            <div class="flex container flex-col">
+              <p class="text-xl text-center">min</p>
+              <div class="border rounded-lg p-2 shadow-xl">
+                <div class="flex container border border-[#2d58b1] rounded-lg bg-gray-200 shadow" id="caret-up-min">
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                    class="mx-auto icon icon-tabler icon-tabler-caret-up fill-[#2d58b1]" width="40" height="40"
+                    viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="#2d58b1" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M18 14l-6 -6l-6 6h12" />
+                  </svg>
+                </div>
+                <div class="text-center text-2xl font-semibold text-grey-darker">0</div>
+                <div class="flex container border border-[#2d58b1] rounded-lg bg-gray-200 shadow" id="caret-down-min">
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                    class="mx-auto icon icon-tabler icon-tabler-caret-down fill-[#2d58b1]" width="40" height="40"
+                    viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="#2d58b1" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M6 10l6 6l6 -6h-12" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <!-- Second -->
+            <div class="flex container flex-col">
+              <p class="text-xl text-center">sec</p>
+              <div class="border rounded-lg p-2 shadow-xl">
+                <div class="flex container border border-[#2d58b1] rounded-lg bg-gray-200 shadow" id="caret-up-sec">
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                    class="mx-auto icon icon-tabler icon-tabler-caret-up fill-[#2d58b1]" width="40" height="40"
+                    viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="#2d58b1" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M18 14l-6 -6l-6 6h12" />
+                  </svg>
+                </div>
+                <div class="text-center text-2xl font-semibold text-grey-darker">0</div>
+                <div class="flex container border border-[#2d58b1] rounded-lg bg-gray-200 shadow" id="caret-down-sec">
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                    class="mx-auto icon icon-tabler icon-tabler-caret-down fill-[#2d58b1]" width="40" height="40"
+                    viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="#2d58b1" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M6 10l6 6l6 -6h-12" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Intensity -->
+        <div class="mb-10">
+          <label class="block text-grey-darker text-lg font-bold mb-2">Choose intensity</label>
+          <div class="flex items-center justify-between container">
+            <span class="text-xs text-grey-darker">Low</span>
+            <div class="flex container">
+              <!-- Intensity1 -->
+              <button class="intensity-btn" data-intensity="1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-point inline" width="40"
+                  height="40" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="none" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+                </svg>
+              </button>
+              <!-- Intensity2 -->
+              <button class="intensity-btn" data-intensity="2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-point inline" width="40"
+                  height="40" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="none" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+                </svg>
+              </button>
+              <!-- Intensity3 -->
+              <button class="intensity-btn" data-intensity="3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-point inline" width="40"
+                  height="40" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="none" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+                </svg>
+              </button>
+              <!-- Intensity4 -->
+              <button class="intensity-btn" data-intensity="4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-point inline" width="40"
+                  height="40" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="none" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+                </svg>
+              </button>
+              <!-- Intensity5 -->
+              <button class="intensity-btn" data-intensity="5">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-point inline" width="40"
+                  height="40" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="none" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+                </svg>
+              </button>
+            </div>
+            <span class="text-xs text-grey-darker">High</span>
+          </div>
+        </div>
+        <!-- Save and Cancel Buttons -->
+        <div class="flex items-center justify-between">
+          <button id="cancel-btn"
+            class="bg-transparent hover:bg-blue-500 text-[#2d58b1] font-semibold hover:text-white py-2 px-4 border border-[#2d58b1] hover:border-transparent rounded">
+            Cancel
+          </button>
+          <button id="save-btn" class="bg-[#2d58b1] text-white hover:bg-blue-500 font-bold py-2 px-4 rounded">
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navbar -->
+  <nav class="fixed w-full bottom-0 bg-[#2d58b1] text-[#fffff] rounded-t-xl">
+    <div class="flex justify-between items-center px-4 py-2">
+      <!-- Home Icon -->
+      <button id="home-btn" class="p-2" aria-label="Home">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24"
+          viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
+          <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+          <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+        </svg>
+      </button>
+
+      <!-- Plus Icon -->
+      <button id="plus-btn" class="p-2" aria-label="Add">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle-plus" width="24" height="24"
+          viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+          <path d="M9 12h6" />
+          <path d="M12 9v6" />
+        </svg>
+      </button>
+
+      <!-- Settings Icon -->
+      <button id="settings-btn" class="p-2" aria-label="Settings">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-settings" width="24" height="24"
+          viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path
+            d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" />
+          <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+        </svg>
+      </button>
+
+      <!-- User Icon -->
+      <button id="user-btn" class="p-2" aria-label="User">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-square-rounded" width="24"
+          height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path d="M12 13a3 3 0 1 0 0 -6a3 3 0 0 0 0 6z" />
+          <path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9 -9 9s-9 -1.8 -9 -9s1.8 -9 9 -9z" />
+          <path d="M6 20.05v-.05a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v.05" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!---------------------------------------------->
+  <!-- Your own JavaScript functions go here    -->
+  <!---------------------------------------------->
+
+  <!-- Link to scripts of your own -->
+  <script src="../scripts/home_nav_top_hamburger.js"></script>
+  <script src="../scripts/general_nav_bottom.js"></script>
+  <script src="../scripts/general_skeleton.js"></script>
+  <script src="../scripts/duration_picker.js"></script>
+  <script src="../scripts/intensity_setter.js"></script>
+  <script src="../scripts/save_cancel.js"></script>
+</body>
+
+</html>
