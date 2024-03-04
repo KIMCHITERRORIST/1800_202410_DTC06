@@ -18,7 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Assuming selectedIntensity is globally accessible and defined in the other JS file
     const intensity = window.getSelectedIntensity ? window.getSelectedIntensity() : 0;
 
-    console.log(`Intensity: ${intensity}`);
+    // Check for missing data
+    if (!activityName || hours === "00" && minutes === "00" && seconds === "00" || intensity === 0) {
+      alert("Please complete all required fields: Activity Name, Time, and Intensity.");
+      return; // Stop the function from proceeding further
+    }
+
     console.log(`Activity Name: ${activityName}`);
     console.log(`Duration: ${hours} hours, ${minutes} minutes, ${seconds} seconds`);
     console.log(`Intensity: ${intensity}`);
