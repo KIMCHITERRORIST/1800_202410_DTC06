@@ -13,7 +13,7 @@ document.getElementById('login-form').addEventListener('submit', function (event
     .then((userCredential) => {
 
       console.log("Logged in as:", userCredential.user.email);
-      window.location.href = 'overview.html';
+      window.location.href = 'user_info.html';
     })
     .catch((error) => {
       const errorCode = error.code;
