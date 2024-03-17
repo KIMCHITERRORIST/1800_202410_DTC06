@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   homeBtn.addEventListener("click", () => {
     console.log("Redirecting to Home Page...");
     // Code to redirect to Home Page
-    // window.location.href = 'home_page_url_here';
+    window.location.href = "overview.html";
   });
 
   // Event listener for Settings button
@@ -22,14 +22,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // Event listener for Plus button
   plusBtn.addEventListener("click", () => {
     console.log("Displaying Popup Menu...");
-    // Code to display a set of menus
-    // Example: displayPopupMenu();
   });
 
   // Event listener for User button
   userBtn.addEventListener("click", () => {
     console.log("Redirecting to User Settings...");
-    // Code to redirect to User Settings Page
-    // window.location.href = 'user_settings_page_url_here';
   });
 });
