@@ -26,7 +26,7 @@ document.getElementById('signup-form').addEventListener('submit', function (even
         .then(() => {
           console.log("New user added to firestore");
           // Redirect the user or show a success message
-          window.location.href = 'signin.html';
+          window.location.href = 'login.html';
         })
         .catch((error) => {
           console.error("Error adding new user to firestore: ", error);
