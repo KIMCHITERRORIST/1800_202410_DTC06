@@ -107,7 +107,7 @@ if (document.getElementById("donut-chart") && typeof ApexCharts !== 'undefined')
             }
 
         } else {
-            chart.updateSeries([35.1, 23.5, 2.4, 5.4]);
+            chart.updateSeries([35.1, 23.5, 2.4]);
         }
     }
 
