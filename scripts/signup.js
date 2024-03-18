@@ -17,7 +17,7 @@ document.getElementById('signup-form').addEventListener('submit', function (even
 
       // Add user info to Firestore
       db.collection("users").doc(user.uid).set({
-        name: name,
+        name: na,
         email: email,
         // Additional default information
         country: "Canada",
