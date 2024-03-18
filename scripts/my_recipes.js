@@ -23,13 +23,30 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log("Error fetching categories", error);
     });
 
-    document.getElementById('create-category').addEventListener('click', function () {
+    document.getElementById('categories-container').addEventListener('click', function () {
       const newCategoryName = prompt("Please enter the name of the new category:");
       if (newCategoryName && newCategoryName.trim() !== "") {
         createNewCategory(uid, newCategoryName.trim());
       } else {
         console.log("Nothing was entered");
       }
+    });
+  }
+
+  // function to create a new category in firebase
+  function createNewCategory(uid, categoryName) {
+    // point  towards the category in the id document of the user
+    const userCategoriesRef = db.collection('users').doc(uid).collection('categories');
+    userCategoriesRef.set({
+      name: categoryName,
+      count: 0
+    }).then(function(){
+      console.log("category created with id:", categoryName);
+
+      // must update ui after
+      createCategoryDiv(categoryName, 0);      
+    }).catch(function(error){
+      console.error("error adding new document: ", error);
     });
   }
 
