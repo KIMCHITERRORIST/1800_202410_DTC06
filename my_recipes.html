@@ -10,6 +10,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Boostrap Library JS CDN  go here -->
     <!-- Other libraries go here -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
@@ -83,52 +84,14 @@
         </div>
         <h1 class="text-center p-3 font-sans font-bold text-2xl"><span id="name"></span>'s Recipes</h1>
 
-        <!-- recipe categories -->
-        <!-- Breakfast -->
-        <div
-            class="flex flex-col mx-auto h-24 justify-center items-center border-2 border-gray-300 shadow-md rounded-full mt-2 mb-5 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <p class="text-2xl font-semibold">Breakfast</p>
-                <!-- Adjust font size and weight for "Breakfast" -->
-                <p class="text-lg"><span id="breakfast-count"></span> Recipes</p>
-                <!-- Smaller font size for "xx Entries" -->
-            </div>
-        </div>
-        <!-- Lunch -->
-        <div
-            class="flex flex-col mx-auto h-24 justify-center items-center border-2 border-gray-300 shadow-md rounded-full my-5 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <p class="text-2xl font-semibold">Lunch</p>
-                <!-- Adjust font size and weight for "Breakfast" -->
-                <p class="text-lg"><span id="lunch-count"></span> Recipes</p>
-                <!-- Smaller font size for "xx Entries" -->
-            </div>
-        </div>
-        <!-- Dinner -->
-        <div
-            class="flex flex-col mx-auto h-24 justify-center items-center border-2 border-gray-300 shadow-md rounded-full my-5 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <p class="text-2xl font-semibold">Dinner</p>
-                <!-- Adjust font size and weight for "Breakfast" -->
-                <p class="text-lg"><span id="dinner-count"></span> Recipes</p>
-                <!-- Smaller font size for "xx Entries" -->
-            </div>
-        </div>
-        <!-- Snacks -->
-        <div
-            class="flex flex-col mx-auto h-24 justify-center items-center border-2 border-gray-300 shadow-md rounded-full my-5 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <p class="text-2xl  font-semibold">Snacks</p>
-                <!-- Adjust font size and weight for "Breakfast" -->
-                <p class="text-lg"><span id="snack-count"></span> Recipes</p>
-                <!-- Smaller font size for "xx Entries" -->
-            </div>
-        </div>
-        <!-- Create Your own -->
-        <div
-            class="flex flex-col mx-auto h-24 justify-center items-center border-2 border-gray-300 shadow-md rounded-full my-5 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <p class="text-xl font-semibold">Create another catetgory</p>
+        <!-- container to store recipe categories and with create your own button at the end -->
+        <div id="categories-container">
+            <!-- Create Your own -->
+            <div
+                class="flex flex-col mx-auto h-24 justify-center items-center border-2 border-gray-300 shadow-md rounded-full my-5 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <p class="text-xl font-semibold">Create another catetgory</p>
+                </div>
             </div>
         </div>
 
