@@ -21,7 +21,8 @@ document.getElementById('signup-form').addEventListener('submit', function (even
         email: email,
         // Additional default information
         country: "Canada",
-        school: "BCIT"
+        school: "BCIT(DTC)"
+
       })
 
       db.collection("Recipes").doc(user.uid).set({})
