@@ -2,10 +2,18 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recipes</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Tailwind Library CSS CDN go here -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Boostrap Library JS CDN  go here -->
+    <!-- Other libraries go here -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 </head>
 
 <body class="flex flex-col">
@@ -73,7 +81,7 @@
                 </path>
             </svg>
         </div>
-        <h1 class="text-center p-3 font-sans font-bold text-2xl">Matt's Recipes</h1>
+        <h1 class="text-center p-3 font-sans font-bold text-2xl"><span id="name"></span>'s Recipes</h1>
 
         <!-- recipe categories -->
         <!-- Breakfast -->
@@ -82,7 +90,8 @@
             <div class="text-center">
                 <p class="text-2xl font-semibold">Breakfast</p>
                 <!-- Adjust font size and weight for "Breakfast" -->
-                <p class="text-lg">0 Recipes</p> <!-- Smaller font size for "xx Entries" -->
+                <p class="text-lg"><span id="breakfast-count"></span> Recipes</p>
+                <!-- Smaller font size for "xx Entries" -->
             </div>
         </div>
         <!-- Lunch -->
@@ -91,7 +100,8 @@
             <div class="text-center">
                 <p class="text-2xl font-semibold">Lunch</p>
                 <!-- Adjust font size and weight for "Breakfast" -->
-                <p class="text-lg">0 Recipes</p> <!-- Smaller font size for "xx Entries" -->
+                <p class="text-lg"><span id="lunch-count"></span> Recipes</p>
+                <!-- Smaller font size for "xx Entries" -->
             </div>
         </div>
         <!-- Dinner -->
@@ -100,7 +110,8 @@
             <div class="text-center">
                 <p class="text-2xl font-semibold">Dinner</p>
                 <!-- Adjust font size and weight for "Breakfast" -->
-                <p class="text-lg">0 Recipes</p> <!-- Smaller font size for "xx Entries" -->
+                <p class="text-lg"><span id="dinner-count"></span> Recipes</p>
+                <!-- Smaller font size for "xx Entries" -->
             </div>
         </div>
         <!-- Snacks -->
@@ -109,7 +120,8 @@
             <div class="text-center">
                 <p class="text-2xl  font-semibold">Snacks</p>
                 <!-- Adjust font size and weight for "Breakfast" -->
-                <p class="text-lg">0 Recipes</p> <!-- Smaller font size for "xx Entries" -->
+                <p class="text-lg"><span id="snack-count"></span> Recipes</p>
+                <!-- Smaller font size for "xx Entries" -->
             </div>
         </div>
         <!-- Create Your own -->
@@ -171,7 +183,14 @@
             </button>
         </div>
     </footer>
+    <!---------------------------------------------->
+    <!-- Your own JavaScript functions go here    -->
+    <!---------------------------------------------->
+
+    <!-- Link to scripts of your own -->
     <script src="../scripts/general_nav_bottom.js"></script>
+    <script src="/scripts/firebaseAPI_TEAMDTC06.js"></script>
+    <script src="scripts/my_recipes.js"></script>
 </body>
 
 </html>

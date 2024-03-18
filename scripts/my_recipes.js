@@ -1,11 +1,3 @@
-// Initialize Firebase: Ensure you've added your Firebase project configuration here
-firebase.initializeApp({
-  // Your Firebase config object here
-});
-
-// Get a reference to the Firestore service
-var db = firebase.firestore();
-
 // Function to get the current user's UID
 function getCurrentUserId() {
   return firebase.auth().currentUser.uid;
@@ -28,7 +20,7 @@ function fetchAndDisplayUserName() {
 // Function to fetch and display recipe counts for each category
 function fetchAndDisplayRecipeCounts() {
   const userId = getCurrentUserId();
-  // First, fetch the categories array
+  // Fetch the categories array
   db.collection('Recipes').doc(userId).get().then((doc) => {
     if (doc.exists) {
       const categories = doc.data().categories;
@@ -52,14 +44,13 @@ function fetchAndDisplayRecipeCounts() {
   });
 }
 
-// Ensure you call these functions at the appropriate time, such as when the page loads or after the user signs in
+// Ensure calling these functions when the page loads or after the user signs in
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
     fetchAndDisplayUserName();
     fetchAndDisplayRecipeCounts();
   } else {
-    // User is signed out
-    // Handle sign-out or redirect to a login page
+    console.log("No user signed in.");
   }
 });
 
