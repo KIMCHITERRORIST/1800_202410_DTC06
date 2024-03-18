@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../scripts/general_nav_bottom.js"></script>
+</head>
+
+<body class="flex flex-col">
+    <!-- top nav bar -->
+    <nav id="general-top-nav" class="bg-[#2d58b1] rounded-b-xl ">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-2">
+            <button
+                class="inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-white hover:text-yellow-100">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left" width="40"
+                    height="40" viewBox="0 0 24 24" stroke-width="1.5" stroke="#fff9e1" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M5 12l14 0" />
+                    <path d="M5 12l6 6" />
+                    <path d="M5 12l6 -6" />
+                </svg>
+            </button>
+
+            <a href="#" class="flex items-center justify-center mx-auto">
+                <img src="/images/FitQuest Logo.svg" class="h-8" alt="Logo" />
+                <span class="self-center text-2xl text-white font-semibold whitespace-nowrap">FitQuest</span>
+            </a>
+            <button data-collapse-toggle="navbar-hamburger" type="button"
+                class="inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-white rounded-lg hover:bg-white hover:text-[#2d58b1] focus:outline-none"
+                aria-controls="navbar-hamburger" aria-expanded="false">
+                <span class="sr-only">Open main menu</span>
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 17 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M1 1h15M1 7h15M1 13h15" />
+                </svg>
+            </button>
+            <div class="hidden w-full" id="navbar-hamburger">
+                <ul class="flex flex-col font-medium mt-4 rounded-lg bg-white">
+                    <li>
+                        <a href="#"
+                            class="block py-2 px-3 text-[#2d58b1] rounded-md focus:ring-1 hover:focus:ring-[#2d58b1]"
+                            aria-current="page">Home</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="block py-2 px-3 text-[#2d58b1] rounded-md focus:ring-1 hover:focus:ring-[#2d58b1]">History</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="block py-2 px-3 text-[#2d58b1] rounded-md focus:ring-1 hover:focus:ring-[#2d58b1]">Settings</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="block py-2 px-3 text-[#2d58b1] rounded-md focus:ring-1 hover:focus:ring-[#2d58b1]">Support</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- have to link the firebase database to this and then make the graphs work with them. -->
+    <main class="overflow-auto" style="height: calc(100vh - 112px);">
+
+        <!-- avatar -->
+        <div class="relative mt-6 mx-auto overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600 size-24 flex items-center justify-center">
+            <svg class="flex size-10 items-center text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"> </path>
+            </svg>
+        </div>
+        <h1 class="text-center p-3 font-sans font-bold text-2xl">Matt's Recipes</h1>
+
+        <!-- recipe categories -->
+        <!-- Breakfast -->
+        <div class="flex flex-col mx-auto h-24 justify-center items-center border-2 border-gray-300 shadow-md rounded-full mt-2 mb-5 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-2xl font-semibold">Breakfast</p>
+                <!-- Adjust font size and weight for "Breakfast" -->
+                <p class="text-lg">0 Recipes</p> <!-- Smaller font size for "xx Entries" -->
+            </div>
+        </div>
+        <!-- Lunch -->
+        <div
+            class="flex flex-col mx-auto h-24 justify-center items-center border-2 border-gray-300 shadow-md rounded-full my-5 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-2xl font-semibold">Lunch</p>
+                <!-- Adjust font size and weight for "Breakfast" -->
+                <p class="text-lg">0 Recipes</p> <!-- Smaller font size for "xx Entries" -->
+            </div>
+        </div>
+        <!-- Dinner -->
+        <div
+            class="flex flex-col mx-auto h-24 justify-center items-center border-2 border-gray-300 shadow-md rounded-full my-5 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-2xl font-semibold">Dinner</p>
+                <!-- Adjust font size and weight for "Breakfast" -->
+                <p class="text-lg">0 Recipes</p> <!-- Smaller font size for "xx Entries" -->
+            </div>
+        </div>
+        <!-- Snacks -->
+        <div
+            class="flex flex-col mx-auto h-24 justify-center items-center border-2 border-gray-300 shadow-md rounded-full my-5 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-2xl  font-semibold">Snacks</p>
+                <!-- Adjust font size and weight for "Breakfast" -->
+                <p class="text-lg">0 Recipes</p> <!-- Smaller font size for "xx Entries" -->
+            </div>
+        </div>
+        <!-- Create Your own -->
+        <div
+            class="flex flex-col mx-auto h-24 justify-center items-center border-2 border-gray-300 shadow-md rounded-full my-5 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-xl font-semibold">Create another catetgory</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer Navigation Bar -->
+    <footer id="general-bottom-nav" class="fixed w-full bottom-0 bg-[#2d58b1] text-[#fffff] rounded-t-xl">
+        <div class="flex justify-between items-center px-4 py-2">
+            <!-- Home Icon -->
+            <button id="home-btn" class="p-2" aria-label="Home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24"
+                    viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
+                    <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+                    <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+                </svg>
+            </button>
+            <!-- Plus Icon -->
+            <button id="plus-btn" class="p-2" aria-label="Add">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle-plus" width="24"
+                    height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                    <path d="M9 12h6" />
+                    <path d="M12 9v6" />
+                </svg>
+            </button>
+            <!-- Settings Icon -->
+            <button id="settings-btn" class="p-2" aria-label="Settings">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-settings" width="24"
+                    height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path
+                        d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" />
+                    <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+                </svg>
+            </button>
+            <!-- User Icon -->
+            <button id="user-btn" class="p-2" aria-label="User">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-square-rounded"
+                    width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M12 13a3 3 0 1 0 0 -6a3 3 0 0 0 0 6z" />
+                    <path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9 -9 9s-9 -1.8 -9 -9s1.8 -9 9 -9z" />
+                    <path d="M6 20.05v-.05a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v.05" />
+                </svg>
+            </button>
+        </div>
+    </footer>
+</body>
+
+</html>
