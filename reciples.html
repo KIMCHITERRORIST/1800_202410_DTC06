@@ -63,44 +63,59 @@
         </div>
     </nav>
     <!-- have to link the firebase database to this and then make the graphs work with them. -->
-    <main class="overflow-hidden">
-        <!-- avatar -->
+    <main class="overflow-auto" style="height: calc(100vh - 112px);">
 
-        <div>
-            <div
-                class="relative mt-10 mx-auto overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600 size-24 flex items-center justify-center">
-                <svg class="flex size-10 items-center text-gray-400" fill="currentColor" viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                        clip-rule="evenodd">
-                    </path>
-                </svg>
-            </div>
-            <h1 class="text-center p-3 font-sans font-bold text-2xl">Matt's Recipes</h1>
+        <!-- avatar -->
+        <div class="relative mt-8 mx-auto overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600 size-24 flex items-center justify-center">
+            <svg class="flex size-10 items-center text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"> </path>
+            </svg>
         </div>
+        <h1 class="text-center p-3 font-sans font-bold text-2xl">Matt's Recipes</h1>
+
         <!-- recipe categories -->
         <!-- Breakfast -->
         <div
             class="flex flex-col mx-auto h-24 justify-center items-center border-2 border-gray-300 shadow-md rounded-full my-5 sm:px-6 lg:px-8">
             <div class="text-center">
-                <p class="text-lg md:text-xl font-semibold">Breakfast</p>
+                <p class="text-2xl font-semibold">Breakfast</p>
                 <!-- Adjust font size and weight for "Breakfast" -->
-                <p class="text-sm">xx Entries</p> <!-- Smaller font size for "xx Entries" -->
+                <p class="text-lg">xx Recipes</p> <!-- Smaller font size for "xx Entries" -->
             </div>
         </div>
         <!-- Lunch -->
-        <div class="container mx-auto h-24 rounded-full sm:px-6 lg:px-8">
+        <div
+            class="flex flex-col mx-auto h-24 justify-center items-center border-2 border-gray-300 shadow-md rounded-full my-5 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-2xl font-semibold">Lunch</p>
+                <!-- Adjust font size and weight for "Breakfast" -->
+                <p class="text-lg">xx Recipes</p> <!-- Smaller font size for "xx Entries" -->
+            </div>
         </div>
         <!-- Dinner -->
-        <div class="container mx-auto h-24 rounded-full sm:px-6 lg:px-8">
+        <div
+            class="flex flex-col mx-auto h-24 justify-center items-center border-2 border-gray-300 shadow-md rounded-full my-5 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-2xl font-semibold">Dinner</p>
+                <!-- Adjust font size and weight for "Breakfast" -->
+                <p class="text-lg">xx Recipes</p> <!-- Smaller font size for "xx Entries" -->
+            </div>
         </div>
         <!-- Snacks -->
-        <div class="container mx-auto h-24 rounded-full sm:px-6 lg:px-8">
+        <div
+            class="flex flex-col mx-auto h-24 justify-center items-center border-2 border-gray-300 shadow-md rounded-full my-5 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-2xl  font-semibold">Snacks</p>
+                <!-- Adjust font size and weight for "Breakfast" -->
+                <p class="text-lg">xx Recipes</p> <!-- Smaller font size for "xx Entries" -->
+            </div>
         </div>
         <!-- Create Your own -->
-        <div class="container mx-auto h-24 rounded-full sm:px-6 lg:px-8">
-        </div>
-        </div>
+        <div
+            class="flex flex-col mx-auto h-24 justify-center items-center border-2 border-gray-300 shadow-md rounded-full my-5 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-xl font-semibold">Create another catetgory</p>
+            </div>
         </div>
 
     </main>
