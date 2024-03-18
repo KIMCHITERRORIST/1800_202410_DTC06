@@ -29,12 +29,14 @@ document.getElementById("user-info-form").addEventListener("submit", function (e
     const age = document.getElementById("age").value;
     const weight = document.getElementById("weight").value;
     const height = document.getElementById("height").value;
+    const gender = document.getElementById("gender").value;
 
     // Update user's info in Firestore
     db.collection("users").doc(uid).set({
       age: age,
       weight: weight,
-      height: height
+      height: height,
+      gender: gender
     }, { merge: true }).then(() => {
       console.log("Document successfully written!");
       window.location.href = "overview.html";

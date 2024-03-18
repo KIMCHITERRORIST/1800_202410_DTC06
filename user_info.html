@@ -82,7 +82,7 @@
 
   <!-- user info form -->
   <form id="user-info-form"
-    class="flex flex-col justify-center mx-auto container w-[75%] md:w-[50%] md:mx-auto max-h-fit bg-white border-1 border-gray-500 rounded-2xl shadow-2xl mt-10 p-5">
+    class="flex flex-col justify-center mx-auto container w-[75%] md:w-[50%] md:mx-auto max-h-fit bg-white border-1 border-gray-500 rounded-2xl shadow-2xl my-10 p-5">
     <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
       <p class="text-center">Welcome! <span id="name"></span></p>
       <p class="text-center">Please fill your basic info below</p>
@@ -101,11 +101,26 @@
         <input type="number" id="height" placeholder="height in cm"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
       </div>
+      <!-- Gender drop-down -->
+      <div class="mb-6">
+        <form class="max-w-sm mx-auto">
+          <label for="gender" class="block mb-2 text-sm font-medium text-gray-900">Gender</label>
+          <select id="gender"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+            <option value="" disabled selected>Select your gender</option>
+            <option>male</option>
+            <option>female</option>
+          </select>
+        </form>
+      </div>
+      <!-- Buttons -->
       <div class="mb-6 container flex justify-between px-5">
         <button id="save" type="submit"
           class="max-w-fit text-white bg-[#2d58b1] hover:bg-[#172d58] focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5">Save</button>
         <button id="cancel" type="reset"
-          class="max-w-fit text-black bg-gray-300 hover:bg-gray-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5">cancel</button>
+          class="max-w-fit text-black bg-gray-300 hover:bg-gray-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-[#2d58b1] font-medium rounded-lg text-sm px-5 py-2.5">cancel</button>
+      </div>
+
   </form>
 
   <!-- Bottom Navigation Bar -->
