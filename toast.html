@@ -63,11 +63,16 @@
         </div>
     </nav>
     <!-- have to link the firebase database to this and then make the graphs work with them. -->
-  <main>
-    <div class="p-4 flex flex-col items-center">
-        <input type="text" id="recipeNameInput" placeholder="Enter Your Recipe Name" class="text-3xl p-2 border-2 border-gray-300 rounded mt-4 mb-2 w-full max-w-md">
-    </div>
-  </main>
+    <main>
+        <!-- Box for user to input recpie name -->
+        <div class="p-4 flex flex-col items-center">
+            <input type="text" id="recipeNameInput" placeholder="Enter Your Recipe Name"
+                class="text-3xl p-2 border-2 border-gray-300 rounded mt-4 mb-2 w-full max-w-md"
+                oninput="updateRecipeName()">
+            <!-- place holder for the name once inputted -->
+            <div id=":recipeNameDisplay" class="text-4xl font-semmibold mt-2"></div>
+        </div>
+    </main>
 
     <!-- Footer Navigation Bar -->
     <footer id="general-bottom-nav" class="fixed w-full bottom-0 bg-[#2d58b1] text-[#fffff] rounded-t-xl">
@@ -118,6 +123,7 @@
             </button>
         </div>
     </footer>
+    <script src="/scripts/toast.js"></script>
 </body>
 
 </html>
