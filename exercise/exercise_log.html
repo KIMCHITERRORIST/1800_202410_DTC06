@@ -2,19 +2,30 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Activity log</title>
-  <!-- Tailwind Library CSS CDN go here -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>log_exercise</title>
+  <meta name="comp1800 template" content="My 1800 App">
 
-  <!-- Import jQuery -->
+  <!------------------------>
+  <!-- Required meta tags -->
+  <!------------------------>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-------------------------------------------------------->
+  <!-- Firebase 8 Library related CSS, JS, JQuery go here -->
+  <!-------------------------------------------------------->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 
   <!-------------------------------------------->
   <!-- Other libraries and styles of your own -->
   <!-------------------------------------------->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
 </head>
 
 <body>
@@ -146,7 +157,10 @@
     <!---------------------------------------------->
 
     <!-- Link to scripts of your own -->
-    <script src="../scripts/save_cancel.js"></script>
+    <script src="../scripts/home_nav_top_hamburger.js"></script>
+    <script src="../scripts/general_nav_bottom.js"></script>
+    <script src="../scripts/general_skeleton.js"></script>
+    <script src="../scripts/firebaseAPI_TEAMDTC06.js"></script>
     <script src="../scripts/log_exercise.js"></script>
   </body>
 
