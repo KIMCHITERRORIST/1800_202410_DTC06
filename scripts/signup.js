@@ -8,7 +8,7 @@ document.getElementById('signup-form').addEventListener('submit', function (even
   const email = document.getElementById('signup-email').value;
   const password = document.getElementById('signup-password').value;
   const name = document.getElementById('signup-name').value; // Assuming this is "Last Name First Name" format
-
+  const categories = []
   // Create a new user with the provided email and password
   auth.createUserWithEmailAndPassword(email, password)
     .then((userCredential) => {
@@ -23,6 +23,11 @@ document.getElementById('signup-form').addEventListener('submit', function (even
         country: "Canada",
         school: "BCIT"
       })
+
+      db.collection("Recipes").doc(user.uid).set({})
+      db.collection("exercises").doc(user.uid).set({})
+      db.collection("calories").doc(user.uid).set({})
+
         .then(() => {
           console.log("New user added to firestore");
           // Redirect the user or show a success message
