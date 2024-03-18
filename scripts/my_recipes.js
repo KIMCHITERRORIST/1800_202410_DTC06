@@ -36,9 +36,11 @@ document.addEventListener('DOMContentLoaded', function () {
   // function to create a new category in firebase
   function createNewCategory(uid, categoryName) {
     // point  towards the category in the id document of the user
-    const userCategoriesRef = db.collection('Recipes').doc(uid);
-    userCategoriesRef.add({
-      name: categoryName,
+    // const userCategoriesRef = db.collection('Recipes').doc(uid);
+    // userCategoriesRef.collection(categoryName).set({
+    //   name: categoryName,
+    //   count: 0
+    db.collection('Recipes').doc(uid).collection(categoryName).doc('count').set({
       count: 0
     }).then(function () {
       console.log("category created with id:", categoryName);
