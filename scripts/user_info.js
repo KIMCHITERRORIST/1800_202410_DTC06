@@ -1,20 +1,26 @@
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
-    // User is signed in, retrieve user's name
+    // User is signed in, retrieve user's name and check for additional info
     const uid = user.uid;
     db.collection("users").doc(uid).get().then((doc) => {
       if (doc.exists) {
-        const userName = doc.data().name;
+        const userData = doc.data();
+        const userName = userData.name;
+        // Display the user's name
         document.getElementById("name").textContent = userName;
+
+        // Check if the user has already filled in additional info
+        if (userData.age && userData.weight && userData.height && userData.gender) {
+          // User has filled in their information, redirect to overview
+          window.location.href = "overview.html";
+        }
       } else {
-        // doc.data() will be undefined in this case
         console.log("No such document!");
       }
     }).catch((error) => {
       console.log("Error getting document:", error);
     });
   } else {
-    // No user is signed in.
     console.log("No user signed in.");
   }
 });
