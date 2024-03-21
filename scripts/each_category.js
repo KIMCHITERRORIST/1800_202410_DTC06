@@ -14,7 +14,7 @@ async function fetchUID() {
 async function displayCategoryInfo() {
   const uid = await fetchUID();
   let params = new URL(window.location.href); //get URL of search bar
-  let ID = params.searchParams.get("colId"); //get value for key "id"
+  let ID = params.searchParams.get("collectionId"); //get value for key "id"
   console.log(ID);
 
   db.collection("Recipes")

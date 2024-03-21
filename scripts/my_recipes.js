@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
     db.collection('Recipes').doc(uid).get().then(doc => {
       if (doc.exists) {
         const categoriesArray = doc.data().categories;
+        console.log(categoriesArray);
 
         // Fetch and read the 'count' document from each corresponding category collection
         categoriesArray.forEach(categoryName => {
@@ -90,10 +91,11 @@ document.addEventListener('DOMContentLoaded', function () {
         <p class="text-lg"><span id="${category}-count">${count}</span> Recipes</p>
       </div>`;
 
-    // Add click event listener to redirect to the category page
-    categoryDiv.addEventListener('click', () => {
-      window.location.href = `/${category}.html`; // Redirect to respective category page
-    });
+    categoryCollectionId =
+      // Add click event listener to redirect to the category page
+      categoryDiv.addEventListener('click', () => {
+        window.location.href = `/each_category.html?collectionId=` + category; // Redirect to respective category page
+      });
 
     container.insertBefore(categoryDiv, container.firstChild);
   }
