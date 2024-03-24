@@ -91,11 +91,10 @@ document.addEventListener('DOMContentLoaded', function () {
         <p class="text-lg"><span id="${category}-count">${count}</span> Recipes</p>
       </div>`;
 
-    categoryCollectionId =
-      // Add click event listener to redirect to the category page
-      categoryDiv.addEventListener('click', () => {
-        window.location.href = `/each_category.html?collectionId=` + category; // Redirect to respective category page
-      });
+    // Add click event listener to redirect to the category page
+    categoryDiv.addEventListener('click', () => {
+      window.location.href = `/each_category.html?collectionId=` + category; // Redirect to respective category page
+    });
 
     container.insertBefore(categoryDiv, container.firstChild);
   }

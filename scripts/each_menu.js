@@ -14,24 +14,28 @@ async function fetchUID() {
 async function displayMenuInfo() {
   const uid = await fetchUID();
   let params = new URL(window.location.href); //get URL of search bar
-  let ID = params.searchParams.get("collectionId"); //get value for key "id"
-  console.log(ID);
+  let category = params.searchParams.get("categoryId"); //get value for key "id"
+  let menu = params.searchParams.get("menuId"); //get value for key "id"
+  console.log(menu);
 
   db.collection("Recipes")
     .doc(uid)
-    .collection(ID)
+    .collection(category)
+    .doc(menu)
+    .collection("ingredients")
     .get()
-    .then((menuList) => {
-      menuList.forEach((doc) => {
+    .then((ingredientList) => {
+      ingredientList.forEach((doc) => {
         if (doc.id === "count") return;
 
-        menuName = doc.id
-        calorie = doc.data().totalCalorie
-        menuCard = document.getElementById("recipeContainer")
+        ingredientName = doc.id
+        calorie = doc.data().calorie
+        quantity = doc.data().quantity
+        menuCard = document.getElementById("menuContainer")
         menuCard.innerHTML += `<div class="flex w-full mx-auto border-2 border-gray-300 shadow-md rounded-full mt-2 mb-5 p-4 text-center">
             <div class="w-3/4">
-                <p class="text-3xl font-bold mb-2">${menuName}</p>
-                <p class="text-sm text-gray-500">0g Protein | 0g Carb | 0g Fat</p>
+                <p class="text-3xl font-bold mb-2">${ingredientName}</p>
+                <p class="text-sm text-gray-500">Quantity: ${quantity}</p>
             </div>
             <div class="flex items-center">
                 <p class="text-gray-800 text-lg font-semibold">${calorie}</p>
@@ -39,12 +43,8 @@ async function displayMenuInfo() {
             </div>
         </div>`
       })
-
-      menuId =
-        // Add click event listener to redirect to the category page
-        menuCard.addEventListener('click', () => {
-          window.location.href = `/each_menu.html?categoryId=${ID}&menuId=${menuName}`; // Redirect to respective category page
-        });
     });
+
+  container.insertBefore(categoryDiv, container.firstChild);
 }
 displayMenuInfo();
