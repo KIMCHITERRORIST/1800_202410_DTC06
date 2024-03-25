@@ -13,9 +13,7 @@ async function fetchAndDisplayUserActivities() {
       return;
     }
 
-    // Clear existing content in the container
     const exerciseCardContainer = document.getElementById("exercise-card-container");
-    exerciseCardContainer.innerHTML = '';
 
     // Iterate over each activity document
     snapshot.forEach(doc => {
