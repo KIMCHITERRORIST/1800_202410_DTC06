@@ -7,6 +7,13 @@
     <title>Recipes</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../scripts/general_nav_bottom.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script src="/scripts/firebaseAPI_TEAMDTC06.js"></script>
+    <script src="scripts/each_category.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body class="flex flex-col">
@@ -64,7 +71,7 @@
         </div>
     </nav>
 
-    <main class="flex flex-col mt-5">
+    <main class="flex flex-col mt-5" style="height: calc(100vh - 112px);">
         <h1 class="font-bold text-5xl m-4 mb-6"><span id="recipeCategory"></span></h1>
         <!-- search bar for recipes -->
         <form class="flex items-center w-full max-w-md px-4 mb-4">
@@ -105,10 +112,10 @@
         <!-- container to store recipe categories and with create your own button at the end -->
         <div id="recipes-container">
             <!-- Create Your own -->
-            <div id="create-recipe"
+            <div id='create-recipe'
                 class="flex flex-col mx-auto h-24 justify-center items-center border-2 border-gray-300 shadow-md rounded-full my-5">
                 <div class="text-center">
-                    <p class="text-xl font-semibold">Create Add another Recipe.</p>
+                    <p class="text-xl font-semibold">Create another Recipe.</p>
                 </div>
             </div>
         </div>
@@ -164,13 +171,6 @@
             </button>
         </div>
     </footer>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
-    <script src="scripts/each_category.js"></script>
-
 </body>
 
 </html>
