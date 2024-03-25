@@ -4,6 +4,8 @@ async function fetchUID() {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         resolve(user.uid);
+        selected = localStorage.getItem('selectedCategory');
+        console.log(selected);
       } else {
         reject('User is not logged in.');
       }
@@ -16,7 +18,6 @@ async function displayMenuInfo() {
   let params = new URL(window.location.href); //get URL of search bar
   let ID = params.searchParams.get("collectionId"); //get value for key "id"
   console.log(ID);
-
   db.collection("Recipes")
     .doc(uid)
     .collection(ID)
