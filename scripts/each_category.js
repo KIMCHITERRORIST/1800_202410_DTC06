@@ -9,6 +9,44 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+function fetchAndDisplayRecipes(uid) {
+  // Read the categories array from the UID document under 'Recipes' collection
+  db.collection('Recipes').doc(uid).collection(recipeCatName).get().then(doc => {
+    if (doc.exists) {
+      var recipesDataArray = doc.data().recipeCatName;
+      console.log(recipesDataArray);
+
+      // Fetch and read the 'count' document from each corresponding category collection
+      recipesDataArray.forEach(recipeName => {
+        db.collection('Recipes').doc(uid).collection(recipeCatName).doc('count').get()
+          .then(docCount => {
+            if (docCount.exists) {
+              createCategoryDiv(categoryName, docCount.data().count);
+            } else {
+              console.log(`Count document does not exist in ${categoryName} collection`);
+            }
+          }).catch(error => {
+            console.log("Error fetching count document:", error);
+          });
+      });
+    } else {
+      console.log("No such document for this UID!");
+    }
+  }).catch(error => {
+    console.log("Error fetching categories array:", error);
+  });
+
+  document.getElementById('create-category').addEventListener('click', function () {
+    const newCategoryName = prompt("Please enter the name of the new category:");
+    if (newCategoryName && newCategoryName.trim() !== "") {
+      createNewCategory(uid, newCategoryName.trim());
+    } else {
+      console.log("Nothing was entered");
+    }
+  });
+}
+
+
 // Fetch UID function
 async function fetchUID() {
   return new Promise((resolve, reject) => {
