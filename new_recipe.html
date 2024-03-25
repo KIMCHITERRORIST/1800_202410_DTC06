@@ -85,7 +85,7 @@
     <h1 class="font-bold text-5xl m-4 mb-0"><span id="recipeCategory"></span>dsaf</h1>
     <!-- Graph area -->
     <div class="w-full p-4">
-      <div id="graphContainer" class="w-full h-64 bg-gray-100">
+      <div id="graphContainer" class="w-full h-56 bg-gray-100">
         <!-- Graph will be inserted here -->
       </div>
     </div>
@@ -96,15 +96,29 @@
       <p class="font-semibold">Carbs: <span id="carbs">0</span> g</p>
       <p class="font-semibold">Fats: <span id="fats">0</span> g</p>
     </div>
-  </main>
-
-  <div class="flex w-full mx-auto border-2 border-gray-300 shadow-md rounded-full mt-2 mb-5 p-4 text-center">
-    <div class="w-3/4">
-      <p class="text-3xl font-bold mb-2">Toast</p>
-      <p class="text-sm text-gray-500">0g Protein | 0g Carb | 0g Fat | 0 calories</p>
+    <!-- showing ingredients already on the list -->
+    <div
+      class="flex w-full mx-auto border border-gray-300 shadow-md rounded-full mt-6 mb-5 px-3 py-2 text-center items-center justify-between">
+      <div class="flex-1">
+        <p class="text-xl font-bold mb-1"><span id="ingredientName">Toast</span> <span id="quantity">quantity</span>
+          <span id="measureType">type</span></p>
+        <p class="text-xs text-gray-500"><span id="protein">0</span>g Protein | <span id="carbs">0</span>g Carb | <span
+            id="fats">0</span>g Fat</p>
+      </div>
+      <div class="flex items-center space-x-1">
+        <p class="text-gray-800 text-lg font-semibold" id="calories">1000</p>
+        <img src="/images/kcal_icon.svg" alt="" class="w-10 h-10">
+      </div>
     </div>
-  </div>
-
+    <!-- add new ingredient -->
+    <div
+      class="flex w-full mx-auto border border-gray-300 shadow-md rounded-full mt-6 mb-5 px-3 py-2 text-center items-center justify-center">
+      <div class="flex-1">
+        <p class="text-xl font-bold mb-1">Add New Ingredient</p>
+      </div>
+    </div>
+    
+  </main>
   <!-- Bottom Navigation Bar -->
   <footer id="general-bottom-nav" class="fixed inset-x-0 bottom-0 bg-[#2d58b1] text-[#fffff] rounded-t-xl">
     <div class="flex justify-between items-center px-4 py-2">
