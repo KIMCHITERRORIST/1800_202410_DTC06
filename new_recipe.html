@@ -14,7 +14,7 @@
   <!-------------------------------------------------------->
   <!-- Firebase 8 Library related CSS, JS, JQuery go here -->
   <!-------------------------------------------------------->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
@@ -81,14 +81,29 @@
   </nav>
 
   <!-- Main Content -->
-<main>
-  <div class="text-center py-4">
-    <h1 id="recipeName" class="text-3xl font-bold"></h1>
+  <main>
+    <h1 class="font-bold text-5xl m-4 mb-0"><span id="recipeCategory"></span>dsaf</h1>
+    <!-- Graph area -->
+    <div class="w-full p-4">
+      <div id="graphContainer" class="w-full h-64 bg-gray-100">
+        <!-- Graph will be inserted here -->
+      </div>
+    </div>
+
+    <!-- Macro nutrients displayed in one line below the graph -->
+    <div class="flex justify-between px-4">
+      <p class="font-semibold">Protein: <span id="protein">0</span> g</p>
+      <p class="font-semibold">Carbs: <span id="carbs">0</span> g</p>
+      <p class="font-semibold">Fats: <span id="fats">0</span> g</p>
+    </div>
+  </main>
+
+  <div class="flex w-full mx-auto border-2 border-gray-300 shadow-md rounded-full mt-2 mb-5 p-4 text-center">
+    <div class="w-3/4">
+      <p class="text-3xl font-bold mb-2">Toast</p>
+      <p class="text-sm text-gray-500">0g Protein | 0g Carb | 0g Fat | 0 calories</p>
+    </div>
   </div>
-
-  div
-</main>
-
 
   <!-- Bottom Navigation Bar -->
   <footer id="general-bottom-nav" class="fixed inset-x-0 bottom-0 bg-[#2d58b1] text-[#fffff] rounded-t-xl">
@@ -144,11 +159,11 @@
   <!---------------------------------------------->
   <!-- Your own JavaScript functions go here    -->
   <!---------------------------------------------->
-    <script src="scripts/user_info.js"></script>
-    <script src="scripts/home_nav_top_hamburger.js"></script>
-    <script src="../scripts/general_nav_bottom.js"></script>
-    <script src="/scripts/firebaseAPI_TEAMDTC06.js"></script>
-    <script src="scripts/new_recipe.js"></script>
+  <script src="scripts/user_info.js"></script>
+  <script src="scripts/home_nav_top_hamburger.js"></script>
+  <script src="../scripts/general_nav_bottom.js"></script>
+  <script src="/scripts/firebaseAPI_TEAMDTC06.js"></script>
+  <script src="scripts/new_recipe.js"></script>
 
 </body>
 
