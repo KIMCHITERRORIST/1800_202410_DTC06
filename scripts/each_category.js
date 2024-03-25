@@ -1,50 +1,90 @@
-// Fetch UID function
-async function fetchUID() {
-  return new Promise((resolve, reject) => {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        resolve(user.uid);
-      } else {
-        reject('User is not logged in.');
+document.addEventListener("DOMContentLoaded", function () {
+  firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+      const uid = user.uid;
+      const recipeCatName = localStorage.getItem('selectedCategory');
+      // Attach click event listener to the create-recipe div
+      document.getElementById('create-recipe').addEventListener('click', function () {
+        // Call your function to create a new recipe
+        createNewRecipePrompt(uid, recipeCatName);
+      });
+      if (recipeCatName) {
+        document.getElementById("recipeCategory").innerText = recipeCatName;
       }
+      displayRecipeInfo(uid, recipeCatName);
+    } else {
+      console.error('User is not logged in.');
+    }
+  });
+});
+
+// create new recipe function
+function createNewRecipePrompt(uid, recipeCatName) {
+  const newRecipeName = prompt("Please enter the name of the new recipe:");
+  if (newRecipeName && newRecipeName.trim() !== "") {
+    // Pass newName, recipeCatName, and uid to createNewRecipe
+    createNewRecipe(newRecipeName.trim(), recipeCatName, uid);
+  } else {
+    console.log("Nothing was entered");
+  }
+}
+function displayRecipeInfo(uid, recipeCatName) {
+  db.collection('Recipes')
+    .doc(uid)
+    .collection(recipeCatName)
+    .get()
+    .then((querySnapshot) => {
+      const recipesContainer = document.getElementById("recipes-container");
+
+      querySnapshot.forEach((doc) => {
+        var recipeName = doc.id;
+        var recipe = doc
+        var recipeCardHTML = `
+          <div class="flex flex-col items-center justify-center w-full max-w-sm mx-auto my-4 border-2 border-gray-300 rounded-lg shadow-md">
+            <div class="p-5">
+              <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">${recipeName}</h5>
+              <ul class="mb-4 text-gray-600">
+                <li>Calories: ${recipe.calories}</li>
+                <li>Protein: ${recipe.protein}g</li>
+                <li>Carbs: ${recipe.carbs}g</li>
+                <li>Fats: ${recipe.fats}g</li>
+              </ul>
+              <button onclick="viewRecipeDetails('${recipeName}')" class="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
+                View Recipe
+                <svg aria-hidden="true" class="ml-2 -mr-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H7"></path></svg>
+              </button>
+            </div>
+          </div>
+        `;
+
+        recipesContainer.insertAdjacentHTML('afterbegin', recipeCardHTML);
+      });
+    })
+    .catch((error) => {
+      console.error("Error fetching recipes:", error);
     });
+}
+
+//function when you click on view recipe
+function viewRecipeDetails(recipeName) {
+  localStorage.setItem('selectedRecipe', recipeName);
+  window.location.href = '/recipe.html';
+
+}
+
+
+// Function to create a new recipe in Firebase
+function createNewRecipe(newName, recipeCatName, uid) {
+  db.collection('Recipes').doc(uid).collection(recipeCatName).doc(newName).set({
+    calories: 0,
+    protein: 0,
+    carbs: 0,
+    fats: 0
+  }).then(function () {
+    console.log("Recipe created with id:", newName);
+    // Perform further actions here, if necessary
+    window.location.href = '/recipe.html'; // Redirects to the recipe page
+  }).catch(function (error) {
+    console.error("Error adding new document:", error);
   });
 }
-
-async function displayMenuInfo() {
-  const uid = await fetchUID();
-  let params = new URL(window.location.href); //get URL of search bar
-  let ID = params.searchParams.get("collectionId"); //get value for key "id"
-  console.log(ID);
-
-  db.collection("Recipes")
-    .doc(uid)
-    .collection(ID)
-    .get()
-    .then((menuList) => {
-      menuList.forEach((doc) => {
-        if (doc.id === "count") return;
-
-        menuName = doc.id
-        calorie = doc.data().totalCalorie
-        menuCard = document.getElementById("recipeContainer")
-        menuCard.innerHTML += `<div class="flex w-full mx-auto border-2 border-gray-300 shadow-md rounded-full mt-2 mb-5 p-4 text-center">
-            <div class="w-3/4">
-                <p class="text-3xl font-bold mb-2">${menuName}</p>
-                <p class="text-sm text-gray-500">0g Protein | 0g Carb | 0g Fat</p>
-            </div>
-            <div class="flex items-center">
-                <p class="text-gray-800 text-lg font-semibold">${calorie}</p>
-                <img src="/images/kcal_icon.svg" alt="" class="size-20">
-            </div>
-        </div>`
-      })
-
-      menuId =
-        // Add click event listener to redirect to the category page
-        menuCard.addEventListener('click', () => {
-          window.location.href = `/each_menu.html?categoryId=${ID}&menuId=${menuName}`; // Redirect to respective category page
-        });
-    });
-}
-displayMenuInfo();
