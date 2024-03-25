@@ -14,7 +14,7 @@
   <!-------------------------------------------------------->
   <!-- Firebase 8 Library related CSS, JS, JQuery go here -->
   <!-------------------------------------------------------->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
@@ -81,20 +81,44 @@
   </nav>
 
   <!-- Main Content -->
-  <div class="md:flex md:items-center md:justify-between">
-    <h1 class="text-center p-3 font-sans font-bold text-2xl"><span id="recipeName"></span></h1>
-    <!-- this is gonna appear when you click on the name so you can edit it. have to java script it  -->
-    <!-- <div class="">
-      <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Large input</label>
-      <input type="text" id="large-input"
-        class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+  <main>
+    <h1 class="font-bold text-5xl m-4 mb-0"><span id="recipeCategory"></span>dsaf</h1>
+    <!-- Graph area -->
+    <div class="w-full p-4">
+      <div id="graphContainer" class="w-full h-56 bg-gray-100">
+        <!-- Graph will be inserted here -->
+      </div>
     </div>
-    <div class="mt-4 flex justify-end">
-      <button type="button" class="mr-4 inline-flex items-center rounded-md bg-indigo-600 px-5 py-3 text-md font-semibold text-white shadow-sm hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
-    </div> -->
-  </div>
 
-
+    <!-- Macro nutrients displayed in one line below the graph -->
+    <div class="flex justify-between px-4">
+      <p class="font-semibold">Protein: <span id="protein">0</span> g</p>
+      <p class="font-semibold">Carbs: <span id="carbs">0</span> g</p>
+      <p class="font-semibold">Fats: <span id="fats">0</span> g</p>
+    </div>
+    <!-- showing ingredients already on the list -->
+    <div
+      class="flex w-full mx-auto border border-gray-300 shadow-md rounded-full mt-6 mb-5 px-3 py-2 text-center items-center justify-between">
+      <div class="flex-1">
+        <p class="text-xl font-bold mb-1"><span id="ingredientName">Toast</span> <span id="quantity">quantity</span>
+          <span id="measureType">type</span></p>
+        <p class="text-xs text-gray-500"><span id="protein">0</span>g Protein | <span id="carbs">0</span>g Carb | <span
+            id="fats">0</span>g Fat</p>
+      </div>
+      <div class="flex items-center space-x-1">
+        <p class="text-gray-800 text-lg font-semibold" id="calories">1000</p>
+        <img src="/images/kcal_icon.svg" alt="" class="w-10 h-10">
+      </div>
+    </div>
+    <!-- add new ingredient -->
+    <div
+      class="flex w-full mx-auto border border-gray-300 shadow-md rounded-full mt-6 mb-5 px-3 py-2 text-center items-center justify-center">
+      <div class="flex-1">
+        <p class="text-xl font-bold mb-1">Add New Ingredient</p>
+      </div>
+    </div>
+    
+  </main>
   <!-- Bottom Navigation Bar -->
   <footer id="general-bottom-nav" class="fixed inset-x-0 bottom-0 bg-[#2d58b1] text-[#fffff] rounded-t-xl">
     <div class="flex justify-between items-center px-4 py-2">
@@ -149,10 +173,11 @@
   <!---------------------------------------------->
   <!-- Your own JavaScript functions go here    -->
   <!---------------------------------------------->
-  <script src="scripts/firebaseAPI_TEAMDTC06.js"></script>
   <script src="scripts/user_info.js"></script>
   <script src="scripts/home_nav_top_hamburger.js"></script>
-  <script src="scripts/general_nav_bottom.js"></script>
+  <script src="../scripts/general_nav_bottom.js"></script>
+  <script src="/scripts/firebaseAPI_TEAMDTC06.js"></script>
+  <script src="scripts/new_recipe.js"></script>
 
 </body>
 

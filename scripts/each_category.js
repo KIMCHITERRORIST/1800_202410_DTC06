@@ -28,6 +28,7 @@ function createNewRecipePrompt(uid, recipeCatName) {
     console.log("Nothing was entered");
   }
 }
+
 function displayRecipeInfo(uid, recipeCatName) {
   db.collection('Recipes')
     .doc(uid)
