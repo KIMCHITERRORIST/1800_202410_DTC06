@@ -1,11 +1,20 @@
+// set global variable to call in other functions from local storage and set recipe name up 
+document.addEventListener("DOMContentLoaded", function () {
+  // Retrieve the value from local storage
+  const recipeCatName = localStorage.getItem('selectedCategory');
+
+  // Set the text content of the element with ID "recipeCategory"
+  if (recipeCatName) {
+    document.getElementById("recipeCategory").innerText = recipeCatName;
+  }
+});
+
 // Fetch UID function
 async function fetchUID() {
   return new Promise((resolve, reject) => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         resolve(user.uid);
-        selected = localStorage.getItem('selectedCategory');
-        console.log(selected);
       } else {
         reject('User is not logged in.');
       }

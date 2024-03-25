@@ -65,7 +65,7 @@
     </nav>
 
     <main class="flex flex-col mt-5">
-        <h1 class="font-bold text-5xl m-4 mb-6">Breakfast</h1>
+        <h1 class="font-bold text-5xl m-4 mb-6"><span id="recipeCategory"></span>ds</h1>
         <!-- search bar for recipes -->
         <form class="flex items-center w-full max-w-md px-4 mb-4">
             <label for="simple-search" class="sr-only">Search</label>
@@ -164,6 +164,13 @@
             </button>
         </div>
     </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script src="scripts/my_recipes.js"></script>
+
 </body>
 
 </html>
