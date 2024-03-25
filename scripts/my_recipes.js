@@ -73,10 +73,8 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log("category created with id:", categoryName);
       // Append the category name to the categories array
       appendCategoryName(uid, categoryName);
-      // Store the selected category in local storage
-      localStorage.setItem('selectedCategory', categoryName);
-      // Redirect to the next page
-      window.location.href = '/each_category.html';
+      // Reload the page to display the new categorys
+      location.reload();
     }).catch(function (error) {
       console.error("error adding new document: ", error);
     });
@@ -95,22 +93,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Add click event listener to redirect to the category page
     categoryDiv.addEventListener('click', () => {
-      // Store the selected category in local storage
-      localStorage.setItem('selectedCategory', category);
-      // Redirect to the next page
-      window.location.href = '/each_category.html';
+      window.location.href = `/each_category.html?collectionId=` + category; // Redirect to respective category page
     });
 
-    () => {
-      const categoryDiv = document.getElementById('categories-container');
-      categoryDiv.addEventListener('click', function () {
-        localStorage.setItem('selectedCategory', category);
-        window.location.href = '/each_category.html';
-      });
-    }
     container.insertBefore(categoryDiv, container.firstChild);
   }
-
 
   // Function to fetch and display user's name
   function fetchAndDisplayUserName(uid) {
