@@ -1,72 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
+<nav id="general-top-nav" class="bg-[#2d58b1] rounded-b-xl ">
+  <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-2">
 
-<head>
-  <!-- Required meta tags -->
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <!-- Tailwind Library CSS CDN go here -->
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
+    <button id="back-btn"
+      class="inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-white hover:text-yellow-100">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left" width="40" height="40"
+        viewBox="0 0 24 24" stroke-width="1.5" stroke="#fff9e1" fill="none" stroke-linecap="round"
+        stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M5 12l14 0" />
+        <path d="M5 12l6 6" />
+        <path d="M5 12l6 -6" />
+      </svg>
+    </button>
 
-<body>
-  <nav id="general-top-nav" class="bg-[#2d58b1] rounded-b-xl ">
-    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-2">
-
-      <button class="inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-white hover:text-yellow-100">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left" width="40" height="40"
-          viewBox="0 0 24 24" stroke-width="1.5" stroke="#fff9e1" fill="none" stroke-linecap="round"
-          stroke-linejoin="round">
-          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-          <path d="M5 12l14 0" />
-          <path d="M5 12l6 6" />
-          <path d="M5 12l6 -6" />
-        </svg>
-      </button>
-
-      <a href="#" class="flex items-center justify-center mx-auto">
-        <img src="/images/FitQuest Logo.svg" class="h-8" alt="Logo" />
-        <span class="self-center text-2xl text-white font-semibold whitespace-nowrap">FitQuest</span>
-      </a>
-      <button data-collapse-toggle="navbar-hamburger" type="button"
-        class="inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-white rounded-lg hover:bg-white hover:text-[#2d58b1] focus:outline-none"
-        aria-controls="navbar-hamburger" aria-expanded="false">
-        <span class="sr-only">Open main menu</span>
-        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M1 1h15M1 7h15M1 13h15" />
-        </svg>
-      </button>
-      <div class="hidden w-full" id="navbar-hamburger">
-        <ul class="flex flex-col font-medium mt-4 rounded-lg bg-white">
-          <li>
-            <a href="#" class="block py-2 px-3 text-[#2d58b1] rounded-md focus:ring-1 hover:focus:ring-[#2d58b1]"
-              aria-current="page">Home</a>
-          </li>
-          <li>
-            <a href="#"
-              class="block py-2 px-3 text-[#2d58b1] rounded-md focus:ring-1 hover:focus:ring-[#2d58b1]">History</a>
-          </li>
-          <li>
-            <a href="#"
-              class="block py-2 px-3 text-[#2d58b1] rounded-md focus:ring-1 hover:focus:ring-[#2d58b1]">Settings</a>
-          </li>
-          <li>
-            <a href="#"
-              class="block py-2 px-3 text-[#2d58b1] rounded-md focus:ring-1 hover:focus:ring-[#2d58b1]">Support</a>
-          </li>
-        </ul>
-      </div>
+    <a href="#" class="flex items-center justify-center mx-auto">
+      <img src="/images/FitQuest Logo.svg" class="h-8" alt="Logo" />
+      <span class="self-center text-2xl text-white font-semibold whitespace-nowrap">FitQuest</span>
+    </a>
+    <button data-collapse-toggle="navbar-hamburger" type="button"
+      class="inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-white rounded-lg hover:bg-white hover:text-[#2d58b1] focus:outline-none"
+      aria-controls="navbar-hamburger" aria-expanded="false">
+      <span class="sr-only">Open main menu</span>
+      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M1 1h15M1 7h15M1 13h15" />
+      </svg>
+    </button>
+    <div class="hidden w-full" id="navbar-hamburger">
+      <ul class="flex flex-col font-medium mt-4 rounded-lg bg-white">
+        <li>
+          <a href="../overview.html"
+            class="block py-2 px-3 text-[#2d58b1] rounded-md focus:ring-1 hover:focus:ring-[#2d58b1]"
+            aria-current="page">Overview</a>
+        </li>
+        <li>
+          <a href="../exercise/exercise_log.html"
+            class="block py-2 px-3 text-[#2d58b1] rounded-md focus:ring-1 hover:focus:ring-[#2d58b1]">Exercises</a>
+        </li>
+        <li>
+          <a href="#"
+            class="block py-2 px-3 text-[#2d58b1] rounded-md focus:ring-1 hover:focus:ring-[#2d58b1]">Settings</a>
+        </li>
+        <li>
+          <a href="#"
+            class="block py-2 px-3 text-[#2d58b1] rounded-md focus:ring-1 hover:focus:ring-[#2d58b1]">Support</a>
+        </li>
+      </ul>
     </div>
-  </nav>
-
-  <!---------------------------------------------->
-  <!-- Your own JavaScript functions go here    -->
-  <!---------------------------------------------->
-
-  <!-- Link to scripts of your own -->
-  <script src="../scripts/home_nav_top_hamburger.js"></script>
-</body>
-
-</html>
+  </div>
+</nav>
