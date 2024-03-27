@@ -27,6 +27,7 @@ document.getElementById('signup-form').addEventListener('submit', function (even
       db.collection("Recipes").doc(user.uid).set({})
       db.collection("exercises").doc(user.uid).set({})
       db.collection("calories").doc(user.uid).set({})
+      db.collection("ingredients").doc(user.uid).set({})
 
         .then(() => {
           console.log("New user added to firestore");

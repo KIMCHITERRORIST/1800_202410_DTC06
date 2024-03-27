@@ -35,17 +35,11 @@
     <!-- Other libraries and styles of your own -->
     <!-------------------------------------------->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
     <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
-    <!-- <link rel="stylesheet" href="./styles/style.css"> -->
 
-    <script src="../scripts/general_nav_bottom.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
-    <script src="/scripts/firebaseAPI_TEAMDTC06.js"></script>
-    <script src="scripts/each_category.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -56,12 +50,7 @@
     <!-- our own navbar goes here -->
     <nav id="navbarPlaceholder"></nav>
 
-    <main class="flex flex-col mt-5" style="height: calc(100vh - 112px);">
-
-        <!-- recipe name -->
-        <h1 class="font-bold text-5xl m-4 mb-6"><span id="recipeCategory"></span></h1>
-        
-        <!-- search bar for recipes -->
+    <main>
         <form class="flex items-center w-full max-w-md px-4 mb-4">
             <label for="simple-search" class="sr-only">Search</label>
             <div class="relative w-full">
@@ -74,7 +63,7 @@
                 </div>
                 <input type="text" id="simple-search"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
-                    placeholder="Search for recipes..." required />
+                    placeholder="Search for ingredients..." required />
             </div>
             <button type="submit"
                 class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -86,40 +75,17 @@
                 <span class="sr-only">Search</span>
             </button>
         </form>
+    </main>
 
-        <!-- this is the place holder cards for the recipes recipes -->
-        <!-- <div class="flex w-full mx-auto border-2 border-gray-300 shadow-md rounded-full mt-2 mb-5 p-4 text-center">
-            <div class="w-3/4">
-                <p class="text-3xl font-bold mb-2">Toast</p>
-                <p class="text-sm text-gray-500">0g Protein | 0g Carb | 0g Fat</p>
-            </div>
-            <div class="flex items-center">
-                <p class="text-gray-800 text-lg font-semibold">1000</p>
-                <img src="/images/kcal_icon.svg" alt="" class="size-20">
-            </div>
-        </div> -->
-        
-        <!-- container to store recipe categories and with create your own button at the end -->
-        <div id="recipes-container">
-            <!-- Create Your own -->
-            <div id='create-recipe'
-                class="flex flex-col mx-auto h-24 justify-center items-center border-2 border-gray-300 shadow-md rounded-full my-5">
-                <div class="text-center">
-                    <p class="text-xl font-semibold">Create another Recipe.</p>
-                </div>
-            </div>
-        </div>
-        </div>
+    <!-- our own footer goes here-->
+    <nav id="footerPlaceholder"></nav>
 
-        <!-- our own footer goes here-->
-        <nav id="footerPlaceholder"></nav>
-
-        <!---------------------------------------------->
-        <!-- Your own JavaScript functions go here    -->
-        <!---------------------------------------------->
-        <script src="./scripts/firebaseAPI_TEAMDTC06.js"></script>
-        <script src="./scripts/general_skeleton.js"></script>
-        <script src="./scripts/each_category.js"></script>
+    <script src="./scripts/firebaseAPI_TEAMDTC06.js"></script>
+    <script src="./scripts/home_skeleton.js"></script>
+    <script src="/scripts/doughnutGraph.js"></script>
+    <SCript src="/scripts/halfDoughnutGraph.js"></SCript>
+    <script src="/scripts/expandCard.js"></script>
+    <script src="../scripts/general_nav_bottom.js"></script>
 </body>
 
 </html>
