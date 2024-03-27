@@ -57,49 +57,53 @@
                         </path>
                     </svg>
                 </div>
-                <div class="my-6">
-                    <label for="age" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
-                    <input type="number" id="name" placeholder="name"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                </div>
-                <div class="my-6">
-                    <label for="age" class="block mb-2 text-sm font-medium text-gray-900">age(years)</label>
-                    <input type="number" id="age" placeholder="age"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                </div>
-                <div class="mb-6">
-                    <label for="weight" class="block mb-2 text-sm font-medium text-gray-900">weight(kg)</label>
-                    <input type="number" id="weight" placeholder="weight in kg"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                </div>
-                <div class="mb-6">
-                    <label for="height" class="block mb-2 text-sm font-medium text-gray-900">height(cm)</label>
-                    <input type="number" id="height" placeholder="height in cm"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                </div>
-                <!-- Gender drop-down -->
-                <div class="mb-6">
-                    <form class="max-w-sm mx-auto">
-                        <label for="gender" class="block mb-2 text-sm font-medium text-gray-900">Gender</label>
-                        <select id="gender"
+                <fieldset id="personal_info" disabled>
+                    <div class="my-6">
+                        <label for="name-field" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
+                        <input type="text" id="nameField" placeholder="name"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                            <option value="" disabled selected>Select your gender</option>
-                            <option>male</option>
-                            <option>female</option>
-                        </select>
-                    </form>
-                </div>
-                <!-- Save and Edit Buttons -->
-                <div class="flex items-center justify-between">
-                    <button id="edit"
-                        class=" max-w-fit bg-transparent hover:bg-blue-500 text-[#2d58b1] text-sm font-semibold hover:text-white py-2 px-4 border border-[#2d58b1] hover:border-transparent rounded">
-                        Edit
-                    </button>
-                    <button id="save" type="submit"
-                        class=" max-w-fit bg-[#2d58b1] text-white text-sm  hover:bg-blue-500 font-bold py-2 px-4 rounded">
-                        Save
-                    </button>
-                </div>
+                    </div>
+                    <div class="my-6">
+                        <label for="age" class="block mb-2 text-sm font-medium text-gray-900">age(years)</label>
+                        <input type="number" id="age" placeholder="age"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    </div>
+                    <div class="mb-6">
+                        <label for="weight" class="block mb-2 text-sm font-medium text-gray-900">weight(kg)</label>
+                        <input type="number" id="weight" placeholder="weight in kg"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    </div>
+                    <div class="mb-6">
+                        <label for="height" class="block mb-2 text-sm font-medium text-gray-900">height(cm)</label>
+                        <input type="number" id="height" placeholder="height in cm"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    </div>
+                    <!-- Gender drop-down -->
+                    <div class="mb-6">
+                        <form class="max-w-sm mx-auto">
+                            <label for="gender" class="block mb-2 text-sm font-medium text-gray-900">Gender</label>
+                            <select id="gender"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                <option value="" disabled selected>Select your gender</option>
+                                <option>male</option>
+                                <option>female</option>
+                            </select>
+                </fieldset>
+        </form>
+        </div>
+        <!-- Save and Edit Buttons -->
+        <div class="flex items-center justify-between">
+            <button id="edit"
+                class=" max-w-fit bg-transparent hover:bg-blue-500 text-[#2d58b1] text-sm font-semibold hover:text-white py-2 px-4 border border-[#2d58b1] hover:border-transparent rounded"
+                onclick="editUserInfo()">
+                Edit
+            </button>
+            <button id="save" type="submit"
+                class=" max-w-fit bg-[#2d58b1] text-white text-sm  hover:bg-blue-500 font-bold py-2 px-4 rounded"
+                onclick="saveUserInfo()">
+                Save
+            </button>
+        </div>
         </form>
     </main>
 
