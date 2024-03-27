@@ -33,8 +33,8 @@
   <nav id="navbarPlaceholder"></nav>
 
   <!-- Main Content -->
-  <main>
-    <h1 class="font-bold text-5xl m-4 mb-0"><span id="recipeCategory"></span>dsaf</h1>
+  <main class="pb-32 max-w-md mx-auto">
+    <h1 class="font-bold text-5xl m-4 mb-0"><span id="recipeName"></span></h1>
     <!-- Graph area -->
     <div class="w-full p-4">
       <div id="graphContainer" class="w-full h-56 bg-gray-100">
@@ -44,33 +44,50 @@
 
     <!-- Macro nutrients displayed in one line below the graph -->
     <div class="flex justify-between px-4">
-      <p class="font-semibold">Protein: <span id="protein">0</span> g</p>
-      <p class="font-semibold">Carbs: <span id="carbs">0</span> g</p>
-      <p class="font-semibold">Fats: <span id="fats">0</span> g</p>
-    </div>
-    <!-- showing ingredients already on the list -->
-    <div
-      class="flex w-full mx-auto border border-gray-300 shadow-md rounded-full mt-6 mb-5 px-3 py-2 text-center items-center justify-between">
-      <div class="flex-1">
-        <p class="text-xl font-bold mb-1"><span id="ingredientName">Toast</span> <span id="quantity">quantity</span>
-          <span id="measureType">type</span>
-        </p>
-        <p class="text-xs text-gray-500"><span id="protein">0</span>g Protein | <span id="carbs">0</span>g Carb | <span
-            id="fats">0</span>g Fat</p>
+
+      <div class="container flex-col text-center">
+        <p class="font-semibold">Protein:</p>
+        <p id="protein"></p>
+        <p>g</p>
       </div>
-      <div class="flex items-center space-x-1">
-        <p class="text-gray-800 text-lg font-semibold" id="calories">1000</p>
-        <img src="/images/kcal_icon.svg" alt="" class="w-10 h-10">
+
+      <div class="container flex-col text-center">
+        <p class="font-semibold">Carbs:</p>
+        <p id="carbs"></p>
+        <p>g</p>
       </div>
-    </div>
-    <!-- add new ingredient -->
-    <div
-      class="flex w-full mx-auto border border-gray-300 shadow-md rounded-full mt-6 mb-5 px-3 py-2 text-center items-center justify-center">
-      <div class="flex-1">
-        <p class="text-xl font-bold mb-1">Add New Ingredient</p>
+
+      <div class="container flex-col text-center">
+        <p class="font-semibold">Fats:</p>
+        <p id="fats"></p>
+        <p>g</p>
+      </div>
+
+      <div class="container flex-col text-center">
+        <p class="font-semibold">Calories:</p>
+        <p id="calories"></p>
+        <p>g</p>
       </div>
     </div>
 
+    <!-- showing ingredients already on the list -->
+    <div class="max-w-md rounded overflow-hidden shadow-lg my-4 mx-auto">
+      <div class="px-6 py-4">
+        <div class="font-bold text-xl mb-2">Ingredients</div>
+        <div class="border-t border-gray-200">
+        </div>
+      </div>
+      <div id="ingredientsContainer" class="px-6 py-4">
+        <!-- Ingredients will be inserted here -->
+      </div>
+    </div>
+
+    <!-- Add ingredients -->
+    <div class="max-w-md rounded shadow-lg my-4 mx-auto">
+      <div class="px-6 py-4">
+        <div class="font-bold text-xl mb-2">Add new ingredients</div>
+      </div>
+    </div>
   </main>
   <!-- Bottom Navigation Bar -->
   <nav id="footerPlaceholder"></nav>
@@ -80,7 +97,7 @@
   <!---------------------------------------------->
   <script src="./scripts/firebaseAPI_TEAMDTC06.js"></script>
   <script src="./scripts/general_skeleton.js"></script>
-  <script src="scripts/new_recipe.js"></script>
+  <script src="scripts/each_recipe.js"></script>
 
 </body>
 

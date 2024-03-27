@@ -2,44 +2,49 @@ document.addEventListener("DOMContentLoaded", function () {
   firebase.auth().onAuthStateChanged(user => {
     if (user) {
       const uid = user.uid;
-      const recipeCatName = localStorage.getItem('selectedCategory');
+      const recipeCategory = localStorage.getItem('selectedCategory');
       // Attach click event listener to the create-recipe div
       document.getElementById('create-recipe').addEventListener('click', function () {
         // Call your function to create a new recipe
-        createNewRecipePrompt(uid, recipeCatName);
+        createNewRecipePrompt(uid, recipeCategory);
       });
-      if (recipeCatName) {
-        document.getElementById("recipeCategory").innerText = recipeCatName;
+      if (recipeCategory) {
+        document.getElementById("recipeCategory").innerText = recipeCategory;
       }
-      displayRecipeInfo(uid, recipeCatName);
+      displayRecipeInfo(uid, recipeCategory);
     } else {
       console.error('User is not logged in.');
+      window.location.href = 'login.html';
     }
   });
 });
 
 // create new recipe function
-function createNewRecipePrompt(uid, recipeCatName) {
+function createNewRecipePrompt(uid, recipeCategory) {
   const newRecipeName = prompt("Please enter the name of the new recipe:");
   if (newRecipeName && newRecipeName.trim() !== "") {
     // Pass newName, recipeCatName, and uid to createNewRecipe
-    createNewRecipe(newRecipeName.trim(), recipeCatName, uid);
+    createNewRecipe(newRecipeName.trim(), recipeCategory, uid);
   } else {
     console.log("Nothing was entered");
   }
 }
 
-function displayRecipeInfo(uid, recipeCatName) {
+function displayRecipeInfo(uid, recipeCategory) {
   db.collection('Recipes')
     .doc(uid)
-    .collection(recipeCatName)
+    .collection(recipeCategory)
     .get()
     .then((querySnapshot) => {
       const recipesContainer = document.getElementById("recipes-container");
+      recipesContainer.innerHTML = ""; // Clear the container before adding new recipes because it is repeated
+      querySnapshot.forEach((recipeCollection) => {
+        if (recipeCollection.id === "count") {
+          return;
+        }
 
-      querySnapshot.forEach((doc) => {
-        var recipeName = doc.id;
-        var recipe = doc
+        var recipeName = recipeCollection.id;
+        var recipe = recipeCollection
         var recipeCardHTML = `
           <div class="flex flex-col items-center justify-center w-full max-w-sm mx-auto my-4 border-2 border-gray-300 rounded-lg shadow-md">
             <div class="p-5">
@@ -69,14 +74,14 @@ function displayRecipeInfo(uid, recipeCatName) {
 //function when you click on view recipe
 function viewRecipeDetails(recipeName) {
   localStorage.setItem('selectedRecipe', recipeName);
-  window.location.href = '/recipe.html';
+  window.location.href = '/each_recipe.html';
 
 }
 
 
 // Function to create a new recipe in Firebase
-function createNewRecipe(newName, recipeCatName, uid) {
-  db.collection('Recipes').doc(uid).collection(recipeCatName).doc(newName).set({
+function createNewRecipe(newName, recipeCategory, uid) {
+  db.collection('Recipes').doc(uid).collection(recipeCategory).doc(newName).set({
     calories: 0,
     protein: 0,
     carbs: 0,
@@ -84,7 +89,7 @@ function createNewRecipe(newName, recipeCatName, uid) {
   }).then(function () {
     console.log("Recipe created with id:", newName);
     // Perform further actions here, if necessary
-    window.location.href = '/recipe.html'; // Redirects to the recipe page
+    window.location.href = '/each_recipe.html'; // Redirects to the recipe page
   }).catch(function (error) {
     console.error("Error adding new document:", error);
   });
