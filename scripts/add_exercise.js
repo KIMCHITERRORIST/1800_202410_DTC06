@@ -1,13 +1,38 @@
+async function fetchUserGender(uid) {
+  gender = await db.collection('users').doc(uid).get().then(doc => {
+    if (doc.exists) {
+      return doc.data().gender;
+    }
+  })
+}
+
+async function fetchUserAge(uid) {
+  gender = await db.collection('users').doc(uid).get().then(doc => {
+    if (doc.exists) {
+      return doc.data().age;
+    }
+  })
+}
+
+async function fetchUserWeight(uid) {
+  gender = await db.collection('users').doc(uid).get().then(doc => {
+    if (doc.exists) {
+      return doc.data().weight;
+    }
+  })
+}
+
 async function saveActivity() {
   const uid = await fetchUID();
   const activityName = document.getElementById('activity_name').value.trim();
   const hour = document.getElementById('hour').value.trim();
   const minute = document.getElementById('minute').value.trim();
   const second = document.getElementById('second').value.trim();
+  const heartrate = document.getElementById('heart_rate').value.trim();
 
 
-  if (!activityName || !hour || !minute || !second) {
-    alert("Please fill out all fields: activity name, hour, minute, and second.");
+  if (!activityName || !hour || !minute || !second || !heartrate) {
+    alert("Please fill out all fields: activity name, hour, minute, second, and heart rate.");
     return;
   }
 
@@ -24,11 +49,13 @@ async function saveActivity() {
       date: formattedDate,
       time: formattedTime,
       name: activityName,
+      heartrate: heartrate,
       duration: {
         hour: hour,
         minute: minute,
         second: second
-      }
+      },
+      caloriesBurned: calculateCaloriesBurned(uid, activityName, hour, minute, second, heartrate)
     };
 
     // Save the data in database
@@ -47,6 +74,23 @@ document.getElementById('save').addEventListener('click', saveActivity);
 document.getElementById('cancel').addEventListener('click', () => {
   window.history.back();
 });
+
+// Calculate calories burned
+function calculateCaloriesBurned(uid, hour, minute, second, heartrate) {
+  let caloriesBurned = 0;
+  const userGender = fetchUserGender(uid);
+  const userAge = fetchUserAge(uid);
+  const userWeight = fetchUserWeight(uid);
+
+  if (userGender === "female") {
+    caloriesBurned = ((hour * 60) + minute + (second / 60)) * ((-20.4022 + (0.4472 * heartrate) - (0.1263 * userWeight) + (0.074 * userAge)) / 4.184);
+  } else if (userGender === "male") {
+    caloriesBurned = ((hour * 60) + minute + (second / 60)) * ((-55.0969 + (0.6309 * heartrate) - (0.1988 * userWeight) + (0.2017 * userAge)) / 4.184);
+  }
+
+  return caloriesBurned;
+}
+
 
 // Fetch UID function
 async function fetchUID() {
