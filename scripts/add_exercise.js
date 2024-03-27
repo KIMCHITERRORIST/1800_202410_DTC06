@@ -1,27 +1,3 @@
-async function fetchUserGender(uid) {
-  gender = await db.collection('users').doc(uid).get().then(doc => {
-    if (doc.exists) {
-      return doc.data().gender;
-    }
-  })
-}
-
-async function fetchUserAge(uid) {
-  gender = await db.collection('users').doc(uid).get().then(doc => {
-    if (doc.exists) {
-      return doc.data().age;
-    }
-  })
-}
-
-async function fetchUserWeight(uid) {
-  gender = await db.collection('users').doc(uid).get().then(doc => {
-    if (doc.exists) {
-      return doc.data().weight;
-    }
-  })
-}
-
 async function saveActivity() {
   const uid = await fetchUID();
   const activityName = document.getElementById('activity_name').value.trim();
@@ -49,18 +25,18 @@ async function saveActivity() {
       date: formattedDate,
       time: formattedTime,
       name: activityName,
-      heartrate: heartrate,
+      heartrate: Number(heartrate),
       duration: {
-        hour: hour,
-        minute: minute,
-        second: second
+        hour: Number(hour),
+        minute: Number(minute),
+        second: Number(second)
       },
-      caloriesBurned: calculateCaloriesBurned(uid, activityName, hour, minute, second, heartrate)
+      caloriesBurned: await calculateCaloriesBurned(uid, hour, minute, second, heartrate)
     };
 
     // Save the data in database
     await db.collection('exercises').doc(uid).collection('dailyActivities').add(activityData);
-
+    window.location.href = 'exercise_log.html';
     console.log('Activity saved successfully');
   } catch (error) {
     console.error('Error saving activity: ', error);
@@ -76,18 +52,21 @@ document.getElementById('cancel').addEventListener('click', () => {
 });
 
 // Calculate calories burned
-function calculateCaloriesBurned(uid, hour, minute, second, heartrate) {
+async function calculateCaloriesBurned(uid, hour, minute, second, heartrate) {
   let caloriesBurned = 0;
-  const userGender = fetchUserGender(uid);
-  const userAge = fetchUserAge(uid);
-  const userWeight = fetchUserWeight(uid);
+  userData = await db.collection('users').doc(uid).get()
+  const gender = userData.data().gender;
+  const age = userData.data().age;
+  const weight = userData.data().weight;
+  console.log(hour, minute, second)
+  timeInMinutes = (Number(hour) * 60) + Number(minute) + (Number(second) / 60);
+  console.log(timeInMinutes);
 
-  if (userGender === "female") {
-    caloriesBurned = ((hour * 60) + minute + (second / 60)) * ((-20.4022 + (0.4472 * heartrate) - (0.1263 * userWeight) + (0.074 * userAge)) / 4.184);
-  } else if (userGender === "male") {
-    caloriesBurned = ((hour * 60) + minute + (second / 60)) * ((-55.0969 + (0.6309 * heartrate) - (0.1988 * userWeight) + (0.2017 * userAge)) / 4.184);
+  if (gender === "female") {
+    caloriesBurned = Math.round(Number(timeInMinutes * ((-20.4022 + (0.4472 * Number(heartrate)) - (0.1263 * weight) + (0.074 * age)) / 4.184)));
+  } else if (gender === "male") {
+    caloriesBurned = Math.round(Number(timeInMinutes * ((-55.0969 + (0.6309 * Number(heartrate)) - (0.1988 * weight) + (0.2017 * age)) / 4.184)));
   }
-
   return caloriesBurned;
 }
 
