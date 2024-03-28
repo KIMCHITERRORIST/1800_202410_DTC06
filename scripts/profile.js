@@ -46,7 +46,7 @@ populateUserInfo();
 
 function editUserInfo() {
   //Enable the form fields
-  document.getElementById('personal_info').disable = false;
+  document.getElementById('personal_info').disabled = false;
 }
 
 function saveUserInfo() {
@@ -63,6 +63,5 @@ function saveUserInfo() {
     weight: userWeight,
     gender: userGender
   }).then(() => { console.log("User info updated") })
-
-
+  document.getElementById('personal_info').disabled = true;
 }      

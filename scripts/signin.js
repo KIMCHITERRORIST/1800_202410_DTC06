@@ -19,6 +19,6 @@ document.getElementById('login-form').addEventListener('submit', function (event
       const errorCode = error.code;
       const errorMessage = error.message;
       // Display error message to the user
-      alert("Error: " + errorMessage);
+      alert("Error: " + errorCode + errorMessage);
     });
 });
