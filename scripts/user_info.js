@@ -39,10 +39,11 @@ document.getElementById("user-info-form").addEventListener("submit", function (e
 
     // Update user's info in Firestore
     db.collection("users").doc(uid).set({
-      age: age,
-      weight: weight,
-      height: height,
-      gender: gender
+      age: Number(age),
+      weight: Number(weight),
+      height: Number(height),
+      gender: gender,
+      BMI: Number(weight / (height / 100 * height / 100))
     }, { merge: true }).then(() => {
       console.log("Document successfully written!");
       window.location.href = "overview.html";

@@ -18,7 +18,7 @@ async function fetchAndDisplayUserActivities() {
     // Iterate over each activity document
     snapshot.forEach(doc => {
       const activity = doc.data();
-      const { date, name, time } = activity;
+      const { date, name, time, caloriesBurned } = activity;
       const { hour, minute, second } = activity.duration; // Assuming duration is a map/object
 
       // Generate HTML for each activity
@@ -43,7 +43,8 @@ async function fetchAndDisplayUserActivities() {
                   <div class="text-xl text-black">Activity Name: <span  class="font-medium">${name}</span></div>
                   <p class="text-black">Date: ${date}</p>
                   <p class="text-black">Time: ${time}</p>
-                  <p class="text-black">Duration: ${hour}h ${minute}m ${second}  s</p>
+                  <p class="text-black">Duration: ${hour}h ${minute}m ${second}s</p>
+                  <p class="text-black">Calories Burnt: ${caloriesBurned}</p>
               </div>
             </div>`;
     });
