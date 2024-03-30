@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// create new recipe function
+// function asking for prompt
 function createNewRecipePrompt(uid, recipeCategory) {
   const newRecipeName = prompt("Please enter the name of the new recipe:");
   if (newRecipeName && newRecipeName.trim() !== "") {
@@ -75,7 +75,6 @@ function displayRecipeInfo(uid, recipeCategory) {
 function viewRecipeDetails(recipeName) {
   localStorage.setItem('selectedRecipe', recipeName);
   window.location.href = '/each_recipe.html';
-
 }
 
 
