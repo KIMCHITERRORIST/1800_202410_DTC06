@@ -16,26 +16,28 @@ document.addEventListener('DOMContentLoaded', function () {
 function fetchAndDisplayIngredients(uid) {
     console.log(`Attempting to fetch ingredients for UID: ${uid}`); // Log before fetching
 
-    db.collection("Ingredients").doc(uid).get().then(documentSnapshot => {
+    db.collection("ingredients").doc(uid).get().then(documentSnapshot => {
         console.log(`Fetched document with UID: ${uid}`); // Log after successful fetch
 
         if (documentSnapshot.exists) {
             const ingredientData = documentSnapshot.data();
             const ingredientsContainer = document.getElementById("ingredientsContainer");
-            ingredientsContainer.innerHTML = ""; // Clear existing contents
 
             // Iterate over each field in the document as an ingredient
             Object.keys(ingredientData).forEach(ingredientName => {
                 const ingredient = ingredientData[ingredientName];
                 var ingredientCardHTML = `
-                    <div class="flex w-full mx-auto border-2 border-gray-300 shadow-md rounded-full mt-2 mb-5 p-4 text-center">
-                        <div class="w-3/4">
-                            <p class="text-3xl font-bold mb-2">${ingredientName}</p>
-                            <p class="text-sm text-gray-500">${ingredient.protein}g Protein | ${ingredient.carbs}g Carbs | ${ingredient.fat}g Fat | ${ingredient.calories} kcal</p>
-                        </div>
-                    </div>`;
+    <div class="flex w-full mx-auto border-2 border-gray-300 shadow-md rounded-full mt-2 mb-5 p-4 items-center justify-between">
+        <div class="flex-1 pl-4 md:pl-8">
+            <p class="text-2xl md:text-4xl font-bold mb-2">${ingredientName}</p>
+            <p class="text-xs md:text-sm text-gray-500">${ingredient.protein}g Protein | ${ingredient.carbs}g Carbs | ${ingredient.fat}g Fat</p>
+        </div>
+        <div class="w-auto flex flex-col justify-center items-center md:items-end">
+            <p class="text-xl md:text-3xl font-semibold">${ingredient.calories} kcal</p>
+        </div>
+    </div>`;
                 // Append the card HTML for each ingredient to the container
-                ingredientsContainer.innerHTML += ingredientCardHTML;
+                ingredientsContainer.innerHTML = ingredientCardHTML + ingredientsContainer.innerHTML;
             });
         } else {
             console.log("No such document!"); // Log if document does not exist
@@ -43,4 +45,10 @@ function fetchAndDisplayIngredients(uid) {
     }).catch(error => {
         console.log("Error getting document:", error); // Log any errors during fetch
     });
+}
+
+//function when you click on view recipe
+function viewRecipeDetails(recipeName) {
+    localStorage.setItem('selectedRecipe', recipeName);
+    window.location.href = '/eachIngrdient.html';
 }

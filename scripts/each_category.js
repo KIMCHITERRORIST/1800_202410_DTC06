@@ -19,17 +19,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// function asking for prompt
-function createNewRecipePrompt(uid, recipeCategory) {
-  const newRecipeName = prompt("Please enter the name of the new recipe:");
-  if (newRecipeName && newRecipeName.trim() !== "") {
-    // Pass newName, recipeCatName, and uid to createNewRecipe
-    createNewRecipe(newRecipeName.trim(), recipeCategory, uid);
-  } else {
-    console.log("Nothing was entered");
-  }
-}
-
 function displayRecipeInfo(uid, recipeCategory) {
   db.collection('Recipes')
     .doc(uid)
@@ -77,7 +66,6 @@ function viewRecipeDetails(recipeName) {
   window.location.href = '/each_recipe.html';
 }
 
-
 // Function to create a new recipe in Firebase
 function createNewRecipe(newName, recipeCategory, uid) {
   db.collection('Recipes').doc(uid).collection(recipeCategory).doc(newName).set({
@@ -92,4 +80,15 @@ function createNewRecipe(newName, recipeCategory, uid) {
   }).catch(function (error) {
     console.error("Error adding new document:", error);
   });
+}
+
+// function asking for prompt
+function createNewRecipePrompt(uid, recipeCategory) {
+  const newRecipeName = prompt("Please enter the name of the new recipe:");
+  if (newRecipeName && newRecipeName.trim() !== "") {
+    // Pass newName, recipeCatName, and uid to createNewRecipe
+    createNewRecipe(newRecipeName.trim(), recipeCategory, uid);
+  } else {
+    console.log("Nothing was entered");
+  }
 }
