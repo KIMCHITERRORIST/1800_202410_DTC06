@@ -46,9 +46,3 @@ function fetchAndDisplayIngredients(uid) {
         console.log("Error getting document:", error); // Log any errors during fetch
     });
 }
-
-//function when you click on view recipe
-function viewRecipeDetails(recipeName) {
-    localStorage.setItem('selectedRecipe', recipeName);
-    window.location.href = '/eachIngrdient.html';
-}
