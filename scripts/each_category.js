@@ -75,7 +75,7 @@ function createNewRecipe(newName, recipeCategory, uid) {
     fats: 0
   }).then(function () {
     console.log("Recipe created with id:", newName);
-    // Perform further actions here, if necessary
+    localStorage.setItem('selectedRecipe', newName);
     window.location.href = '/each_recipe.html'; // Redirects to the recipe page
   }).catch(function (error) {
     console.error("Error adding new document:", error);
