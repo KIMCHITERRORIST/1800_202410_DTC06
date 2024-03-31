@@ -31,7 +31,6 @@ function loadSkeleton() {
     // Event listners for bottom nav
     // Reference to buttons
     const homeBtn = document.getElementById("home-btn");
-    const settingsBtn = document.getElementById("settings-btn");
     const plusBtn = document.getElementById("plus-btn");
     const userBtn = document.getElementById("user-btn");
     const menu = document.getElementById("menu");
@@ -47,20 +46,13 @@ function loadSkeleton() {
       });
     } else { console.log("Home button not found"); }
 
-    // Event listener for Settings button
-    settingsBtn.addEventListener("click", () => {
-      console.log("Opening Settings...");
-      // Code to open Settings
-      // Example: openSettingsFunction();
-    });
-
-    // Open menu event
+    // Open menu
     plusBtn.addEventListener("click", () => {
       menu.classList.remove("hidden");
       menuBg.classList.remove("hidden");
     });
 
-    // Close menu event
+    // Close menu
     closeBtn.addEventListener("click", () => {
       menu.classList.add("hidden");
       menuBg.classList.add("hidden");

@@ -8,7 +8,6 @@ function loadSkeleton() {
     //Select the button and the menu div
     let button = document.querySelector('button[data-collapse-toggle="navbar-hamburger"]');
     let menu = document.getElementById('navbar-hamburger');
-    // let backBtn = document.getElementById('back-btn');
 
     //Add an event listener to the button
     button.addEventListener('click', () => {
@@ -20,47 +19,24 @@ function loadSkeleton() {
       button.setAttribute('aria-expanded', !isExpanded);
     });
 
-    // backBtn.addEventListener('click', () => {
-    //   console.log("Going back...");
-    //   window.history.back();
-    // })
-
   });
   $('#footerPlaceholder').load('./navbars/home_nav_bottom.html', function () {
     console.log('Footer loaded');
     // Event listners for bottom nav
     // Reference to buttons
-    // const homeBtn = document.getElementById("home-btn");
-    const settingsBtn = document.getElementById("settings-btn");
     const plusBtn = document.getElementById("plus-btn");
     const userBtn = document.getElementById("user-btn");
     const menu = document.getElementById("menu");
     const menuBg = document.getElementById("menuBackground");
     const closeBtn = document.getElementById("closeMenu");
 
-    // Event listener for Home button
-    // if (homeBtn) {
-    //   homeBtn.addEventListener("click", () => {
-    //     console.log("Redirecting to Home Page...");
-    //     // Code to redirect to Home Page
-    //     window.location.href = "../overview.html";
-    //   });
-    // } else { console.log("Home button not found"); }
-
-    // Event listener for Settings button
-    settingsBtn.addEventListener("click", () => {
-      console.log("Opening Settings...");
-      // Code to open Settings
-      // Example: openSettingsFunction();
-    });
-
-    // Open menu event
+    // Open menu
     plusBtn.addEventListener("click", () => {
       menu.classList.remove("hidden");
       menuBg.classList.remove("hidden");
     });
 
-    // Close menu event
+    // Close menu 
     closeBtn.addEventListener("click", () => {
       menu.classList.add("hidden");
       menuBg.classList.add("hidden");
