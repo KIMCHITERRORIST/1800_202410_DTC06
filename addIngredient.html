@@ -56,6 +56,24 @@
                 <input type="number" id="calories" name="calories" placeholder="calories" required
                     class="mt-1 block w-full p-2.5 rounded-md border-gray-900 bg-gray-50 shadow-sm focus:border-[#172d58] focus:ring-[#172d58] sm:text-sm">
             </div>
+            <!-- Container for Value Number and Unit with Flexbox -->
+            <div class="flex mb-6">
+                <!-- Value Number input field -->
+                <div class="flex-grow mr-2">
+                    <label for="valueNumber" class="block text-lg font-medium text-gray-700">Value Number</label>
+                    <input type="number" id="valueNumber" name="valueNumber" placeholder="Enter value" required
+                        class="mt-1 block w-full p-2.5 rounded-md border-gray-900 bg-gray-50 shadow-sm focus:border-[#172d58] focus:ring-[#172d58] sm:text-sm">
+                </div>
+                <!-- Unit dropdown field -->
+                <div class="flex-grow">
+                    <label for="unit" class="block text-lg font-medium text-gray-700">Unit</label>
+                    <select id="unit" name="unit" required
+                        class="mt-1 block w-full p-2.5 rounded-md border-gray-900 bg-gray-50 shadow-sm focus:border-[#172d58] focus:ring-[#172d58] sm:text-sm">
+                        <option value="grams">Grams</option>
+                        <option value="ml">Milliliters (ml)</option>
+                    </select>
+                </div>
+            </div>
             <button type="submit"
                 class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#2d58b1] hover:bg-[#172d58]focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#172d58]">
                 Create Ingredient

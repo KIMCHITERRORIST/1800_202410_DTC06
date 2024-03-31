@@ -28,6 +28,8 @@ updateFirestore = (uid, ingredientName) => {
     const carbs = document.getElementById('carbs').value;
     const protein = document.getElementById('protein').value;
     const calories = document.getElementById('calories').value;
+    const valueNumber = document.getElementById('valueNumber').value;
+    const unitType = document.getElementById('unit').value;
 
     // format data to update into firestore
     let dataToUpdate = {};
@@ -35,7 +37,8 @@ updateFirestore = (uid, ingredientName) => {
         fat: fats,
         carbs: carbs,
         protein: protein,
-        calories: calories
+        calories: calories,
+        [unitType]: valueNumber
     };
 
     // update the document in firestore
@@ -43,6 +46,7 @@ updateFirestore = (uid, ingredientName) => {
         .then(() => {
             console.log('Document successfully updated!');
             // Optionally, provide feedback or redirect the user
+            window.location.href = 'ingredients.html';
         })
         .catch((error) => {
             console.error('Error updating document: ', error);
