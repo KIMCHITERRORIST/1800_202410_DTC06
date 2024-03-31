@@ -13,16 +13,32 @@ async function fetchAndDisplayUserActivities() {
       return;
     }
 
-    const exerciseCardContainer = document.getElementById("exercise-card-container");
-
     // Iterate over each activity document
+    activities = [];
     snapshot.forEach(doc => {
       const activity = doc.data();
+      activity.dateTime = activity.date + " " + activity.time;
+      activities.push(activity);
+    });
+
+    sortedDateTimeActivities = activities.sort((a, b) => {
+      if (b.dateTime > a.dateTime) {
+        return -1;
+      } else if (a.dateTime > b.dateTime) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+
+    const exerciseCardContainer = document.getElementById("exercise-card-container");
+    sortedDateTimeActivities.forEach(activity => {
       const { date, name, time, caloriesBurned } = activity;
-      const { hour, minute, second } = activity.duration; // Assuming duration is a map/object
+      const { hour, minute, second } = activity.duration;
+
 
       // Generate HTML for each activity
-      exerciseCardContainer.innerHTML += `
+      exerciseCard = `
         <div class="bg-white p-4 rounded-lg shadow-lg w-full">
               <div class="flex items-center">
                 <div class="flex container space-x-10">
@@ -57,6 +73,9 @@ async function fetchAndDisplayUserActivities() {
               </div>
             </div>
       </div>`;
+
+      // Append the activity card to the container
+      exerciseCardContainer.insertAdjacentHTML("afterbegin", exerciseCard);
     });
   } catch (error) {
     console.error("Error fetching user activities:", error);
