@@ -46,3 +46,9 @@ function fetchAndDisplayIngredients(uid) {
         console.log("Error getting document:", error); // Log any errors during fetch
     });
 }
+
+// Function to toggle the modal visibility
+function toggleModal() {
+    const modal = document.getElementById('ingredientModal');
+    modal.classList.toggle('hidden');
+}

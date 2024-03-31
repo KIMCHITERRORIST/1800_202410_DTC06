@@ -74,9 +74,30 @@
         <div id="ingredientsContainer">
             <!-- Create Your own -->
             <div id='create-ingredient'
-                class="flex flex-col mx-auto h-24 justify-center items-center border-2 border-gray-300 shadow-md rounded-full my-4">
+                class="flex flex-col mx-auto h-24 justify-center items-center border-2 border-gray-300 shadow-md rounded-full my-4"
+                onclick="toggleModal()">
                 <div class="text-center">
-                    <p class="text-xl font-semibold">Add another Ingredient.</p>
+                    <p class="text-xl font-semibold">Add New Ingredient.</p>
+                </div>
+            </div>
+        </div>
+        <div id="ingredientModal"
+            class="hidden fixed z-10 left-0 top-0 w-full h-full overflow-auto bg-gray-500 bg-opacity-75">
+            <div class="modal-content container mx-auto p-5 border shadow-lg rounded-md bg-white mt-20">
+                <!-- Modal Header -->
+                <div class="modal-header flex justify-between items-center pb-3">
+                    <p class="text-2xl font-bold">Ingredient Name?</p>
+                    <div class="modal-close cursor-pointer z-50" onclick="toggleModal()">
+                        <span class="text-2xl font-semibold">&times;</span>
+                    </div>
+                </div>
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <form id="newIngredientForm">
+                        <input type="text" id="ingredientName" placeholder="Enter here" required
+                            class="input mb-2" />
+                        <button type="button" onclick="submitIngredientName()" class="btn">Proceed</button>
+                    </form>
                 </div>
             </div>
         </div>
