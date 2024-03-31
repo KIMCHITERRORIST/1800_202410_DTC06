@@ -56,6 +56,7 @@ function toggleModal() {
 // Function to handle the ingredient name submission
 function submitIngredientName() {
     const ingredientName = document.getElementById('ingredientName').value.trim();
+    localStorage.setItem('ingredientName', ingredientName);
     if (ingredientName === "") {
         alert("Please enter an ingredient name.");
         return;
