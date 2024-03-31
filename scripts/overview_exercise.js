@@ -30,45 +30,49 @@ async function fetchDataAndDisplayChart() {
     activitiesSnapshot.forEach(doc => {
       var data = doc.data();
       if (formattedToday === data.date) {
-        // Check for field existence
         caloriesBurned.push(Number(data.caloriesBurned));
         times.push(data.time);
       }
     });
     times.sort()
 
-    if (caloriesBurned.length > 0 && times.length > 0) {
-      // Initialize the chart with the data
-      var ctx = document.getElementById('activityChart').getContext('2d');
-      var activityChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: times,
-          datasets: [{
-            label: 'Calories Burned',
-            data: caloriesBurned,
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 1
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true
-            },
-            x: {
-              // x-axis configuration options go here
+    // Chart configuration
+    var chartConfig = {
+      type: 'line',
+      data: {
+        labels: times,
+        datasets: [{
+          label: 'Calories Burned Today',
+          data: caloriesBurned,
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Calories Burned'
             }
-          }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Time'
+            },
+          },
         }
-      });
-    } else {
-      console.log('No data available to plot the chart.');
+      }
     }
+    // Initialize the chart
+    var dailyCalorieBurntChart = document.getElementById('dailyCalorieBurntChart').getContext('2d');
+    var lineChart = new Chart(dailyCalorieBurntChart, chartConfig)
   } catch (error) {
-    console.error("Error getting documents:", error);
+    console.error("Error fetching data:", error)
   }
-}
+};
 
 fetchDataAndDisplayChart();
