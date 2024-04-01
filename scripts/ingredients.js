@@ -20,20 +20,21 @@ function fetchAndDisplayIngredients(uid) {
         console.log(`Fetched document with UID: ${uid}`); // Log after successful fetch
 
         if (documentSnapshot.exists) {
-            const ingredientData = documentSnapshot.data();
+            const ingredientNames = documentSnapshot.data();
             const ingredientsContainer = document.getElementById("ingredientsContainer");
 
             // Iterate over each field in the document as an ingredient
-            Object.keys(ingredientData).forEach(ingredientName => {
-                const ingredient = ingredientData[ingredientName];
+            Object.keys(ingredientNames).forEach(ingredientName => {
+                const ingredient = ingredientNames[ingredientName];
                 var ingredientCardHTML = `
-    <div class="flex w-full mx-auto border-2 border-gray-300 shadow-md rounded-full mt-2 mb-5 p-4 items-center justify-between">
-        <div class="flex-1 pl-4 md:pl-8">
-            <p class="text-2xl md:text-4xl font-bold mb-2">${ingredientName}</p>
+    <div class="container flex w-full mx-auto border-2 border-gray-300 shadow-md rounded-full mb-5 px-6 py-3 items-center justify-between">
+        <div class="container flex-col pl-4 md:pl-8">
+            <p class="text-xl md:text-2xl font-bold mb-2">${ingredientName}</p>
             <p class="text-xs md:text-sm text-gray-500">${ingredient.protein}g Protein | ${ingredient.carbs}g Carbs | ${ingredient.fat}g Fat</p>
         </div>
-        <div class="w-auto flex flex-col justify-center items-center md:items-end">
-            <p class="text-xl md:text-3xl font-semibold">${ingredient.calories} kcal</p>
+        <div class="container flex items-center justify-end">
+            <span class="text-black text-lg font-medium"><span class="font-normal">${ingredient.calories}</span></span>
+            <img src="/images/kcal_icon.svg" alt="Calories Icon" class="w-10 h-10 inline">
         </div>
     </div>`;
                 // Append the card HTML for each ingredient to the container
