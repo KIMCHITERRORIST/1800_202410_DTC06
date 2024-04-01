@@ -1,8 +1,14 @@
 function search() {
-    let input = document.getElementById("searchBar").value
+    let input = document.getElementById('simple-search').value
     input = input.toLowerCase();
-    // i need this to pull the list of collections fromm firebase. 
-    let x = document.getElementbyClassName("Recipes")
+    let list = document.getElementsById('recipesContainer');
 
-    for (i = 0, i<x.length,i++)
+    for (i = 0; i < list.length; i++) {
+        if (!list[i].innerHTML.toLowerCase().includes(input)) {
+            list[i].style.display = "none";
+        }
+        else {
+            list[i].style.display = "list-item";
+        }
+    }
 }

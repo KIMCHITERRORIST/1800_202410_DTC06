@@ -100,14 +100,6 @@ document.addEventListener('DOMContentLoaded', function () {
       // Redirect to the next page
       window.location.href = '/each_category.html';
     });
-
-    () => {
-      const categoryDiv = document.getElementById('categories-container');
-      categoryDiv.addEventListener('click', function () {
-        localStorage.setItem('selectedCategory', category);
-        window.location.href = '/each_category.html';
-      });
-    }
     container.insertBefore(categoryDiv, container.firstChild);
   }
 
