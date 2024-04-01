@@ -27,8 +27,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/ui/4.8.1/firebase-ui-auth.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.1/firebase-ui-auth.css" />
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 
     <!-------------------------------------------->
@@ -37,15 +35,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
     <!-- <link rel="stylesheet" href="./styles/style.css"> -->
-
-    <script src="../scripts/general_nav_bottom.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
-    <script src="/scripts/firebaseAPI_TEAMDTC06.js"></script>
-    <script src="scripts/each_category.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body class="space-y-16">
@@ -56,7 +45,7 @@
     <!-- our own navbar goes here -->
     <nav id="navbarPlaceholder"></nav>
 
-    <main class="flex flex-col mt-5" style="height: calc(100vh - 112px);">
+    <main class="flex flex-col mt-5">
 
         <!-- recipe name -->
         <h1 class="font-bold text-5xl m-4 mb-6"><span id="recipeCategory"></span></h1>
@@ -87,22 +76,10 @@
             </button>
         </form>
 
-        <!-- this is the place holder cards for the recipes recipes -->
-        <!-- <div class="flex w-full mx-auto border-2 border-gray-300 shadow-md rounded-full mt-2 mb-5 p-4 text-center">
-            <div class="w-3/4">
-                <p class="text-3xl font-bold mb-2">Toast</p>
-                <p class="text-sm text-gray-500">0g Protein | 0g Carb | 0g Fat</p>
-            </div>
-            <div class="flex items-center">
-                <p class="text-gray-800 text-lg font-semibold">1000</p>
-                <img src="/images/kcal_icon.svg" alt="" class="size-20">
-            </div>
-        </div> -->
-        <div id="recipes-container"></div>
-
         <!-- container to store recipe categories and with create your own button at the end -->
 
-        <div id="recipesContainer">
+        <div id="recipes">
+            <div id="recipesContainer"></div>
             <!-- Create Your own -->
             <div id='create-recipe'
                 class="flex flex-col mx-auto h-24 justify-center items-center border-2 border-gray-300 shadow-md rounded-full my-2">
@@ -111,17 +88,17 @@
                 </div>
             </div>
         </div>
-        </div>
+    </main>
 
-        <!-- our own footer goes here-->
-        <nav id="footerPlaceholder"></nav>
+    <!-- our own footer goes here-->
+    <nav id="footerPlaceholder"></nav>
 
-        <!---------------------------------------------->
-        <!-- Your own JavaScript functions go here    -->
-        <!---------------------------------------------->
-        <script src="./scripts/firebaseAPI_TEAMDTC06.js"></script>
-        <script src="./scripts/general_skeleton.js"></script>
-        <script src="./scripts/each_category.js"></script>
+    <!---------------------------------------------->
+    <!-- Your own JavaScript functions go here    -->
+    <!---------------------------------------------->
+    <script src="./scripts/firebaseAPI_TEAMDTC06.js"></script>
+    <script src="./scripts/general_skeleton.js"></script>
+    <script src="./scripts/each_category.js"></script>
 </body>
 
 </html>

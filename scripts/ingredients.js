@@ -47,11 +47,19 @@ function fetchAndDisplayIngredients(uid) {
     });
 }
 
+const modal = document.getElementById('ingredientModal');
+const modalBg = document.getElementById('modalBackground');
 // Function to toggle the modal visibility
 function toggleModal() {
-    const modal = document.getElementById('ingredientModal');
     modal.classList.toggle('hidden');
 }
+
+// Close modal on outside click
+modalBg.addEventListener("click", () => {
+    modal.classList.add("hidden");
+    modalBg.classList.add("hidden");
+});
+
 
 // Function to handle the ingredient name submission
 function submitIngredientName() {

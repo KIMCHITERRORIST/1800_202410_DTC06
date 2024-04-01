@@ -25,13 +25,12 @@ function displayRecipeInfo(uid, recipeCategory) {
     .collection(recipeCategory)
     .get()
     .then((querySnapshot) => {
-      const recipesContainer = document.getElementById("recipes-container");
+      const recipesContainer = document.getElementById("recipesContainer");
       recipesContainer.innerHTML = ""; // Clear the container before adding new recipes because it is repeated
       querySnapshot.forEach((recipeCollection) => {
         if (recipeCollection.id === "count") {
           return;
         }
-
         var recipeName = recipeCollection.id;
         var recipe = recipeCollection
         var recipeCardHTML = `
@@ -51,7 +50,6 @@ function displayRecipeInfo(uid, recipeCategory) {
             </div>
           </div>
         `;
-
         recipesContainer.insertAdjacentHTML('afterbegin', recipeCardHTML);
       });
     })
@@ -75,7 +73,7 @@ function createNewRecipe(newName, recipeCategory, uid) {
     fats: 0
   }).then(function () {
     console.log("Recipe created with id:", newName);
-    // Perform further actions here, if necessary
+    db.collection('Recipes').doc(uid).collection(recipeCategory).doc('count').update({ count: firebase.firestore.FieldValue.increment(1) }); // Increment the count
     window.location.href = '/each_recipe.html'; // Redirects to the recipe page
   }).catch(function (error) {
     console.error("Error adding new document:", error);
