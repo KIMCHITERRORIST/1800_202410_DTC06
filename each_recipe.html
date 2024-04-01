@@ -84,11 +84,25 @@
 
     <!-- Add ingredients -->
     <div class="max-w-md rounded shadow-lg my-4 mx-auto">
-      <div class="px-6 py-4">
+      <div class="px-6 py-4" id="addIngredientDiv" onclick="toggleModal()">
         <div class="font-bold text-xl mb-2">Add new ingredients</div>
       </div>
     </div>
+
+    <!-- Modal Structure -->
+    <div id="ingredientModal"
+      class="modal hidden fixed z-10 left-0 top-0 w-full h-full overflow-auto bg-gray-500 bg-opacity-75">
+      <div class="modal-content container mx-auto mt-14 p-5 bg-white w-full">
+        <span class="modal-close cursor-pointer float-right font-bold" onclick="toggleModal()">&times;</span>
+        <h2 class="text-2xl mb-4">Add Ingredient</h2>
+        <input type="text" id="ingredientSearch" placeholder="Search ingredients..."
+          class="p-2 border rounded w-full mb-4">
+        <div id="ingredientList" class="max-h-60 overflow-y-auto">
+        </div>
+      </div>
+    </div>
   </main>
+
   <!-- Bottom Navigation Bar -->
   <nav id="footerPlaceholder"></nav>
 
@@ -98,19 +112,7 @@
   <script src="./scripts/firebaseAPI_TEAMDTC06.js"></script>
   <script src="./scripts/general_skeleton.js"></script>
   <script src="scripts/each_recipe.js"></script>
-  <!-- Modal Structure -->
-  <div id="ingredientModal"
-    class="modal hidden fixed z-10 left-0 top-0 w-full h-full overflow-auto bg-gray-500 bg-opacity-75">
-    <div class="modal-content container mx-auto mt-14 p-5 bg-white w-full">
-      <span class="close cursor-pointer float-right font-bold">&times;</span>
-      <h2 class="text-2xl mb-4">Add Ingredient</h2>
-      <input type="text" id="ingredientSearch" placeholder="Search ingredients..."
-        class="p-2 border rounded w-full mb-4">
-      <div id="ingredientList" class="max-h-60 overflow-y-auto">
-        <!-- Ingredient items will be inserted here -->
-      </div>
-    </div>
-  </div>
+
 </body>
 
 </html>
