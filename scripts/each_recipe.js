@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  document.querySelector('#addIngredientDiv').addEventListener('click', loadIngredients);
+  document.querySelector('#chooseIngredientsDiv').addEventListener('click', loadIngredients);
 });
 
 // Fetch UID function
@@ -62,6 +62,11 @@ displayRecipeInfo();
 function toggleModal() {
   const modal = document.getElementById('ingredientModal');
   modal.classList.toggle('hidden');
+}
+
+// Function to redirect to ingredients.html
+function redirectIngredientsPage() {
+  window.location.href = 'ingredients.html';
 }
 
 // display the ingredients inside the modal 
