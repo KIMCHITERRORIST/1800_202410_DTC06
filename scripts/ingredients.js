@@ -27,15 +27,18 @@ function fetchAndDisplayIngredients(uid) {
             Object.keys(ingredientData).forEach(ingredientName => {
                 const ingredient = ingredientData[ingredientName];
                 var ingredientCardHTML = `
-    <div class="flex w-full mx-auto border-2 border-gray-300 shadow-md rounded-full mt-2 mb-5 p-4 items-center justify-between">
-        <div class="flex-1 pl-4 md:pl-8">
-            <p class="text-2xl md:text-4xl font-bold mb-2">${ingredientName}</p>
-            <p class="text-xs md:text-sm text-gray-500">${ingredient.protein}g Protein | ${ingredient.carbs}g Carbs | ${ingredient.fat}g Fat</p>
-        </div>
-        <div class="w-auto flex flex-col justify-center items-center md:items-end">
-            <p class="text-xl md:text-3xl font-semibold">${ingredient.calories} kcal</p>
-        </div>
-    </div>`;
+<div class="flex w-full mx-auto border-2 border-gray-300 shadow-lg rounded-3xl mt-4 mb-6 p-4 items-center justify-between bg-white hover:bg-gray-50 transition-colors">
+    <div class="flex-1 mr-1">
+        <p class="text-xl md:text-2xl font-bold mb-2 text-gray-800">${ingredientName}</p>
+        <p class="text-sm md:text-base text-gray-600">${ingredient.protein}g Protein | ${ingredient.carbs}g Carbs | ${ingredient.fat}g Fat</p>
+    </div>
+    <div class="w-auto flex flex-col justify-center items-center md:items-end text-right">
+        <p class="text-lg md:text-xl font-semibold text-blue-600">${ingredient.calories} kcal</p>
+    </div>
+    <button onclick="editIngredient('${ingredientName}')" class="ml-4 px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-75">
+        Edit
+    </button>
+</div>`;
                 // Append the card HTML for each ingredient to the container
                 ingredientsContainer.innerHTML = ingredientCardHTML + ingredientsContainer.innerHTML;
             });
