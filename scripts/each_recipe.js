@@ -69,25 +69,70 @@ function redirectIngredientsPage() {
   window.location.href = 'ingredients.html';
 }
 
-// display the ingredients inside the modal 
-async function loadIngredients() {
-  try {
-    const uid = await fetchUID();
-    const ingredientsRef = db.collection('ingredients').doc(uid);
-    const snapshot = await ingredientsRef.get();
+// Function to handle the ingredient name submission
+function submitIngredientName() {
+  const ingredientName = document.getElementById('ingredientName').value.trim();
+  localStorage.setItem('ingredientName', ingredientName);
+  if (ingredientName === "") {
+    alert("Please enter an ingredient name.");
+    return;
+  }
 
-    if (snapshot.exists) {
-      const ingredients = snapshot.data();
-      const ingredientList = document.getElementById('ingredientList');
-      ingredientList.innerHTML = ''; // Clear current list
+  // Directly retrieve the user's UID from Firebase Auth
+  const user = firebase.auth().currentUser;
+  if (user) {
+    // User is signed in, proceed with saving the ingredient
+    const uid = user.uid;
 
-      Object.keys(ingredients).forEach(key => {
-        // For each ingredient, create a list item or similar element
-        const ingredientElement = `<div class="ingredient-item p-2 hover:bg-gray-200 cursor-pointer" onclick="addIngredientToList('${key}')">${key}</div>`;
-        ingredientList.insertAdjacentHTML('beforeend', ingredientElement);
+    // Define the ingredient data with macronutrients set to 0
+    const ingredientData = {
+      protein: 0,
+      carbs: 0,
+      fat: 0,
+      calories: 0
+    };
+
+    // Prepare the document update with the ingredient data
+    const updateObject = {};
+    updateObject[ingredientName] = ingredientData; // Use the ingredient name as the key
+
+    // Update the document for the user with the new ingredient
+    db.collection("ingredients").doc(uid).set(updateObject, { merge: true })
+      .then(() => {
+        console.log("Ingredient added to Firestore successfully.");
+        // Optionally redirect or perform other actions after successful update
+        window.location.href = 'addIngredient.html'; // Example redirection
+      })
+      .catch((error) => {
+        console.error("Error adding ingredient to Firestore: ", error);
       });
-    }
-  } catch (error) {
-    console.error("Error loading ingredients:", error);
+
+  } else {
+    // No user is signed in. Handle accordingly, possibly redirecting to login page
+    console.log('No user is signed in. Redirecting to login page...');
+    window.location.href = 'login.html';
   }
 }
+
+// // display the ingredients inside the modal 
+// async function loadIngredients() {
+//   try {
+//     const uid = await fetchUID();
+//     const ingredientsRef = db.collection('ingredients').doc(uid);
+//     const snapshot = await ingredientsRef.get();
+
+//     if (snapshot.exists) {
+//       const ingredients = snapshot.data();
+//       const ingredientList = document.getElementById('ingredientList');
+//       ingredientList.innerHTML = ''; // Clear current list
+
+//       Object.keys(ingredients).forEach(key => {
+//         // For each ingredient, create a list item or similar element
+//         const ingredientElement = `<div class="ingredient-item p-2 hover:bg-gray-200 cursor-pointer" onclick="addIngredientToList('${key}')">${key}</div>`;
+//         ingredientList.insertAdjacentHTML('beforeend', ingredientElement);
+//       });
+//     }
+//   } catch (error) {
+//     console.error("Error loading ingredients:", error);
+//   }
+// }
