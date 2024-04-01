@@ -74,6 +74,7 @@ function createNewRecipe(newName, recipeCategory, uid) {
   }).then(function () {
     console.log("Recipe created with id:", newName);
     db.collection('Recipes').doc(uid).collection(recipeCategory).doc('count').update({ count: firebase.firestore.FieldValue.increment(1) }); // Increment the count
+    localStorage.setItem('selectedRecipe', newName);
     window.location.href = '/each_recipe.html'; // Redirects to the recipe page
   }).catch(function (error) {
     console.error("Error adding new document:", error);
