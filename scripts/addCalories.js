@@ -22,7 +22,11 @@ function fetchAndDisplayRecipes(category) {
             console.log(`Found ${querySnapshot.docs.length} recipes in ${category}`); // Log the number of recipes found
             querySnapshot.forEach(doc => {
                 console.log(`Processing recipe: ${doc.id}`); // Log each recipe being processed
+                if (doc.id === "count") {
+                    return; // Skip the count document
+                }
                 const recipeElement = document.createElement('div');
+                recipeElement.classList.add("bg-slate-50", "border-2", "border-gray-200", "rounded-full", "p-2", "shadow-lg", "mb-2");
                 recipeElement.textContent = doc.id;
                 recipeElement.addEventListener('click', () => {
                     console.log(`Recipe ${doc.id} clicked, adding to calories...`); // Log recipe click
@@ -40,7 +44,7 @@ function fetchAndDisplayRecipes(category) {
 
 function fetchAndDisplaySubcategories() {
     const uid = firebase.auth().currentUser.uid;
-    console.log(`Fetching categories for user ID: ${uid}`); // Log user ID
+    console.log(`Fetching categories for user ID: ${uid}`);
     const subcategoriesContainer = document.getElementById('subcategoriesContainer');
 
     db.collection("Recipes").doc(uid).get().then(doc => {
@@ -51,6 +55,7 @@ function fetchAndDisplaySubcategories() {
             categories.forEach(category => {
                 console.log(`Processing category: ${category}`); // Log each category being processed
                 const categoryElement = document.createElement('div');
+                categoryElement.classList.add("bg-white", "border-2", "border-gray-200", "rounded-full", "p-2", "shadow-lg", "mb-2");
                 categoryElement.textContent = category;
                 categoryElement.addEventListener('click', () => {
                     console.log(`Category ${category} clicked, fetching recipes...`); // Log category click

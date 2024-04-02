@@ -32,25 +32,31 @@
     <!-- Top Nav bar -->
     <nav id="navbarPlaceholder"></nav>
 
-    <main>
-        <h1>Add Calories</h1>
-
-        <!-- Container for subcategories -->
-        <div id="subcategoriesContainer">
-            <!-- Subcategories will be dynamically added here -->
+    <main class="space-y-4">
+        <div class="container flex-col p-4 text-center mx-auto w-[95%] md:w-[75%] space-y-2">
+            <h1 class="font-semibold text-xl">Add Calories</h1>
+            <!-- Container for subcategories -->
+            <div id="subcategoriesContainer">
+                <!-- Subcategories will be dynamically added here -->
+            </div>
         </div>
 
         <!-- Container for recipes -->
-        <div id="recipesContainer">
-            <!-- Recipes will be dynamically added here -->
+        <div class="container flex-col p-4 text-center mx-auto w-[95%] md:w-[75%] space-y-2">
+            <div id="recipesContainer">
+                <!-- Recipes will be dynamically added here -->
+            </div>
         </div>
 
         <!-- Optional: Form for additional input (e.g., quantity) -->
-        <form id="addCaloriesForm">
-            <label for="quantity">Quantity:</label>
-            <input type="number" id="quantity" name="quantity" required>
-            <button type="submit">Add to Calories</button>
-        </form>
+        <div class="container flex text-xl font-semi-bold mx-auto w-[95%] md:w-[75%] p-4">
+            <form id="addCaloriesForm">
+                <label for="quantity">Quantity:</label>
+                <input class="border-2 p-2.5 border-gray-100" type="number" id="quantity" name="quantity"
+                    placeholder="g/ml (no unit needed)" required>
+                <button class="bg-[#2d58b1] text-white p-2 rounded-lg" type="submit">Add to Calories</button>
+            </form>
+        </div>
     </main>
 
     <!-- Bottom Navigation Bar -->
