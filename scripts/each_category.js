@@ -27,12 +27,12 @@ function displayRecipeInfo(uid, recipeCategory) {
     .then((querySnapshot) => {
       const recipesContainer = document.getElementById("recipesContainer");
       recipesContainer.innerHTML = ""; // Clear the container before adding new recipes because it is repeated
-      querySnapshot.forEach((recipeCollection) => {
-        if (recipeCollection.id === "count") {
+      querySnapshot.forEach((recipeDocument) => {
+        if (recipeDocument.id === "count") {
           return;
         }
-        var recipeName = recipeCollection.id;
-        var recipe = recipeCollection
+        var recipeName = recipeDocument.id;
+        var recipe = recipeDocument.data();
         var recipeCardHTML = `
           <div class="flex flex-col items-center justify-center w-full max-w-sm mx-auto my-4 border-2 border-gray-300 rounded-lg shadow-md">
             <div class="p-5">

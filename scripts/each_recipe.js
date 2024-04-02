@@ -43,13 +43,10 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
           }
           const ingredientDetails = doc[ingredientName];
-          const unit = ingredientDetails.grams ? 'g' : 'ml';
-          const value = ingredientDetails.grams || ingredientDetails.ml;
 
           let ingredientDiv = `<div class="flex justify-between px-2 py-3 border-b border-gray-200">
                           <span class="text-gray-700 font-semibold me-4">${ingredientName}</span>
                           <span class="flex text-center space-x-4">
-                              <div class="text-gray-500">quantity<p class="flex-col container">${value} ${unit}</p></div>
                               <div class="text-gray-500">carbs<p class="flex-col container">${ingredientDetails.carbs}g</p></div>
                               <div class="text-gray-500">fats<p class="flex-col container">${ingredientDetails.fat}g</p></div>
                               <div class="text-gray-500">protein<p class="flex-col container">${ingredientDetails.protein}g</p></div>

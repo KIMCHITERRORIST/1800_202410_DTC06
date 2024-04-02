@@ -32,9 +32,7 @@ function fetchAndDisplayIngredients(uid) {
                         <p class="text-xl font-bold mb-2 text-gray-800">${ingredientName}</p>
                         <p class="text-sm text-gray-600">${ingredient.protein}g Protein | ${ingredient.carbs}g Carbs | ${ingredient.fat}g Fat | ${ingredient.calories} kcal</p>
                     </div>
-                    <button onclick="event.stopPropagation(); editIngredient('${ingredientName}');" class="ml-4 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-75">
-                        Edit
-                    </button>
+                    
                 </div>`;
                 ingredientsContainer.insertAdjacentHTML('afterbegin', ingredientCardHTML);
             });
@@ -139,7 +137,7 @@ function submitIngredientAmount() {
                             })
                             .then(() => {
                                 console.log(`${ingredientName} added to ${selectedRecipe} in ${selectedCategory} successfully. Totals updated.`)
-                                // Optionally, redirect or perform other actions after successful update
+                                // Redirect to the recipe page after successful update
                                 window.location.href = 'each_recipe.html';
                             })
                             .catch(error => {
