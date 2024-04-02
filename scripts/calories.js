@@ -38,15 +38,15 @@ function fetchAndDisplayFoodEntries() {
     <div>
       <div><span class="text-xl text-black font-medium"> ${foodName}</span></div>
       <p class="text-black font-medium">Date: <span class="font-normal">${entry.date}</span></p>
-      <p class="text-black font-medium">Fats: <span class="font-normal">${entry.fats}g</span></p>
-      <p class="text-black font-medium">Carbs: <span class="font-normal">${entry.carbs}g</span></p>
-      <p class="text-black font-medium">Protein: <span class="font-normal">${entry.protein}g</span></p>
+      <p class="text-black font-medium">Fats: <span class="font-normal">${entry.fats} g</span></p>
+      <p class="text-black font-medium">Carbs: <span class="font-normal">${entry.carbs} g</span></p>
+      <p class="text-black font-medium">Protein: <span class="font-normal">${entry.protein} g</span></p>
     </div>
   </div>
   
   <!-- Calorie Information -->
   <div class="text-center">
-    <p class="text-black text-xl font-medium"><span class="font-normal">${entry.calories}kcal</span></p>
+    <p class="text-black text-xl font-medium"><span class="font-normal">${entry.calories} kcal</span></p>
     <img src="/images/kcal_icon.svg" alt="Calories Icon" class="w-20 h-20">
   </div>
 </div>

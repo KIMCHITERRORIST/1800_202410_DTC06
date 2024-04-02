@@ -13,20 +13,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function fetchAndDisplayRecipes(category) {
     const uid = firebase.auth().currentUser.uid;
-    console.log(`Fetching recipes for category: ${category} under user ID: ${uid}`); // Log category and user ID
     const recipesContainer = document.getElementById('recipesContainer');
     recipesContainer.innerHTML = ''; // Clear previous recipes
 
     db.collection("Recipes").doc(uid).collection(category).get().then(querySnapshot => {
         if (!querySnapshot.empty) {
-            console.log(`Found ${querySnapshot.docs.length} recipes in ${category}`); // Log the number of recipes found
             querySnapshot.forEach(doc => {
-                console.log(`Processing recipe: ${doc.id}`); // Log each recipe being processed
                 const recipeElement = document.createElement('div');
                 recipeElement.textContent = doc.id;
                 recipeElement.addEventListener('click', () => {
-                    console.log(`Recipe ${doc.id} clicked, adding to calories...`); // Log recipe click
-                    addRecipeToCalories(category, doc.id); // Ensure this function is well defined
+                    addRecipeToCalories(category, doc.id);
                 });
                 recipesContainer.appendChild(recipeElement);
             });
@@ -40,20 +36,15 @@ function fetchAndDisplayRecipes(category) {
 
 function fetchAndDisplaySubcategories() {
     const uid = firebase.auth().currentUser.uid;
-    console.log(`Fetching categories for user ID: ${uid}`); // Log user ID
     const subcategoriesContainer = document.getElementById('subcategoriesContainer');
 
     db.collection("Recipes").doc(uid).get().then(doc => {
         if (doc.exists && doc.data().categories) {
-            console.log("Document data:", doc.data()); // Log fetched document data
             const categories = doc.data().categories;
-            console.log(`Found categories: ${categories}`); // Log categories array
             categories.forEach(category => {
-                console.log(`Processing category: ${category}`); // Log each category being processed
                 const categoryElement = document.createElement('div');
                 categoryElement.textContent = category;
                 categoryElement.addEventListener('click', () => {
-                    console.log(`Category ${category} clicked, fetching recipes...`); // Log category click
                     fetchAndDisplayRecipes(category);
                 });
                 subcategoriesContainer.appendChild(categoryElement);
