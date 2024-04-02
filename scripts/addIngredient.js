@@ -24,11 +24,11 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 updateFirestore = (uid, ingredientName) => {
-    const fats = document.getElementById('fats').value;
-    const carbs = document.getElementById('carbs').value;
-    const protein = document.getElementById('protein').value;
-    const calories = document.getElementById('calories').value;
-    const valueNumber = document.getElementById('valueNumber').value;
+    const fats = Number(document.getElementById('fats').value);
+    const carbs = Number(document.getElementById('carbs').value);
+    const protein = Number(document.getElementById('protein').value);
+    const calories = Number(document.getElementById('calories').value);
+    const valueNumber = Number(document.getElementById('valueNumber').value);
     const unitType = document.getElementById('unit').value;
 
     // format data to update into firestore

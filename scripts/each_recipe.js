@@ -28,7 +28,7 @@ async function displayRecipeInfo() {
       console.log(doc.ingredients);
 
       document.getElementById("recipeName").innerText = recipeID;
-      document.getElementById("calories").innerText = doc.totalCalorie;
+      document.getElementById("calories").innerText = doc.calories;
       document.getElementById("protein").innerText = doc.protein;
       document.getElementById("carbs").innerText = doc.carbs;
       document.getElementById("fats").innerText = doc.fats;

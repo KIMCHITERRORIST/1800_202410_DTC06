@@ -54,45 +54,58 @@ function addIngredientToRecipe(ingredientName) {
 
     if (user && selectedCategory && selectedRecipe) {
         const uid = user.uid;
+        // Retrieve the recipe document to get current totals
+        db.collection("Recipes").doc(uid).collection(selectedCategory).doc(selectedRecipe).get().then(recipeDoc => {
+            if (recipeDoc.exists) {
+                const recipeData = recipeDoc.data();
+                // Use the field names as specified
+                const currentProtein = Number(recipeData.protein) || 0;
+                const currentCarbs = Number(recipeData.carbs) || 0;
+                const currentFats = Number(recipeData.fats) || 0;
+                const currentCalories = Number(recipeData.calories) || 0;
+                // Fetch the ingredient to be added
+                db.collection("ingredients").doc(uid).get().then(documentSnapshot => {
+                    if (documentSnapshot.exists) {
+                        const ingredientData = documentSnapshot.data()[ingredientName];
+                        if (ingredientData) {
+                            // Calculate new totals
+                            const newProtein = currentProtein + (Number(ingredientData.protein) || 0);
+                            const newCarbs = currentCarbs + (Number(ingredientData.carbs) || 0);
+                            const newFats = currentFats + (Number(ingredientData.fat) || 0);
+                            const newCalories = currentCalories + (Number(ingredientData.calories) || 0);
 
-        db.collection("ingredients").doc(uid).get().then(documentSnapshot => {
-            if (documentSnapshot.exists) {
-                const ingredientData = documentSnapshot.data()[ingredientName];
-                if (ingredientData) {
-                    const recipeIngredientData = {
-                        protein: ingredientData.protein,
-                        carbs: ingredientData.carbs,
-                        fat: ingredientData.fat,
-                        calories: ingredientData.calories
-                    };
-
-                    // Dynamically add grams or milliliters if they exist
-                    if (ingredientData.grams) {
-                        recipeIngredientData.grams = ingredientData.grams;
+                            // Update the recipe with the new totals
+                            db.collection("Recipes").doc(uid).collection(selectedCategory).doc(selectedRecipe)
+                                .update({
+                                    protein: newProtein,
+                                    carbs: newCarbs,
+                                    fats: newFats,
+                                    calories: newCalories,
+                                    // This assumes ingredientData is a sub-map of each ingredient within the recipe document
+                                    [ingredientName]: ingredientData
+                                })
+                                .then(() => {
+                                    console.log(`${ingredientName} added to ${selectedRecipe} in ${selectedCategory} successfully. Totals updated.`)
+                                    // Optionally, redirect or perform other actions after successful update
+                                    window.location.href = 'each_recipe.html';
+                                })
+                                .catch(error => {
+                                    console.error("Error updating recipe with new totals:", error);
+                                });
+                        } else {
+                            console.log(`Ingredient ${ingredientName} not found.`);
+                        }
+                    } else {
+                        console.log("No ingredients found for this user.");
                     }
-                    if (ingredientData.ml) {
-                        recipeIngredientData.ml = ingredientData.ml;
-                    }
-                    // Add the ingredient to the selected recipe in the selected category
-                    db.collection("Recipes").doc(uid)
-                        .collection(selectedCategory).doc(selectedRecipe)
-                        .set({ [ingredientName]: recipeIngredientData }, { merge: true })
-                        .then(() => {
-                            console.log(`${ingredientName} added to ${selectedRecipe} in ${selectedCategory} successfully.`);
-                            // Redirect after successful addition
-                            window.location.href = 'each_recipe.html';
-                        })
-                        .catch(error => {
-                            console.error("Error adding ingredient to recipe:", error);
-                        });
-                } else {
-                    console.log(`Ingredient ${ingredientName} not found.`);
-                }
+                }).catch(error => {
+                    console.log("Error getting ingredient document:", error);
+                });
             } else {
-                console.log("No ingredients found for this user.");
+                console.log("Recipe document does not exist.");
             }
         }).catch(error => {
-            console.log("Error getting ingredient document:", error);
+            console.error("Error getting recipe document:", error);
         });
     } else {
         console.log('Missing information or user not signed in.');
