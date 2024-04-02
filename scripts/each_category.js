@@ -31,17 +31,17 @@ function displayRecipeInfo(uid, recipeCategory) {
         if (recipeDocument.id === "count") {
           return;
         }
-        var recipeName = recipeDocument.id;
-        var recipe = recipeDocument.data();
+        var recipeName = recipeCollection.id;
+        var recipe = recipeCollection
         var recipeCardHTML = `
           <div class="flex flex-col items-center justify-center w-full max-w-sm mx-auto my-4 border-2 border-gray-300 rounded-lg shadow-md">
             <div class="p-5">
               <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">${recipeName}</h5>
               <ul class="mb-4 text-gray-600">
-                <li>Calories: ${recipe.calories}</li>
-                <li>Protein: ${recipe.protein}g</li>
-                <li>Carbs: ${recipe.carbs}g</li>
-                <li>Fats: ${recipe.fats}g</li>
+                <li>Calories: ${recipeData.calories}</li>
+                <li>Protein: ${recipeData.protein}g</li>
+                <li>Carbs: ${recipeData.carbs}g</li>
+                <li>Fats: ${recipeData.fats}g</li>
               </ul>
               <button onclick="viewRecipeDetails('${recipeName}')" class="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
                 View Recipe

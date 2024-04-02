@@ -9,8 +9,9 @@ async function initApp() {
     const uid = await fetchUID();
     if (uid) {
       // Firebase Auth is ready and a user is logged in, now fetch data and display charts.
-      fetchDataAndDisplayChart(); // This will internally fetch UID as needed
-      fetchAndDisplayTodaysFoodEntries(); // This will internally fetch UID as needed
+      fetchDataAndDisplayChart();
+      fetchAndDisplayTodaysFoodEntries();
+      fetchAndDisplayTodaysExerciseEntries()
     }
   } catch (error) {
     console.error("Initialization error:", error);
@@ -140,9 +141,64 @@ function fetchAndDisplayTodaysFoodEntries() {
   });
 }
 
+function fetchAndDisplayTodaysExerciseEntries() {
+  const uid = firebase.auth().currentUser.uid; // Use the UID of the currently logged-in user
+  const today = new Date().toISOString().split('T')[0]; // Format today's date as YYYY-MM-DD
+  const exerciseCardContent = document.getElementById('exerciseCardContent');
+
+  // Clear previous content
+  exerciseCardContent.innerHTML = '';
+
+  db.collection('exercises').doc(uid).collection('dailyActivities').get().then(querySnapshot => {
+    let totalCaloriesBurned = 0;
+
+    querySnapshot.forEach(doc => {
+      const data = doc.data();
+      if (data.date === today) {
+        totalCaloriesBurned += parseInt(data.caloriesBurned, 10);
+
+        // Create a new div for each exercise entry
+        const exerciseEntryDiv = document.createElement('div');
+        exerciseEntryDiv.classList.add('py-2'); // Add some padding
+        exerciseEntryDiv.innerHTML = `
+          <p class="font-semibold">Activity - ${doc.id}</p>
+          <p>Calories Burned: ${data.caloriesBurned} kcal</p>
+          <p>Duration: ${data.duration.hour || 0}h ${data.duration.minute || 0}m ${data.duration.second || 0}s</p>
+          <p>Heart Rate: ${data.heartRate} bpm</p>
+        `;
+
+        // Append the new div to the exerciseCardContent
+        exerciseCardContent.appendChild(exerciseEntryDiv);
+      }
+    });
+
+    if (exerciseCardContent.innerHTML !== '') {
+      document.getElementById('cardHeaderBurn').querySelector('p').textContent = `You have burned ${totalCaloriesBurned} calories today!`;
+      exerciseCardContent.classList.remove('hidden');
+    } else {
+      exerciseCardContent.innerHTML = '<p>No exercise entries found for today.</p>';
+      exerciseCardContent.classList.remove('hidden');
+    }
+  }).catch(error => {
+    console.error("Error fetching today's exercise entries:", error);
+  });
+}
+
 document.getElementById('cardHeader').addEventListener('click', function () {
   const content = document.getElementById('calorieCardContent');
   const symbol = document.getElementById('toggleSymbol');
+  if (content.classList.contains('hidden')) {
+    content.classList.remove('hidden'); // Show content
+    symbol.textContent = '-'; // Change symbol to '-'
+  } else {
+    content.classList.add('hidden'); // Hide content
+    symbol.textContent = '+'; // Change symbol to '+'
+  }
+});
+
+document.getElementById('cardHeaderBurn').addEventListener('click', function () {
+  const content = document.getElementById('exerciseCardContent');
+  const symbol = document.getElementById('toggleSymbolBurn');
   if (content.classList.contains('hidden')) {
     content.classList.remove('hidden'); // Show content
     symbol.textContent = '-'; // Change symbol to '-'
