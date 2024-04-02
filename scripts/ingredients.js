@@ -36,7 +36,6 @@ function fetchAndDisplayIngredients(uid) {
                         Edit
                     </button>
                 </div>`;
-                // Prepend the card HTML for each ingredient to the container
                 ingredientsContainer.insertAdjacentHTML('afterbegin', ingredientCardHTML);
             });
         } else {
