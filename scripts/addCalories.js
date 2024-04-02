@@ -65,23 +65,36 @@ function fetchAndDisplaySubcategories() {
         console.error("Error fetching categories:", error);
     });
 }
+
 // Function to add a recipe to the Calories collection
 function addRecipeToCalories(category, recipeName) {
     const uid = firebase.auth().currentUser.uid;
-    // Fetch the recipe details
+
     db.collection("Recipes").doc(uid).collection(category).doc(recipeName).get().then(recipeDoc => {
         if (recipeDoc.exists) {
             const recipeData = recipeDoc.data();
-            // Add the recipe to the Calories collection
+            const currentDate = new Date();
+            const dateString = currentDate.toISOString().split('T')[0];
+
+            // Directly use the macros from the recipeData
+            const fats = recipeData.fats;
+            const carbs = recipeData.carbs;
+            const protein = recipeData.protein;
+            const calories = recipeData.calories;
+
             db.collection("calories").doc(uid).set({
-                [recipeName]: recipeData // Assuming recipeData contains macros and calories
-            }, { merge: true })
-                .then(() => {
-                    console.log(`${recipeName} added to Calories successfully.`);
-                })
-                .catch(error => {
-                    console.error("Error adding recipe to Calories:", error);
-                });
+                [recipeName]: {
+                    fats: fats,
+                    carbs: carbs,
+                    protein: protein,
+                    calories: calories,
+                    date: dateString
+                }
+            }, { merge: true }).then(() => {
+                console.log(`${recipeName} added to Calories with date ${dateString} successfully.`);
+            }).catch(error => {
+                console.error("Error adding recipe to Calories:", error);
+            });
         } else {
             console.log("Recipe not found.");
         }
