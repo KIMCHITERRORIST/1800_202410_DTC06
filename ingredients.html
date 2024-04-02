@@ -74,6 +74,29 @@
             </div>
         </div>
 
+        <!-- Amount Input Modal -->
+        <div id="ingredientAmountModal"
+            class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 justify-center items-center">
+            <div class="bg-white rounded-lg p-5">
+                <h2 class="text-lg">Enter the amount and select the unit:</h2>
+                <input type="number" id="ingredientAmountInput" class="border-gray-300 border rounded p-2" />
+                <!-- Add the unit selection dropdown -->
+                <select id="ingredientUnit" class="border-gray-300 border rounded p-2">
+                    <option value="ml">ml</option>
+                    <option value="grams">grams</option>
+                </select>
+                <!-- End of unit selection dropdown -->
+                <button id="confirmAmount" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Confirm
+                </button>
+                <button onclick="toggleIngredientAmountModal(false)"
+                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                    Cancel
+                </button>
+            </div>
+        </div>
+
+        <!-- modal for ingredient name -->
         <div id="ingredientModal"
             class="hidden fixed z-10 left-0 top-0 w-full h-full overflow-auto bg-gray-500 bg-opacity-75">
             <div class="modal-content container mx-auto p-5 border shadow-lg rounded-md bg-white mt-20">

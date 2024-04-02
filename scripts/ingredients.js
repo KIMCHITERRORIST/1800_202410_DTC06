@@ -28,7 +28,7 @@ function fetchAndDisplayIngredients(uid) {
                 const ingredient = ingredientNames[ingredientName];
                 var ingredientCardHTML = `
                 <div class="flex w-full mx-auto border-2 border-gray-300 shadow-lg rounded-lg mt-4 mb-6 p-4 items-center justify-between bg-white hover:bg-gray-50 transition-colors">
-                    <div class="flex-1 cursor-pointer" onclick="addIngredientToRecipe('${ingredientName}')">
+                    <div class="flex-1 cursor-pointer" onclick="openAmountModal('${ingredientName}')">
                         <p class="text-xl font-bold mb-2 text-gray-800">${ingredientName}</p>
                         <p class="text-sm text-gray-600">${ingredient.protein}g Protein | ${ingredient.carbs}g Carbs | ${ingredient.fat}g Fat | ${ingredient.calories} kcal</p>
                     </div>
@@ -48,68 +48,127 @@ function fetchAndDisplayIngredients(uid) {
 }
 
 function addIngredientToRecipe(ingredientName) {
-    const selectedCategory = localStorage.getItem('selectedCategory');
-    const selectedRecipe = localStorage.getItem('selectedRecipe');
-    const user = firebase.auth().currentUser;
+    localStorage.setItem('currentIngredient', ingredientName);
+    toggleIngredientAmountModal(true);
+}
+function toggleIngredientAmountModal(show) {
+    const modal = document.getElementById('ingredientAmountModal');
+    modal.style.display = show ? "flex" : "none";
+}
+function openAmountModal(ingredientName) {
+    // Store the ingredient name for later retrieval
+    localStorage.setItem('currentIngredient', ingredientName);
+    // Show the modal
+    toggleIngredientAmountModal(true);
+}
 
-    if (user && selectedCategory && selectedRecipe) {
-        const uid = user.uid;
-        // Retrieve the recipe document to get current totals
-        db.collection("Recipes").doc(uid).collection(selectedCategory).doc(selectedRecipe).get().then(recipeDoc => {
-            if (recipeDoc.exists) {
-                const recipeData = recipeDoc.data();
-                // Use the field names as specified
-                const currentProtein = Number(recipeData.protein) || 0;
-                const currentCarbs = Number(recipeData.carbs) || 0;
-                const currentFats = Number(recipeData.fats) || 0;
-                const currentCalories = Number(recipeData.calories) || 0;
-                // Fetch the ingredient to be added
-                db.collection("ingredients").doc(uid).get().then(documentSnapshot => {
-                    if (documentSnapshot.exists) {
-                        const ingredientData = documentSnapshot.data()[ingredientName];
-                        if (ingredientData) {
-                            // Calculate new totals
-                            const newProtein = currentProtein + (Number(ingredientData.protein) || 0);
-                            const newCarbs = currentCarbs + (Number(ingredientData.carbs) || 0);
-                            const newFats = currentFats + (Number(ingredientData.fat) || 0);
-                            const newCalories = currentCalories + (Number(ingredientData.calories) || 0);
+document.getElementById('confirmAmount').addEventListener('click', function () {
+    submitIngredientAmount();
+});
 
-                            // Update the recipe with the new totals
-                            db.collection("Recipes").doc(uid).collection(selectedCategory).doc(selectedRecipe)
-                                .update({
-                                    protein: newProtein,
-                                    carbs: newCarbs,
-                                    fats: newFats,
-                                    calories: newCalories,
-                                    // This assumes ingredientData is a sub-map of each ingredient within the recipe document
-                                    [ingredientName]: ingredientData
-                                })
-                                .then(() => {
-                                    console.log(`${ingredientName} added to ${selectedRecipe} in ${selectedCategory} successfully. Totals updated.`)
-                                    // Optionally, redirect or perform other actions after successful update
-                                    window.location.href = 'each_recipe.html';
-                                })
-                                .catch(error => {
-                                    console.error("Error updating recipe with new totals:", error);
-                                });
-                        } else {
-                            console.log(`Ingredient ${ingredientName} not found.`);
-                        }
+// Function triggered when the "Confirm" button in the modal is clicked
+function submitIngredientAmount() {
+    const ingredientName = localStorage.getItem('currentIngredient');
+    const amount = Number(document.getElementById('ingredientAmountInput').value);
+
+    const uid = firebase.auth().currentUser.uid;
+    db.collection("ingredients").doc(uid).get().then(doc => {
+        if (doc.exists) {
+            const ingredientData = doc.data()[ingredientName];
+
+            // Check if grams or milliliters exist in the ingredient data
+            const hasGrams = ingredientData.hasOwnProperty('grams');
+            const hasMl = ingredientData.hasOwnProperty('ml');
+
+            let unit;
+            if (hasGrams && hasMl) {
+                // Prompt the user to choose the unit if both grams and ml exist
+                unit = prompt("Enter the unit (grams or ml):");
+            } else if (hasGrams) {
+                unit = 'grams';
+            } else if (hasMl) {
+                unit = 'ml';
+            } else {
+                console.log("No unit information found for this ingredient.");
+                return;
+            }
+
+            // Calculate ratio based on the amount from the database and the input amount
+            const baseAmount = ingredientData[unit];
+            const ratio = amount / baseAmount;
+
+            // Adjust nutritional values based on the calculated ratio
+            const adjustedProtein = ingredientData.protein * ratio;
+            const adjustedCarbs = ingredientData.carbs * ratio;
+            const adjustedFat = ingredientData.fat * ratio;
+            const adjustedCalories = ingredientData.calories * ratio;
+
+            // Now, update the recipe with these adjusted values.
+            const selectedCategory = localStorage.getItem('selectedCategory');
+            const selectedRecipe = localStorage.getItem('selectedRecipe');
+            if (selectedCategory && selectedRecipe) {
+                // Retrieve the recipe document to get current totals
+                db.collection("Recipes").doc(uid).collection(selectedCategory).doc(selectedRecipe).get().then(recipeDoc => {
+                    if (recipeDoc.exists) {
+                        const recipeData = recipeDoc.data();
+                        // Use the field names as specified
+                        const currentProtein = Number(recipeData.protein) || 0;
+                        const currentCarbs = Number(recipeData.carbs) || 0;
+                        const currentFats = Number(recipeData.fats) || 0;
+                        const currentCalories = Number(recipeData.calories) || 0;
+
+                        // Calculate new totals
+                        const newProtein = currentProtein + adjustedProtein;
+                        const newCarbs = currentCarbs + adjustedCarbs;
+                        const newFats = currentFats + adjustedFat;
+                        const newCalories = currentCalories + adjustedCalories;
+
+                        // Update the recipe with the new totals
+                        db.collection("Recipes").doc(uid).collection(selectedCategory).doc(selectedRecipe)
+                            .update({
+                                protein: newProtein,
+                                carbs: newCarbs,
+                                fats: newFats,
+                                calories: newCalories,
+                                // add ingredient to recipe
+                                [ingredientName]: {
+                                    protein: adjustedProtein,
+                                    carbs: adjustedCarbs,
+                                    fat: adjustedFat,
+                                    calories: adjustedCalories
+                                }
+                            })
+                            .then(() => {
+                                console.log(`${ingredientName} added to ${selectedRecipe} in ${selectedCategory} successfully. Totals updated.`)
+                                // Optionally, redirect or perform other actions after successful update
+                                window.location.href = 'each_recipe.html';
+                            })
+                            .catch(error => {
+                                console.error("Error updating recipe with new totals:", error);
+                            });
                     } else {
-                        console.log("No ingredients found for this user.");
+                        console.log("Recipe document does not exist.");
                     }
                 }).catch(error => {
-                    console.log("Error getting ingredient document:", error);
+                    console.error("Error getting recipe document:", error);
                 });
             } else {
-                console.log("Recipe document does not exist.");
+                console.log('Missing information about selected category or recipe.');
             }
-        }).catch(error => {
-            console.error("Error getting recipe document:", error);
-        });
-    } else {
-        console.log('Missing information or user not signed in.');
-    }
+
+            toggleIngredientAmountModal(false); // Hide the modal after processing
+        } else {
+            console.log("Ingredient document does not exist.");
+        }
+    }).catch(error => {
+        console.error("Error getting ingredient document:", error);
+    });
+}
+
+// Make sure to correctly initialize and show/hide your modal based on the user's interaction
+function toggleIngredientAmountModal(show) {
+    const modal = document.getElementById('ingredientAmountModal');
+    modal.style.display = show ? "flex" : "none";
 }
 
 const modal = document.getElementById('ingredientModal');
@@ -124,6 +183,7 @@ modalBg.addEventListener("click", () => {
     modal.classList.add("hidden");
     modalBg.classList.add("hidden");
 });
+
 
 
 // Function to handle the ingredient name submission
