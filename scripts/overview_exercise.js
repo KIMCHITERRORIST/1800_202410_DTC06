@@ -151,3 +151,15 @@ document.getElementById('cardHeader').addEventListener('click', function () {
     symbol.textContent = '+'; // Change symbol to '+'
   }
 });
+
+document.getElementById('cardHeaderBurn').addEventListener('click', function () {
+  const content = document.getElementById('exerciseCardContent');
+  const symbol = document.getElementById('toggleSymbolBurn');
+  if (content.classList.contains('hidden')) {
+    content.classList.remove('hidden'); // Show content
+    symbol.textContent = '-'; // Change symbol to '-'
+  } else {
+    content.classList.add('hidden'); // Hide content
+    symbol.textContent = '+'; // Change symbol to '+'
+  }
+});
