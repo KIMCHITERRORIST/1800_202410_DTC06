@@ -27,18 +27,17 @@ function fetchAndDisplayIngredients(uid) {
             Object.keys(ingredientNames).forEach(ingredientName => {
                 const ingredient = ingredientNames[ingredientName];
                 var ingredientCardHTML = `
-    <div class="container flex w-full mx-auto border-2 border-gray-300 shadow-md rounded-full mb-5 px-6 py-3 items-center justify-between">
-        <div class="container flex-col pl-4 md:pl-8">
-            <p class="text-xl md:text-2xl font-bold mb-2">${ingredientName}</p>
-            <p class="text-xs md:text-sm text-gray-500">${ingredient.protein}g Protein | ${ingredient.carbs}g Carbs | ${ingredient.fat}g Fat</p>
-        </div>
-        <div class="container flex items-center justify-end">
-            <span class="text-black text-lg font-medium"><span class="font-normal">${ingredient.calories}</span></span>
-            <img src="/images/kcal_icon.svg" alt="Calories Icon" class="w-10 h-10 inline">
-        </div>
-    </div>`;
-                // Append the card HTML for each ingredient to the container
-                ingredientsContainer.innerHTML = ingredientCardHTML + ingredientsContainer.innerHTML;
+                <div class="flex w-full mx-auto border-2 border-gray-300 shadow-lg rounded-lg mt-4 mb-6 p-4 items-center justify-between bg-white hover:bg-gray-50 transition-colors">
+                    <div class="flex-1 cursor-pointer" onclick="addIngredientToRecipe('${ingredientName}')">
+                        <p class="text-xl font-bold mb-2 text-gray-800">${ingredientName}</p>
+                        <p class="text-sm text-gray-600">${ingredient.protein}g Protein | ${ingredient.carbs}g Carbs | ${ingredient.fat}g Fat | ${ingredient.calories} kcal</p>
+                    </div>
+                    <button onclick="event.stopPropagation(); editIngredient('${ingredientName}');" class="ml-4 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-75">
+                        Edit
+                    </button>
+                </div>`;
+                // Prepend the card HTML for each ingredient to the container
+                ingredientsContainer.insertAdjacentHTML('afterbegin', ingredientCardHTML);
             });
         } else {
             console.log("No such document!"); // Log if document does not exist
@@ -46,6 +45,58 @@ function fetchAndDisplayIngredients(uid) {
     }).catch(error => {
         console.log("Error getting document:", error); // Log any errors during fetch
     });
+}
+
+function addIngredientToRecipe(ingredientName) {
+    const selectedCategory = localStorage.getItem('selectedCategory');
+    const selectedRecipe = localStorage.getItem('selectedRecipe');
+    const user = firebase.auth().currentUser;
+
+    if (user && selectedCategory && selectedRecipe) {
+        const uid = user.uid;
+
+        db.collection("ingredients").doc(uid).get().then(documentSnapshot => {
+            if (documentSnapshot.exists) {
+                const ingredientData = documentSnapshot.data()[ingredientName];
+                if (ingredientData) {
+                    const recipeIngredientData = {
+                        protein: ingredientData.protein,
+                        carbs: ingredientData.carbs,
+                        fat: ingredientData.fat,
+                        calories: ingredientData.calories
+                    };
+
+                    // Dynamically add grams or milliliters if they exist
+                    if (ingredientData.grams) {
+                        recipeIngredientData.grams = ingredientData.grams;
+                    }
+                    if (ingredientData.ml) {
+                        recipeIngredientData.ml = ingredientData.ml;
+                    }
+                    // Add the ingredient to the selected recipe in the selected category
+                    db.collection("Recipes").doc(uid)
+                        .collection(selectedCategory).doc(selectedRecipe)
+                        .set({ [ingredientName]: recipeIngredientData }, { merge: true })
+                        .then(() => {
+                            console.log(`${ingredientName} added to ${selectedRecipe} in ${selectedCategory} successfully.`);
+                            // Redirect after successful addition
+                            window.location.href = 'each_recipe.html';
+                        })
+                        .catch(error => {
+                            console.error("Error adding ingredient to recipe:", error);
+                        });
+                } else {
+                    console.log(`Ingredient ${ingredientName} not found.`);
+                }
+            } else {
+                console.log("No ingredients found for this user.");
+            }
+        }).catch(error => {
+            console.log("Error getting ingredient document:", error);
+        });
+    } else {
+        console.log('Missing information or user not signed in.');
+    }
 }
 
 const modal = document.getElementById('ingredientModal');
@@ -99,7 +150,6 @@ function submitIngredientName() {
             .catch((error) => {
                 console.error("Error adding ingredient to Firestore: ", error);
             });
-
     } else {
         // No user is signed in. Handle accordingly, possibly redirecting to login page
         console.log('No user is signed in. Redirecting to login page...');
