@@ -31,14 +31,14 @@ function displayRecipeInfo(uid, recipeCategory) {
         if (recipeDocument.id === "count") {
           return;
         }
-        var recipeName = recipeCollection.id;
-        var recipe = recipeCollection
+        var recipeName = recipeDocument.id;
+        var recipeData = recipeDocument.data()
         var recipeCardHTML = `
           <div class="flex flex-col items-center justify-center w-full max-w-sm mx-auto my-4 border-2 border-gray-300 rounded-lg shadow-md">
             <div class="p-5">
               <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">${recipeName}</h5>
               <ul class="mb-4 text-gray-600">
-                <li>Calories: ${recipeData.calories}</li>
+                <li>Calories: ${recipeData.calories}kcal</li>
                 <li>Protein: ${recipeData.protein}g</li>
                 <li>Carbs: ${recipeData.carbs}g</li>
                 <li>Fats: ${recipeData.fats}g</li>
@@ -75,7 +75,7 @@ function createNewRecipe(newName, recipeCategory, uid) {
     console.log("Recipe created with id:", newName);
     db.collection('Recipes').doc(uid).collection(recipeCategory).doc('count').update({ count: firebase.firestore.FieldValue.increment(1) }); // Increment the count
     localStorage.setItem('selectedRecipe', newName);
-    window.location.href = '/each_recipe.html'; // Redirects to the recipe page
+    window.location.href = '/each_recipe.html'; // Redirect to the recipe page
   }).catch(function (error) {
     console.error("Error adding new document:", error);
   });
