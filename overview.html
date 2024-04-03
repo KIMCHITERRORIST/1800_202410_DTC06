@@ -32,7 +32,7 @@
     <!-- Other libraries and styles of your own -->
     <!-------------------------------------------->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@700 opsz@56" rel="stylesheet" /> -->
     <!-- <link rel="stylesheet" href="./styles/style.css"> -->
 
 </head>
@@ -46,13 +46,17 @@
     <nav id="navbarPlaceholder"></nav>
 
     <main class="max-w-md mx-auto">
+        <div id="add_ingredient_modal_container"></div>
         <div class="chart-container">
             <canvas id="dailyCalorieBurntChart"></canvas>
         </div>
+
+
         <!-- Calories consumed -->
-        <div id="expandableCard" class="max-w-full rounded overflow-hidden shadow-lg">
-            <div class="px-6 py-4 cursor-pointer flex items-center justify-between" id="cardHeader">
-                <p class="flex items-center font-bold text-md">you have eaten 234 calories!</p>
+        <div class="max-w-full rounded overflow-hidden shadow-lg">
+            <div class="px-6 py-4 cursor-pointer flex items-center justify-between" id="cardHeaderCaloriesIn">
+                <p class="flex items-center font-bold text-md"></p>
+
                 <!-- MEAT ICON -->
                 <div>
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-meat" width="44"
@@ -67,10 +71,48 @@
                             d="M12.975 21.425c3.905 -3.906 4.855 -9.288 2.121 -12.021c-2.733 -2.734 -8.115 -1.784 -12.02 2.121" />
                     </svg>
                 </div>
-                <!-- plus sign -->
-                <div id="toggleSymbol" class="text-4xl py-1">+</div>
+
+                <!-- CHEVRON DOWN -->
+                <div id="toggleChevronDownSymbolCaloriesIn" class="text-4xl py-1"><svg
+                        xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-square-chevron-down"
+                        width="40" height="40" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M15 11l-3 3l-3 -3" />
+                        <path d="M3 3m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
+                    </svg>
+                </div>
             </div>
-            <div class="px-3 hidden" id="calorieCardContent">
+
+            <div class="px-3 hidden" id="caloriesInCardContent">
+            </div>
+        </div>
+        <!-- Calories Burned -->
+        <div id="caloriesBurntCard" class="max-w-full rounded overflow-hidden shadow-lg">
+            <div class="px-6 py-4 cursor-pointer flex items-center justify-between" id="cardHeaderCaloriesBurnt">
+                <p class="flex items-center font-bold text-md"></p>
+                <!-- BURN ICON -->
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-flame" width="44"
+                        height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path
+                            d="M12 12c2 -2.96 0 -7 -1 -8c0 3.038 -1.773 4.741 -3 6c-1.226 1.26 -2 3.24 -2 5a6 6 0 1 0 12 0c0 -1.532 -1.056 -3.94 -2 -5c-1.786 3 -2.791 3 -4 2z" />
+                    </svg>
+                </div>
+                <!-- CHEVRON DOWN -->
+                <div id="toggleChevronDownSymbolCaloriesBurnt" class="text-4xl py-1"><svg
+                        xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-square-chevron-down"
+                        width="40" height="40" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M15 11l-3 3l-3 -3" />
+                        <path d="M3 3m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
+                    </svg>
+                </div>
+            </div>
+            <div class="px-3 hidden" id="caloriesBurntCardContent">
             </div>
         </div>
     </main>
@@ -84,7 +126,6 @@
     <script src="scripts/firebaseAPI_TEAMDTC06.js"></script>
     <script src="scripts/home_skeleton.js"></script>
     <script src="scripts/overview_exercise.js"></script>
-    <script src="scripts/expandCard.js"></script>
     <!-- <script src="./scripts/script.js"></script> -->
 
 </body>

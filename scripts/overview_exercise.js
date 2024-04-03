@@ -5,10 +5,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 async function initApp() {
   try {
-    // Wait for Firebase Auth to be ready and for a user to be logged in.
     const uid = await fetchUID();
     if (uid) {
-      // Firebase Auth is ready and a user is logged in, now fetch data and display charts.
+      // User is logged in, now fetch data and display charts.
       fetchDataAndDisplayChart();
       fetchAndDisplayTodaysFoodEntries();
       fetchAndDisplayTodaysExerciseEntries()
@@ -18,7 +17,7 @@ async function initApp() {
   }
 }
 
-// Fetch UID function remains the same as provided before.
+// Fetch UID function 
 async function fetchUID() {
   return new Promise((resolve, reject) => {
     firebase.auth().onAuthStateChanged(user => {
@@ -95,12 +94,10 @@ async function fetchDataAndDisplayChart() {
   }
 };
 
-fetchDataAndDisplayChart();
-
-function fetchAndDisplayTodaysFoodEntries() {
-  const uid = firebase.auth().currentUser.uid;
+async function fetchAndDisplayTodaysFoodEntries() {
+  const uid = await fetchUID();
   const today = new Date().toISOString().split('T')[0]; // Format today's date as YYYY-MM-DD
-  const calorieCardContent = document.getElementById('calorieCardContent');
+  const caloriesInCardContent = document.getElementById('caloriesInCardContent');
 
   db.collection("calories").doc(uid).get().then(doc => {
     if (doc.exists) {
@@ -125,14 +122,11 @@ function fetchAndDisplayTodaysFoodEntries() {
 
       // Check if contentHTML is not empty, then update the DOM
       if (contentHTML !== '') {
-        calorieCardContent.innerHTML = contentHTML;
-        document.getElementById('cardHeader').querySelector('p').textContent = `You have eaten ${totalCalories} calories today!`;
+        caloriesInCardContent.innerHTML = contentHTML;
+        document.getElementById('cardHeaderCaloriesIn').querySelector('p').textContent = `You have eaten ${totalCalories} calories today!`;
       } else {
-        calorieCardContent.innerHTML = '<p>No food entries found for today.</p>';
+        document.getElementById('cardHeaderCaloriesIn').querySelector('p').textContent = 'No food entries found for today.';
       }
-
-      // Make the calorie card content visible
-      calorieCardContent.classList.remove('hidden');
     } else {
       console.log("No document found for this UID.");
     }
@@ -141,13 +135,13 @@ function fetchAndDisplayTodaysFoodEntries() {
   });
 }
 
-function fetchAndDisplayTodaysExerciseEntries() {
-  const uid = firebase.auth().currentUser.uid; // Use the UID of the currently logged-in user
+async function fetchAndDisplayTodaysExerciseEntries() {
+  const uid = await fetchUID(); // Use the UID of the currently logged-in user
   const today = new Date().toISOString().split('T')[0]; // Format today's date as YYYY-MM-DD
-  const exerciseCardContent = document.getElementById('exerciseCardContent');
+  const caloriesBurntCardContent = document.getElementById('caloriesBurntCardContent');
 
   // Clear previous content
-  exerciseCardContent.innerHTML = '';
+  caloriesBurntCardContent.innerHTML = '';
 
   db.collection('exercises').doc(uid).collection('dailyActivities').get().then(querySnapshot => {
     let totalCaloriesBurned = 0;
@@ -161,49 +155,66 @@ function fetchAndDisplayTodaysExerciseEntries() {
         const exerciseEntryDiv = document.createElement('div');
         exerciseEntryDiv.classList.add('py-2'); // Add some padding
         exerciseEntryDiv.innerHTML = `
-          <p class="font-semibold">Activity - ${doc.id}</p>
+          <p class="font-semibold">Activity - ${data.name}</p>
           <p>Calories Burned: ${data.caloriesBurned} kcal</p>
           <p>Duration: ${data.duration.hour || 0}h ${data.duration.minute || 0}m ${data.duration.second || 0}s</p>
-          <p>Heart Rate: ${data.heartRate} bpm</p>
+          <p>Heart Rate: ${data.heartrate} bpm</p>
         `;
 
         // Append the new div to the exerciseCardContent
-        exerciseCardContent.appendChild(exerciseEntryDiv);
+        caloriesBurntCardContent.appendChild(exerciseEntryDiv);
       }
     });
 
-    if (exerciseCardContent.innerHTML !== '') {
-      document.getElementById('cardHeaderBurn').querySelector('p').textContent = `You have burned ${totalCaloriesBurned} calories today!`;
-      exerciseCardContent.classList.remove('hidden');
+    if (caloriesBurntCardContent.innerHTML !== '') {
+      document.getElementById('cardHeaderCaloriesBurnt').querySelector('p').textContent = `You have burned ${totalCaloriesBurned} calories today!`;
     } else {
-      exerciseCardContent.innerHTML = '<p>No exercise entries found for today.</p>';
-      exerciseCardContent.classList.remove('hidden');
+      document.getElementById('cardHeaderCaloriesBurnt').querySelector('p').textContent = 'No exercise entries found for today.';
     }
   }).catch(error => {
     console.error("Error fetching today's exercise entries:", error);
   });
 }
 
-document.getElementById('cardHeader').addEventListener('click', function () {
-  const content = document.getElementById('calorieCardContent');
-  const symbol = document.getElementById('toggleSymbol');
-  if (content.classList.contains('hidden')) {
-    content.classList.remove('hidden'); // Show content
-    symbol.textContent = '-'; // Change symbol to '-'
+document.getElementById('cardHeaderCaloriesIn').addEventListener('click', function () {
+  const contentsCaloriesIn = document.getElementById('caloriesInCardContent');
+  const chevronCaloriesIn = document.getElementById('toggleChevronDownSymbolCaloriesIn');
+  if (contentsCaloriesIn.classList.contains('hidden')) {
+    contentsCaloriesIn.classList.remove('hidden'); // Show content
+    chevronCaloriesIn.innerHTML =
+      `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-square-chevron-up" width="40" height="40" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M3 3m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
+  <path d="M9 13l3 -3l3 3" />
+</svg>`;
+
   } else {
-    content.classList.add('hidden'); // Hide content
-    symbol.textContent = '+'; // Change symbol to '+'
+    contentsCaloriesIn.classList.add('hidden'); // Hide content
+    chevronCaloriesIn.innerHTML =
+      `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-square-chevron-down" width="40" height="40" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M15 11l-3 3l-3 -3" />
+  <path d="M3 3m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
+</svg>`;
   }
 });
 
-document.getElementById('cardHeaderBurn').addEventListener('click', function () {
-  const content = document.getElementById('exerciseCardContent');
-  const symbol = document.getElementById('toggleSymbolBurn');
-  if (content.classList.contains('hidden')) {
-    content.classList.remove('hidden'); // Show content
-    symbol.textContent = '-'; // Change symbol to '-'
+document.getElementById('cardHeaderCaloriesBurnt').addEventListener('click', function () {
+  const contentsCaloriesBurnt = document.getElementById('caloriesBurntCardContent');
+  const chevronCaloriesOut = document.getElementById('toggleChevronDownSymbolCaloriesBurnt');
+  if (contentsCaloriesBurnt.classList.contains('hidden')) {
+    contentsCaloriesBurnt.classList.remove('hidden'); // Show content
+    chevronCaloriesOut.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-square-chevron-up" width="40" height="40" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M3 3m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
+  <path d="M9 13l3 -3l3 3" />
+</svg>`;
   } else {
-    content.classList.add('hidden'); // Hide content
-    symbol.textContent = '+'; // Change symbol to '+'
+    contentsCaloriesBurnt.classList.add('hidden'); // Hide content
+    chevronCaloriesOut.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-square-chevron-down" width="40" height="40" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M15 11l-3 3l-3 -3" />
+  <path d="M3 3m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
+</svg>`;
   }
 });
