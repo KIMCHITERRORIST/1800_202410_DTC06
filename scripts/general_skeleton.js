@@ -29,13 +29,13 @@ function loadSkeleton() {
   $('#footerPlaceholder').load('./navbars/general_nav_bottom.html', function () {
     console.log('Footer loaded');
     // Event listners for bottom nav
-    // Reference to buttons
+    // Reference to elements
     const homeBtn = document.getElementById("home-btn");
     const plusBtn = document.getElementById("plus-btn");
     const userBtn = document.getElementById("user-btn");
-    const menu = document.getElementById("menu");
-    const menuBg = document.getElementById("menuBackground");
-    const closeBtn = document.getElementById("closeMenu");
+    const quickAddMenu = document.getElementById("quickAddMenu");
+    const quickAddMenuBg = document.getElementById("quickAddMenuBackground");
+    const closeQuickAddMenu = document.getElementById("closeQuickAddMenu");
 
     // Event listener for Home button
     if (homeBtn) {
@@ -48,20 +48,20 @@ function loadSkeleton() {
 
     // Open menu
     plusBtn.addEventListener("click", () => {
-      menu.classList.remove("hidden");
-      menuBg.classList.remove("hidden");
+      quickAddMenu.classList.remove("hidden");
+      quickAddMenuBg.classList.remove("hidden");
     });
 
-    // Close menu
-    closeBtn.addEventListener("click", () => {
-      menu.classList.add("hidden");
-      menuBg.classList.add("hidden");
+    // Close menu 
+    closeQuickAddMenu.addEventListener("click", () => {
+      quickAddMenu.classList.add("hidden");
+      quickAddMenuBg.classList.add("hidden");
     });
 
     // Close menu on outside click
-    menuBg.addEventListener("click", () => {
-      menu.classList.add("hidden");
-      menuBg.classList.add("hidden");
+    quickAddMenuBg.addEventListener("click", () => {
+      quickAddMenu.classList.add("hidden");
+      quickAddMenuBg.classList.add("hidden");
     });
 
     // Event listener for User button
@@ -69,6 +69,83 @@ function loadSkeleton() {
       console.log("Redirecting to User Profile...");
       window.location.href = "../profile.html";
     });
-  });
-}
+
+    document.getElementById('open_add_ingredient_modal').addEventListener('click', loadIngredientsModalandOpen);
+  })
+};
+
 loadSkeleton();
+
+function loadIngredientsModalandOpen() {
+  $('#add_ingredient_modal_container').load('main_modals/add_ingredients_modal.html', function () {
+    const quickAddMenu = document.getElementById("quickAddMenu");
+    const quickAddMenuBg = document.getElementById("quickAddMenuBackground");
+    quickAddMenu.classList.add("hidden");
+    quickAddMenuBg.classList.add("hidden");
+    openAddIngredientModal(); // Open Add Ingredient modal
+
+    // Event listeners for Add Ingredient modal
+    document.getElementById('close_add_ingredient_modal').addEventListener('click',
+      closeAddIngredientModal);
+
+    const addNewIngredientButton = document.getElementById('addNewIngredientButton');
+    addNewIngredientButton.addEventListener('click', function (saveData) {
+      saveData.preventDefault(); // Prevent the default form submission
+      saveIngredientInDB();
+    });
+  }
+  )
+};
+
+// Open Add Ingredient modal
+function openAddIngredientModal() {
+  const modal = document.getElementById('add_ingredient_modal');
+  modal.classList.remove('hidden');
+  modal.setAttribute('aria-hidden', 'false');
+}
+
+// Close Add Ingredient modal
+function closeAddIngredientModal() {
+  const modal = document.getElementById('add_ingredient_modal');
+  modal.classList.add('hidden');
+  modal.setAttribute('aria-hidden', 'true');
+}
+//---------------------------------------------------//
+// -----------Functions related to DB----------------//
+//---------------------------------------------------//
+
+async function saveIngredientInDB() {
+  const uid = await fetchUID();
+  console.log(uid);
+  const ingredientName = document.getElementById('ingredientName').value.trim();
+  const fats = Number(document.getElementById('fats').value);
+  const carbs = Number(document.getElementById('carbs').value);
+  const protein = Number(document.getElementById('protein').value);
+  const calories = Number(document.getElementById('calories').value);
+  const quantity = Number(document.getElementById('quantity').value);
+  const unit = document.getElementById('unit').value;
+
+  // Format data to update in Firestore
+  let dataToUpdate = {
+    [ingredientName]: {
+      fats,
+      carbs,
+      protein,
+      calories,
+      quantity: {
+        value: quantity,
+        unit
+      }
+    }
+  };
+
+  // Update the document in Firestore
+  db.collection('ingredients').doc(uid).set(dataToUpdate, { merge: true })
+    .then(() => {
+      console.log('Document successfully updated!');
+      window.location.href = 'ingredients.html'; // Redirect after successful update
+    })
+    .catch((error) => {
+      console.error('Error updating document:', error);
+    });
+}

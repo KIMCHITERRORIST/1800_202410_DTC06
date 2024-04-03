@@ -34,225 +34,228 @@
 
   <!-- Main Session -->
   <main class="bg-white shadow-2xl mx-auto max-w-full md:max-w-[75%] my-10 rounded-2xl">
-    <div class="flex container justify-center items-center mx-auto p-5">
-      <div class="bg-white flex flex-col container justify-center py-10 px-4">
-        <div class="w-full">
-          <!-- New Activity -->
+    <main class="max-w-md mx-auto">
+      <div id="add_ingredient_modal_container"></div>
+      <div class="flex container justify-center items-center mx-auto p-5">
+        <div class="bg-white flex flex-col container justify-center py-10 px-4">
+          <div class="w-full">
+            <!-- New Activity -->
+            <div class="mb-6">
+              <h1 class="text-center text-xl mb-6">Add new activity</h1>
+              <div>
+                <label class="block text-grey-darker text-lg font-bold mb-2" for="activity_name">Enter activity
+                  name</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                  id="activity_name" type="text" placeholder="Activity name" required>
+              </div>
+            </div>
+            <!-- Duration -->
+            <div class="mb-10">
+              <label class="block text-grey-darker text-lg font-bold mb-2">Choose duration</label>
+              <div class="flex items-center justify-between gap-5">
+                <!-- Hour -->
+                <div class="mb-6">
+                  <form class="max-w-sm mx-auto">
+                    <label for="hour" class="block mb-2 text-xl text-center font-medium text-gray-900">Hours</label>
+                    <select id="hour"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:[#2d58b1] focus:border-[#2d58b1] block w-full p-2.5">
+                      <option value="" disabled selected>Select hour</option>
+                      <option value="0">0</option>
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                      <option>5</option>
+                      <option>6</option>
+                      <option>7</option>
+                      <option>8</option>
+                      <option>9</option>
+                      <option>10</option>
+                      <option>11</option>
+                      <option>12</option>
+                    </select>
+                  </form>
+                </div>
+                <!-- Minute -->
+                <div class="mb-6">
+                  <form class="max-w-sm mx-auto">
+                    <label for="minute" class="block mb-2 text-xl text-center font-medium text-gray-900">Minutes</label>
+                    <select id="minute"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:[#2d58b1] focus:border-[#2d58b1] block w-full p-2.5">
+                      <option value="" disabled selected>Select minute</option>
+                      <option value="0">0</option>
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                      <option>5</option>
+                      <option>6</option>
+                      <option>7</option>
+                      <option>8</option>
+                      <option>9</option>
+                      <option>10</option>
+                      <option>11</option>
+                      <option>12</option>
+                      <option>13</option>
+                      <option>14</option>
+                      <option>15</option>
+                      <option>16</option>
+                      <option>17</option>
+                      <option>18</option>
+                      <option>19</option>
+                      <option>20</option>
+                      <option>21</option>
+                      <option>22</option>
+                      <option>23</option>
+                      <option>24</option>
+                      <option>25</option>
+                      <option>26</option>
+                      <option>27</option>
+                      <option>28</option>
+                      <option>29</option>
+                      <option>30</option>
+                      <option>31</option>
+                      <option>32</option>
+                      <option>33</option>
+                      <option>34</option>
+                      <option>35</option>
+                      <option>36</option>
+                      <option>37</option>
+                      <option>38</option>
+                      <option>39</option>
+                      <option>40</option>
+                      <option>41</option>
+                      <option>42</option>
+                      <option>43</option>
+                      <option>44</option>
+                      <option>45</option>
+                      <option>46</option>
+                      <option>47</option>
+                      <option>48</option>
+                      <option>49</option>
+                      <option>50</option>
+                      <option>51</option>
+                      <option>52</option>
+                      <option>53</option>
+                      <option>54</option>
+                      <option>55</option>
+                      <option>56</option>
+                      <option>57</option>
+                      <option>58</option>
+                      <option>59</option>
+                    </select>
+                  </form>
+                </div>
+                <!-- Second -->
+                <div class="mb-6">
+                  <form class="max-w-sm mx-auto">
+                    <label for="second" class="block mb-2 text-xl text-center font-medium text-gray-900">Seconds</label>
+                    <select id="second"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:[#2d58b1] focus:border-[#2d58b1] block w-full p-2.5">
+                      <option value="" disabled selected>Select second</option>
+                      <option value="0">0</option>
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                      <option>5</option>
+                      <option>6</option>
+                      <option>7</option>
+                      <option>8</option>
+                      <option>9</option>
+                      <option>10</option>
+                      <option>11</option>
+                      <option>12</option>
+                      <option>13</option>
+                      <option>14</option>
+                      <option>15</option>
+                      <option>16</option>
+                      <option>17</option>
+                      <option>18</option>
+                      <option>19</option>
+                      <option>20</option>
+                      <option>21</option>
+                      <option>22</option>
+                      <option>23</option>
+                      <option>24</option>
+                      <option>25</option>
+                      <option>26</option>
+                      <option>27</option>
+                      <option>28</option>
+                      <option>29</option>
+                      <option>30</option>
+                      <option>31</option>
+                      <option>32</option>
+                      <option>33</option>
+                      <option>34</option>
+                      <option>35</option>
+                      <option>36</option>
+                      <option>37</option>
+                      <option>38</option>
+                      <option>39</option>
+                      <option>40</option>
+                      <option>41</option>
+                      <option>42</option>
+                      <option>43</option>
+                      <option>44</option>
+                      <option>45</option>
+                      <option>46</option>
+                      <option>47</option>
+                      <option>48</option>
+                      <option>49</option>
+                      <option>50</option>
+                      <option>51</option>
+                      <option>52</option>
+                      <option>53</option>
+                      <option>54</option>
+                      <option>55</option>
+                      <option>56</option>
+                      <option>57</option>
+                      <option>58</option>
+                      <option>59</option>
+                    </select>
+                  </form>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- Heart Rate -->
           <div class="mb-6">
-            <h1 class="text-center text-xl mb-6">Add new activity</h1>
-            <div>
-              <label class="block text-grey-darker text-lg font-bold mb-2" for="activity_name">Enter activity
-                name</label>
-              <input class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="activity_name"
-                type="text" placeholder="Activity name" required>
-            </div>
+            <label class="block text-grey-darker text-lg font-bold mb-2" for="heart_rate">Enter your Heart-rate
+              (BPM)</label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="heart_rate"
+              type="number" placeholder="Heart rate (bpm)" required>
           </div>
-          <!-- Duration -->
-          <div class="mb-10">
-            <label class="block text-grey-darker text-lg font-bold mb-2">Choose duration</label>
-            <div class="flex items-center justify-between gap-5">
-              <!-- Hour -->
-              <div class="mb-6">
-                <form class="max-w-sm mx-auto">
-                  <label for="hour" class="block mb-2 text-xl text-center font-medium text-gray-900">Hours</label>
-                  <select id="hour"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:[#2d58b1] focus:border-[#2d58b1] block w-full p-2.5">
-                    <option value="" disabled selected>Select hour</option>
-                    <option value="0">0</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                    <option>6</option>
-                    <option>7</option>
-                    <option>8</option>
-                    <option>9</option>
-                    <option>10</option>
-                    <option>11</option>
-                    <option>12</option>
-                  </select>
-                </form>
-              </div>
-              <!-- Minute -->
-              <div class="mb-6">
-                <form class="max-w-sm mx-auto">
-                  <label for="minute" class="block mb-2 text-xl text-center font-medium text-gray-900">Minutes</label>
-                  <select id="minute"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:[#2d58b1] focus:border-[#2d58b1] block w-full p-2.5">
-                    <option value="" disabled selected>Select minute</option>
-                    <option value="0">0</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                    <option>6</option>
-                    <option>7</option>
-                    <option>8</option>
-                    <option>9</option>
-                    <option>10</option>
-                    <option>11</option>
-                    <option>12</option>
-                    <option>13</option>
-                    <option>14</option>
-                    <option>15</option>
-                    <option>16</option>
-                    <option>17</option>
-                    <option>18</option>
-                    <option>19</option>
-                    <option>20</option>
-                    <option>21</option>
-                    <option>22</option>
-                    <option>23</option>
-                    <option>24</option>
-                    <option>25</option>
-                    <option>26</option>
-                    <option>27</option>
-                    <option>28</option>
-                    <option>29</option>
-                    <option>30</option>
-                    <option>31</option>
-                    <option>32</option>
-                    <option>33</option>
-                    <option>34</option>
-                    <option>35</option>
-                    <option>36</option>
-                    <option>37</option>
-                    <option>38</option>
-                    <option>39</option>
-                    <option>40</option>
-                    <option>41</option>
-                    <option>42</option>
-                    <option>43</option>
-                    <option>44</option>
-                    <option>45</option>
-                    <option>46</option>
-                    <option>47</option>
-                    <option>48</option>
-                    <option>49</option>
-                    <option>50</option>
-                    <option>51</option>
-                    <option>52</option>
-                    <option>53</option>
-                    <option>54</option>
-                    <option>55</option>
-                    <option>56</option>
-                    <option>57</option>
-                    <option>58</option>
-                    <option>59</option>
-                  </select>
-                </form>
-              </div>
-              <!-- Second -->
-              <div class="mb-6">
-                <form class="max-w-sm mx-auto">
-                  <label for="second" class="block mb-2 text-xl text-center font-medium text-gray-900">Seconds</label>
-                  <select id="second"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:[#2d58b1] focus:border-[#2d58b1] block w-full p-2.5">
-                    <option value="" disabled selected>Select second</option>
-                    <option value="0">0</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                    <option>6</option>
-                    <option>7</option>
-                    <option>8</option>
-                    <option>9</option>
-                    <option>10</option>
-                    <option>11</option>
-                    <option>12</option>
-                    <option>13</option>
-                    <option>14</option>
-                    <option>15</option>
-                    <option>16</option>
-                    <option>17</option>
-                    <option>18</option>
-                    <option>19</option>
-                    <option>20</option>
-                    <option>21</option>
-                    <option>22</option>
-                    <option>23</option>
-                    <option>24</option>
-                    <option>25</option>
-                    <option>26</option>
-                    <option>27</option>
-                    <option>28</option>
-                    <option>29</option>
-                    <option>30</option>
-                    <option>31</option>
-                    <option>32</option>
-                    <option>33</option>
-                    <option>34</option>
-                    <option>35</option>
-                    <option>36</option>
-                    <option>37</option>
-                    <option>38</option>
-                    <option>39</option>
-                    <option>40</option>
-                    <option>41</option>
-                    <option>42</option>
-                    <option>43</option>
-                    <option>44</option>
-                    <option>45</option>
-                    <option>46</option>
-                    <option>47</option>
-                    <option>48</option>
-                    <option>49</option>
-                    <option>50</option>
-                    <option>51</option>
-                    <option>52</option>
-                    <option>53</option>
-                    <option>54</option>
-                    <option>55</option>
-                    <option>56</option>
-                    <option>57</option>
-                    <option>58</option>
-                    <option>59</option>
-                  </select>
-                </form>
-              </div>
 
-            </div>
+
+          <!-- Save and Cancel Buttons -->
+          <div class="flex items-center justify-between">
+            <button id="cancel" type="reset"
+              class="bg-transparent hover:bg-blue-500 text-[#2d58b1] font-semibold hover:text-white py-2 px-4 border border-[#2d58b1] hover:border-transparent rounded">
+              Cancel
+            </button>
+            <button id="save" type="submit"
+              class="bg-[#2d58b1] text-white hover:bg-blue-500 font-bold py-2 px-4 rounded">
+              Save
+            </button>
           </div>
-        </div>
-
-        <!-- Heart Rate -->
-        <div class="mb-6">
-          <label class="block text-grey-darker text-lg font-bold mb-2" for="heart_rate">Enter your Heart-rate
-            (BPM)</label>
-          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="heart_rate"
-            type="number" placeholder="Heart rate (bpm)" required>
-        </div>
-
-
-        <!-- Save and Cancel Buttons -->
-        <div class="flex items-center justify-between">
-          <button id="cancel" type="reset"
-            class="bg-transparent hover:bg-blue-500 text-[#2d58b1] font-semibold hover:text-white py-2 px-4 border border-[#2d58b1] hover:border-transparent rounded">
-            Cancel
-          </button>
-          <button id="save" type="submit" class="bg-[#2d58b1] text-white hover:bg-blue-500 font-bold py-2 px-4 rounded">
-            Save
-          </button>
         </div>
       </div>
-    </div>
-    </div>
-  </main>
+      </div>
+    </main>
 
-  <!-- Bottom Navbar -->
-  <nav id="footerPlaceholder"></nav>
-  <!---------------------------------------------->
-  <!-- Your own JavaScript functions go here    -->
-  <!---------------------------------------------->
+    <!-- Bottom Navbar -->
+    <nav id="footerPlaceholder"></nav>
+    <!---------------------------------------------->
+    <!-- Your own JavaScript functions go here    -->
+    <!---------------------------------------------->
 
-  <!-- Link to scripts of your own -->
-  <script src="./scripts/general_skeleton.js"></script>
-  <script src="./scripts/firebaseAPI_TEAMDTC06.js"></script>
-  <script src="./scripts/add_exercise.js"></script>
+    <!-- Link to scripts of your own -->
+    <script src="./scripts/general_skeleton.js"></script>
+    <script src="./scripts/firebaseAPI_TEAMDTC06.js"></script>
+    <script src="./scripts/add_exercise.js"></script>
 </body>
 
 </html>
