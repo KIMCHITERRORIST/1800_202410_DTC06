@@ -95,10 +95,10 @@ function submitIngredientAmount() {
             const ratio = amount / baseAmount;
 
             // Adjust nutritional values based on the calculated ratio
-            const adjustedProtein = ingredientData.protein * ratio;
-            const adjustedCarbs = ingredientData.carbs * ratio;
-            const adjustedFat = ingredientData.fat * ratio;
-            const adjustedCalories = ingredientData.calories * ratio;
+            const adjustedProtein = Math.round(ingredientData.protein * ratio);
+            const adjustedCarbs = Math.round(ingredientData.carbs * ratio);
+            const adjustedFat = Math.round(ingredientData.fat * ratio);
+            const adjustedCalories = Math.round(ingredientData.calories * ratio);
 
             // Now, update the recipe with these adjusted values.
             const selectedCategory = localStorage.getItem('selectedCategory');
@@ -214,14 +214,13 @@ function submitIngredientName() {
         db.collection("ingredients").doc(uid).set(updateObject, { merge: true })
             .then(() => {
                 console.log("Ingredient added to Firestore successfully.");
-                // Optionally redirect or perform other actions after successful update
-                window.location.href = 'addIngredient.html'; // Example redirection
+                window.location.href = 'addIngredient.html'; 
             })
             .catch((error) => {
                 console.error("Error adding ingredient to Firestore: ", error);
             });
     } else {
-        // No user is signed in. Handle accordingly, possibly redirecting to login page
+        // No user is signed in
         console.log('No user is signed in. Redirecting to login page...');
         window.location.href = 'login.html';
     }

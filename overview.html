@@ -32,7 +32,9 @@
     <!-- Other libraries and styles of your own -->
     <!-------------------------------------------->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@700 opsz@56" rel="stylesheet" /> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@700 opsz@56" rel="stylesheet" />
     <!-- <link rel="stylesheet" href="./styles/style.css"> -->
 
 </head>
@@ -47,10 +49,7 @@
 
     <main class="max-w-md mx-auto">
         <div id="add_ingredient_modal_container"></div>
-        <div class="chart-container">
-            <canvas id="dailyCalorieBurntChart"></canvas>
-        </div>
-
+        <div class="py-6" id="donut-chart"></div>
         <!-- Calories consumed -->
         <div class="max-w-full rounded overflow-hidden shadow-lg">
             <div class="px-6 py-4 cursor-pointer flex items-center justify-between" id="cardHeaderCaloriesIn">
