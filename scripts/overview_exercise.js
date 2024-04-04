@@ -96,7 +96,8 @@ async function fetchDataAndDisplayChart() {
 
 async function fetchAndDisplayTodaysFoodEntries() {
   const uid = await fetchUID();
-  const today = new Date().toISOString().split('T')[0]; // Format today's date as YYYY-MM-DD
+  const today = new Date();
+  const formattedToday = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
   const caloriesInCardContent = document.getElementById('caloriesInCardContent');
 
   db.collection("calories").doc(uid).get().then(doc => {
@@ -108,7 +109,7 @@ async function fetchAndDisplayTodaysFoodEntries() {
       Object.keys(data).forEach(foodName => {
         const entry = data[foodName];
         // Check if entry date matches today's date
-        if (entry.date === today) {
+        if (entry.date === formattedToday) {
           totalCalories += parseInt(entry.calories, 10); // Update total calories
           // Create HTML content for each food entry
           contentHTML += `
@@ -137,7 +138,8 @@ async function fetchAndDisplayTodaysFoodEntries() {
 
 async function fetchAndDisplayTodaysExerciseEntries() {
   const uid = await fetchUID(); // Use the UID of the currently logged-in user
-  const today = new Date().toISOString().split('T')[0]; // Format today's date as YYYY-MM-DD
+  const today = new Date();
+  const formattedToday = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
   const caloriesBurntCardContent = document.getElementById('caloriesBurntCardContent');
 
   // Clear previous content
@@ -148,7 +150,7 @@ async function fetchAndDisplayTodaysExerciseEntries() {
 
     querySnapshot.forEach(doc => {
       const data = doc.data();
-      if (data.date === today) {
+      if (data.date === formattedToday) {
         totalCaloriesBurned += parseInt(data.caloriesBurned, 10);
 
         // Create a new div for each exercise entry
