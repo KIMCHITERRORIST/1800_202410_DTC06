@@ -36,6 +36,20 @@ document.getElementById("user-info-form").addEventListener("submit", function (e
     const weight = document.getElementById("weight").value;
     const height = document.getElementById("height").value;
     const gender = document.getElementById("gender").value;
+    const activity = document.getElementById("activity-level").value;
+    const goalWeight = document.getElementById("goalWeight").value;
+    const goalWeightNumber = Number(goalWeight);
+    const activityLevel = Number(document.getElementById("activity-level").value);
+
+    // calculate bmr from bmi and then find TDEE
+    let BMR;
+    if (gender === "male") {
+      BMR = 10 * weight + 6.25 * height - 5 * age + 5;
+    } else {
+      BMR = 10 * weight + 6.25 * height - 5 * age - 161;
+    }
+
+    const TDEE = BMR * activityLevel;
 
     // Update user's info in Firestore
     db.collection("users").doc(uid).set({
@@ -43,7 +57,12 @@ document.getElementById("user-info-form").addEventListener("submit", function (e
       weight: Number(weight),
       height: Number(height),
       gender: gender,
-      BMI: Number(weight / (height / 100 * height / 100))
+      BMI: Number(weight / (height / 100 * height / 100)),
+      BMR: BMR,
+      activityLevel: activity,
+      TDEE: TDEE,
+      goalWeight: goalWeightNumber 
+
     }, { merge: true }).then(() => {
       console.log("Document successfully written!");
       window.location.href = "overview.html";

@@ -7,16 +7,68 @@ async function initApp() {
   try {
     const uid = await fetchUID();
     if (uid) {
-      // User is logged in, now fetch data and display charts.
+      // User is logged in, now fetch data
       fetchDataAndDisplayChart();
       fetchAndDisplayTodaysFoodEntries();
-      fetchAndDisplayTodaysExerciseEntries()
+      fetchAndDisplayTodaysExerciseEntries();
+      const TDEE = await fetchTDEE(uid); // Fetch user's TDEE
+      const goalCalories = TDEE - 500; // Calculate goal calories
+      await renderDonutChart(uid, goalCalories); // Render the donut chart
     }
   } catch (error) {
     console.error("Initialization error:", error);
   }
 }
 
+async function renderDonutChart(uid, goalCalories) {
+  const { caloriesIn, caloriesOut } = await fetchCaloriesInAndOut(uid); // Fetch today's calories in and out
+  const remainingCalories = Math.max(0, goalCalories - caloriesIn); // Calculate remaining calories, ensure it's not negative
+
+  // Prepare chart options
+  const chartOptions = {
+    series: [caloriesIn, remainingCalories],
+    labels: ['Calories In', 'Calories Remaining'],
+    colors: ["#1C64F2", "#FDBA8C"], // Custom colors: Calories In and Calories Remaining
+    chart: {
+      type: 'donut',
+      height: 320,
+    },
+    plotOptions: {
+      pie: {
+        donut: {
+          labels: {
+            show: true,
+            total: {
+              showAlways: true,
+              label: 'Total',
+              formatter: () => `${goalCalories - remainingCalories} of ${goalCalories}`
+            }
+          }
+        }
+      }
+    },
+    legend: {
+      position: "bottom",
+    },
+    // Include other chart configurations as needed
+  };
+
+  // Render the chart
+  const chart = new ApexCharts(document.getElementById("donut-chart"), chartOptions);
+  chart.render();
+}
+
+async function fetchCaloriesInAndOut(uid) {
+  const today = new Date();
+  const formattedToday = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+
+  const doc = await db.collection("calories").doc(uid).get();
+  if (doc.exists && doc.data()[formattedToday]) {
+    return doc.data()[formattedToday];
+  } else {
+    return { caloriesIn: 0, caloriesOut: 0 }; // Default if no entry for today
+  }
+}
 // Fetch UID function 
 async function fetchUID() {
   return new Promise((resolve, reject) => {
@@ -28,6 +80,11 @@ async function fetchUID() {
       }
     });
   });
+}
+
+async function fetchTDEE(uid) {
+  const doc = await db.collection("users").doc(uid).get();
+  return doc.exists ? doc.data().TDEE : null;
 }
 
 async function fetchDataAndDisplayChart() {
@@ -128,6 +185,11 @@ async function fetchAndDisplayTodaysFoodEntries() {
       } else {
         document.getElementById('cardHeaderCaloriesIn').querySelector('p').textContent = 'No food entries found for today.';
       }
+      db.collection('calories').doc(uid).set({
+        [formattedToday]: {
+          caloriesIn: totalCalories
+        }
+      }, { merge: true });
     } else {
       console.log("No document found for this UID.");
     }
@@ -173,6 +235,11 @@ async function fetchAndDisplayTodaysExerciseEntries() {
     } else {
       document.getElementById('cardHeaderCaloriesBurnt').querySelector('p').textContent = 'No exercise entries found for today.';
     }
+    db.collection('calories').doc(uid).set({
+      [formattedToday]: {
+        caloriesOut: totalCaloriesBurned
+      }
+    }, { merge: true });
   }).catch(error => {
     console.error("Error fetching today's exercise entries:", error);
   });
