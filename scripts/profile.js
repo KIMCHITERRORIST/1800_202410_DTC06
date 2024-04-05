@@ -47,6 +47,11 @@ populateUserInfo();
 function editUserInfo() {
   //Enable the form fields
   document.getElementById('personal_info').disabled = false;
+  document.querySelector('#nameField').classList.add('ring-2', 'ring-[#ffcc6d]')
+  document.querySelector('#age').classList.add('ring-2', 'ring-[#ffcc6d]')
+  document.querySelector('#weight').classList.add('ring-2', 'ring-[#ffcc6d]')
+  document.querySelector('#height').classList.add('ring-2', 'ring-[#ffcc6d]')
+  document.querySelector('#gender').classList.add('ring-2', 'ring-[#ffcc6d]')
 }
 
 function saveUserInfo() {
@@ -62,6 +67,9 @@ function saveUserInfo() {
     height: userHeight,
     weight: userWeight,
     gender: userGender
-  }).then(() => { console.log("User info updated") })
+  }).then(() => {
+    console.log("User info updated");
+    window.location.href = "overview.html";
+  })
   document.getElementById('personal_info').disabled = true;
 }      
