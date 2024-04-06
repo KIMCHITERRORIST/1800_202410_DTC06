@@ -6,46 +6,36 @@
 <div id="quickAddMenu"
   class="hidden fixed top-[30%] left-[10%] right-[10%] md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2  bg-white rounded shadow-lg p-4 z-50 max-w-fit">
   <ul class="menu flex flex-col bg-white max-w-fit rounded-box">
-    <li class="flex-row">
-      <a href="addCalories.html">
-        <div class="inline-block">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus inline-block" width="40"
-            height="40" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="none" stroke-linecap="round"
-            stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M12 5l0 14" />
-            <path d="M5 12l14 0" />
-          </svg>
-        </div>
-        <div class="inline-flex max-w-40">Record Your Meal</div>
-      </a>
-    </li>
+    <!-- Add meal-->
+    <button id="open_add_new_meal_modal"
+      class="mb-6 block bg-slate-100 hover:bg-slate-200 shadow-md focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+      type="button" onclick="loadAddNewMeal()">
+      Record Your Meal
+    </button>
     <!-- Add Ingredient modal toggle -->
     <button id="open_add_ingredient_modal"
       class="mb-6 block bg-slate-100 hover:bg-slate-200 shadow-md focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
       type="button">
-      Add new ingredient to Food Library
+      Add New Ingredient To Food Library
     </button>
     <!-- Add Recipe modal toggle -->
     <button id="open_add_new_recipe_modal"
       class="mb-6 block bg-slate-100 hover:bg-slate-200 shadow-md focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
       type="button">
-      Add new recipe to Food Library
+      Add New Recipe To Food Library
     </button>
-    <li class="flex-row">
-      <a href="add_exercise.html">
-        <div class="inline-block">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus inline-block" width="40"
-            height="40" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="none" stroke-linecap="round"
-            stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M12 5l0 14" />
-            <path d="M5 12l14 0" />
-          </svg>
-        </div>
-        <div class="inline-flex">Record Your Exercise</div>
-      </a>
-    </li>
+    <!-- Add New category modal toggle -->
+    <button id="open_add_new_category_modal"
+      class="mb-6 block bg-slate-100 hover:bg-slate-200 shadow-md focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+      type="button">
+      Add New Category To Food Library
+    </button>
+    <!-- Add exercise button -->
+    <button id="add_new_exercise_button"
+      class="mb-6 block bg-slate-100 hover:bg-slate-200 shadow-md focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+      type="button" onclick="connectAddExercise()">
+      Record Your Exercise
+    </button>
   </ul>
   <!-- Close Button -->
   <button id="closeQuickAddMenu"

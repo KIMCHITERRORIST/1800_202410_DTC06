@@ -72,9 +72,21 @@ function loadSkeleton() {
 
     document.getElementById('open_add_ingredient_modal').addEventListener('click', loadIngredientsModalandOpen);
     document.getElementById('open_add_new_recipe_modal').addEventListener('click', loadAddNewRecipeModalandOpen);
+    document.getElementById('open_add_new_category_modal').addEventListener('click', loadAddNewCategoryModalandOpen);
   })
 
 };
+
+// Redirect to add exercise page
+function connectAddExercise() {
+  window.location.href = 'add_exercise.html';
+}
+
+function loadAddNewMeal() {
+  ;
+}
+
+
 
 loadSkeleton();
 
@@ -251,11 +263,48 @@ function collectRecipeDataFromForm() {
   }
   return ingredientsDataForAddingToRecipe;
 }
+
+
+//------------------------------------------------------------------//
+// -----------Functions related to Add New Category Modal-------------//
+//------------------------------------------------------------------//
+
+function loadAddNewCategoryModalandOpen() {
+  $('#add_new_category_modal_container').load('main_modals/add_new_category_modal.html', function () {
+    const quickAddMenu = document.getElementById("quickAddMenu");
+    const quickAddMenuBg = document.getElementById("quickAddMenuBackground");
+    quickAddMenu.classList.add("hidden");
+    quickAddMenuBg.classList.add("hidden");
+    openAddAddNewCategoryModal();
+    document.getElementById('close_add_new_category_modal').addEventListener('click',
+      closeAddNewRecipeModal);
+
+    const addNewCategoryButton = document.getElementById('addNewCategoryButton');
+    addNewCategoryButton.addEventListener('click', function (saveData) {
+      saveData.preventDefault(); // Prevent the default form submission
+      saveNewCategoryInDB();
+    })
+  })
+};
+
+// Open Add Category modal
+function openAddAddNewCategoryModal() {
+  const modal = document.getElementById('add_new_category_modal');
+  modal.classList.remove('hidden');
+  modal.setAttribute('aria-hidden', 'false');
+}
+
+function closeAddNewCategoryModal() {
+  const modal = document.getElementById('add_new_category_modal');
+  modal.classList.add('hidden');
+  modal.setAttribute('aria-hidden', 'true');
+}
 //---------------------------------------------------//
 //---------------------------------------------------//
 // -----------Functions related to DB----------------//
 //---------------------------------------------------//
 //---------------------------------------------------//
+
 // Fetch UID function
 async function fetchUID() {
   return new Promise((resolve, reject) => {
@@ -405,10 +454,44 @@ async function saveRecipeInDB() {
     };
 
     await recipeRef.set(recipeNutritionTotals);
+    db.collection('Recipes').doc(uid).collection(category).doc('count').update({ count: firebase.firestore.FieldValue.increment(1) })
     localStorage.setItem('selectedCategory', category);
     window.location.href = '/each_category.html'; // Redirect after successful update
   } catch (error) {
     console.error('Error saving recipe:', error);
     alert('Error saving the recipe') // Log any errors that occur
   }
+}
+
+// ++++++ For add Category modal ++++++ //
+async function saveNewCategoryInDB() {
+  const uid = await fetchUID();
+  const categoryName = document.getElementById('categoryName').value.trim();
+  const categoryRef = db.collection('Recipes').doc(uid).collection(categoryName).doc('count');
+  categoryRef.set({
+    count: 0
+  })
+    .then(() => {
+      console.log('Category created with id:', categoryName);
+      appendCategoryNameToArray();
+      window.location.href = 'my_recipes.html';
+    })
+    .catch((error) => {
+      console.error('Error adding new document:', error);
+    });
+}
+
+async function appendCategoryNameToArray() {
+  const uid = await fetchUID();
+  const categoryName = document.getElementById('categoryName').value.trim();
+  const docRef = db.collection('Recipes').doc(uid);
+  docRef.update({
+    categories: firebase.firestore.FieldValue.arrayUnion(categoryName)
+  })
+    .then(() => {
+      console.log(`Category ${categoryName} added to the categories array successfully.`);
+    })
+    .catch((error) => {
+      console.error("Error updating categories array:", error);
+    });
 }
