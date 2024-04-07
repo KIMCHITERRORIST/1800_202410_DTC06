@@ -150,7 +150,7 @@ async function saveActivityChanges() {
   });
 
   document.getElementById('editExerciseModal').classList.add('hidden');
-  fetchAndDisplayUserActivities(); // Refresh the list of activities
+  window.location.reload();
 }
 
 
@@ -162,6 +162,7 @@ async function deleteActivity(event) {
 
   const activityRef = db.collection("exercises").doc(window.userUID).collection("dailyActivities").doc(activityId);
   await activityRef.delete();
+  window.location.reload();
 
   document.getElementById('editExerciseModal').classList.add('hidden');
   fetchAndDisplayUserActivities(); // Refresh the list of activities
