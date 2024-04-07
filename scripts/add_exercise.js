@@ -51,25 +51,23 @@ document.getElementById('cancel').addEventListener('click', () => {
   window.history.back();
 });
 
-// Calculate calories burned
 async function calculateCaloriesBurned(uid, hour, minute, second, heartrate) {
   let caloriesBurned = 0;
-  userData = await db.collection('users').doc(uid).get()
+  const userData = await db.collection('users').doc(uid).get();
   const gender = userData.data().gender;
   const age = userData.data().age;
   const weight = userData.data().weight;
-  console.log(hour, minute, second)
-  timeInMinutes = (Number(hour) * 60) + Number(minute) + (Number(second) / 60);
-  console.log(timeInMinutes);
+  const timeInMinutes = (Number(hour) * 60) + Number(minute) + (Number(second) / 60);
 
   if (gender === "female") {
-    caloriesBurned = Math.round(Number(timeInMinutes * ((-20.4022 + (0.4472 * Number(heartrate)) - (0.1263 * weight) + (0.074 * age)) / 4.184)));
+    // Calculates calories burned depending on average heart rate and user's info
+    caloriesBurned = Math.round(Number(timeInMinutes * ((-10 + (0.45 * Number(heartrate)) - (0.1263 * weight) + (0.075 * age)) / 4.184)));
   } else if (gender === "male") {
-    caloriesBurned = Math.round(Number(timeInMinutes * ((-55.0969 + (0.6309 * Number(heartrate)) - (0.1988 * weight) + (0.2017 * age)) / 4.184)));
+    // Calculates calories burned depending on average heart rate and user's info
+    caloriesBurned = Math.round(Number(timeInMinutes * ((-25 + (0.635 * Number(heartrate)) - (0.1988 * weight) + (0.202 * age)) / 4.184)));
   }
   return caloriesBurned;
 }
-
 
 // Fetch UID function
 async function fetchUID() {
