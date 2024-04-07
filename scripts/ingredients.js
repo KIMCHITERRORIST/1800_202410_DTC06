@@ -219,7 +219,7 @@ function submitIngredientName() {
         const ingredientData = {
             protein: 0,
             carbs: 0,
-            fat: 0,
+            fat: 0, 
             calories: 0
         };
 

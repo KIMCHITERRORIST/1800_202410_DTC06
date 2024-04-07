@@ -49,7 +49,21 @@ document.getElementById("user-info-form").addEventListener("submit", function (e
       BMR = 10 * weight + 6.25 * height - 5 * age - 161;
     }
 
+    // find tdee
     const TDEE = BMR * activityLevel;
+
+    // Determine goal calories based on goal weight
+    let goalCalories;
+    if (goalWeightNumber < weight) {
+      // If goal weight is less, user aims to lose weight, create a deficit of 500 calories
+      goalCalories = TDEE - 500;
+    } else if (goalWeightNumber > weight) {
+      // If goal weight is more, user aims to gain weight, add a surplus of 500 calories
+      goalCalories = TDEE + 500;
+    } else {
+      // If goal weight is equal to current weight, maintain the current TDEE
+      goalCalories = TDEE;
+    }
 
     // Update user's info in Firestore
     db.collection("users").doc(uid).set({
@@ -61,7 +75,8 @@ document.getElementById("user-info-form").addEventListener("submit", function (e
       BMR: BMR,
       activityLevel: activity,
       TDEE: TDEE,
-      goalWeight: goalWeightNumber 
+      goalWeight: goalWeightNumber,
+      goalCalories: goalCalories 
 
     }, { merge: true }).then(() => {
       console.log("Document successfully written!");

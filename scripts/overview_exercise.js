@@ -11,6 +11,7 @@ async function initApp() {
       fetchDataAndDisplayChart();
       fetchAndDisplayTodaysFoodEntries();
       fetchAndDisplayTodaysExerciseEntries();
+      checkAndUpdateWeight(uid);
       const TDEE = await fetchTDEE(uid); // Fetch user's TDEE
       const goalCalories = TDEE - 500; // Calculate goal calories
       await renderDonutChart(uid, goalCalories); // Render the donut chart
@@ -170,10 +171,13 @@ async function fetchAndDisplayTodaysFoodEntries() {
           totalCalories += parseInt(entry.calories, 10); // Update total calories
           // Create HTML content for each food entry
           contentHTML += `
-            <div class="py-2">
-              <p class="font-semibold">${foodName} - ${entry.calories} kcal</p>
-              <p>Fats: ${entry.fats}g, Carbs: ${entry.carbs}g, Protein: ${entry.protein}g</p>
+          <div class="py-2 border-b border-gray-200 last:border-b-0 flex justify-between items-center rounded-lg bg-white shadow">
+            <div>
+              <p class="font-semibold text-blue-600">${foodName}</p>
+              <p class="text-sm text-gray-600">Fats: ${entry.fats}g, Carbs: ${entry.carbs}g, Protein: ${entry.protein}g</p>
             </div>
+            <p class="font-bold text-xl text-right text-blue-600">${entry.calories} kcal</p>
+          </div>
           `;
         }
       });
@@ -217,13 +221,17 @@ async function fetchAndDisplayTodaysExerciseEntries() {
 
         // Create a new div for each exercise entry
         const exerciseEntryDiv = document.createElement('div');
-        exerciseEntryDiv.classList.add('py-2'); // Add some padding
+        exerciseEntryDiv.classList.add('py-2', 'border-b', 'border-gray-200', 'last:border-b-0', 'flex', 'justify-between', 'items-center', 'rounded-lg', 'bg-white', 'shadow');
         exerciseEntryDiv.innerHTML = `
-          <p class="font-semibold">Activity - ${data.name}</p>
-          <p>Calories Burned: ${data.caloriesBurned} kcal</p>
-          <p>Duration: ${data.duration.hour || 0}h ${data.duration.minute || 0}m ${data.duration.second || 0}s</p>
-          <p>Heart Rate: ${data.heartrate} bpm</p>
-        `;
+<div>
+  <p class="font-semibold text-green-600">${data.name}</p>
+  <p class="text-sm text-gray-600">Duration: ${data.duration.hour || 0}h ${data.duration.minute || 0}m ${data.duration.second || 0}s</p>
+  <p class="text-sm text-gray-600">Heart Rate: ${data.heartrate} bpm</p>
+</div>
+<p class="font-bold text-xl text-right text-green-600">${data.caloriesBurned} kcal</p>
+`;
+
+
 
         // Append the new div to the exerciseCardContent
         caloriesBurntCardContent.appendChild(exerciseEntryDiv);
@@ -287,3 +295,27 @@ document.getElementById('cardHeaderCaloriesBurnt').addEventListener('click', fun
 </svg>`;
   }
 });
+
+async function checkAndUpdateWeight(uid) {
+  const userDoc = await db.collection("users").doc(uid).get();
+  if (userDoc.exists) {
+    const userData = userDoc.data();
+    if (userData.Date) {
+      const lastUpdate = userData.Date.toDate(); // Convert Firestore timestamp to JavaScript Date object
+      const today = new Date();
+      const oneWeekAgo = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
+
+      if (lastUpdate < oneWeekAgo) {
+        // A week has passed since the last update
+        showModalToUpdateWeight(); // Implement this function to show your modal
+      }
+    }
+  } else {
+    console.error("No user document found or no weight update date available.");
+  }
+}
+
+function showModalToUpdateWeight() {
+ 
+  console.log("It's time to update your weight!");
+}

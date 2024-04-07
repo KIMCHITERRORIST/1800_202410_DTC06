@@ -5,13 +5,35 @@ document.addEventListener('DOMContentLoaded', function () {
       const uid = user.uid;
       fetchAndDisplayUserName(uid);
       fetchAndDisplayCategories(uid);
+      // Listen for click event on the create category button
+      document.getElementById('create-category').addEventListener('click', function () {
+        toggleCategoryModal(true); // Show the modal
+      });
     } else {
       // No user is signed in. Redirect to login page and show message
       console.log('User is not logged in. Redirecting to login page...');
-      // Redirect to login page
       window.location.href = 'login.html';
     }
   });
+
+  // Implement the toggleCategoryModal function
+  window.toggleCategoryModal = function (show) {
+    const modal = document.getElementById('categoryModal');
+    modal.style.display = show ? 'block' : 'none';
+  };
+
+  // Implement the submitCategoryName function
+  window.submitCategoryName = function () {
+    const uid = firebase.auth().currentUser.uid;
+    const categoryName = document.getElementById('categoryName').value.trim();
+    if (categoryName) {
+      createNewCategory(uid, categoryName);
+      toggleCategoryModal(false); // Hide the modal after submission
+      document.getElementById('categoryName').value = ''; // Clear the input field
+    } else {
+      alert('Please enter a category name.'); // Optionally, handle this more gracefully
+    }
+  };
 
   function fetchAndDisplayCategories(uid) {
     // Read the categories array from the UID document under 'Recipes' collection
@@ -38,15 +60,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }).catch(error => {
       console.log("Error fetching categories array:", error);
-    });
-
-    document.getElementById('create-category').addEventListener('click', function () {
-      const newCategoryName = prompt("Please enter the name of the new category:");
-      if (newCategoryName && newCategoryName.trim() !== "") {
-        createNewCategory(uid, newCategoryName.trim());
-      } else {
-        console.log("Nothing was entered");
-      }
     });
   }
 

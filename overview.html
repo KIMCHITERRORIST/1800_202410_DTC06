@@ -48,6 +48,7 @@
     <nav id="navbarPlaceholder"></nav>
 
     <main class="max-w-md mx-auto">
+        <h1 class="text-2xl font-bold text-center my-4">Today's Overview</h1>
         <div id="add_ingredient_modal_container"></div>
 
         <!-- New Recipe Modal Container -->
@@ -56,15 +57,17 @@
         <!-- Add quick recipe modal -->
         <div id="add_quick_meal_modal_container"></div>
 
-        <div id="donut-chart"></div>
+        <div class="py-4" id="donut-chart"></div>
 
         <!-- Add category modal -->
         <div id="add_new_category_modal_container"></div>
 
         <!-- Calories consumed -->
-        <div class="max-w-full rounded overflow-hidden shadow-lg">
-            <div class="px-6 py-4 cursor-pointer flex items-center justify-between" id="cardHeaderCaloriesIn">
+        <div class="max-w-full rounded-lg shadow border border-gray-300 overflow-hidden">
+            <div class="px-6 py-4 cursor-pointer flex items-center justify-between bg-gray-50"
+                id="cardHeaderCaloriesIn">
                 <p class="flex items-center font-bold text-md"></p>
+
 
                 <!-- MEAT ICON -->
                 <div>
@@ -93,12 +96,13 @@
                 </div>
             </div>
 
-            <div class="px-3 hidden" id="caloriesInCardContent">
+            <div class="mx-6 hidden" id="caloriesInCardContent">
             </div>
         </div>
         <!-- Calories Burned -->
-        <div id="caloriesBurntCard" class="max-w-full rounded overflow-hidden shadow-lg">
-            <div class="px-6 py-4 cursor-pointer flex items-center justify-between" id="cardHeaderCaloriesBurnt">
+        <div class="max-w-full rounded-lg shadow border border-gray-300 overflow-hidden">
+            <div class="px-6 py-4 cursor-pointer flex items-center justify-between bg-gray-50"
+                id="cardHeaderCaloriesBurnt">
                 <p class="flex items-center font-bold text-md"></p>
                 <!-- BURN ICON -->
                 <div>
@@ -121,7 +125,7 @@
                     </svg>
                 </div>
             </div>
-            <div class="px-3 hidden" id="caloriesBurntCardContent">
+            <div class="mx-6 hidden" id="caloriesBurntCardContent">
             </div>
         </div>
     </main>
