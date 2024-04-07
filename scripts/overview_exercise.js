@@ -199,7 +199,7 @@ async function fetchAndDisplayTodaysFoodEntries() {
           totalCalories += parseInt(entry.calories, 10); // Update total calories
           // Create HTML content for each food entry
           contentHTML += `
-          <div class="py-2 border-b border-gray-200 last:border-b-0 flex justify-between items-center rounded-lg bg-white shadow">
+          <div class="py-2 border-b border-gray-200 last:border-b-0 flex justify-between items-center bg-white">
             <div>
               <p class="font-semibold text-blue-600">${foodName}</p>
               <p class="text-sm text-gray-600">Fats: ${entry.fats}g, Carbs: ${entry.carbs}g, Protein: ${entry.protein}g</p>
@@ -249,7 +249,7 @@ async function fetchAndDisplayTodaysExerciseEntries() {
 
         // Create a new div for each exercise entry
         const exerciseEntryDiv = document.createElement('div');
-        exerciseEntryDiv.classList.add('py-2', 'border-b', 'border-gray-200', 'last:border-b-0', 'flex', 'justify-between', 'items-center', 'rounded-lg', 'bg-white', 'shadow');
+        exerciseEntryDiv.classList.add('py-2', 'border-b', 'border-gray-200', 'last:border-b-0', 'flex', 'justify-between', 'items-center', 'bg-white');
         exerciseEntryDiv.innerHTML = `
 <div>
   <p class="font-semibold text-green-600">${data.name}</p>

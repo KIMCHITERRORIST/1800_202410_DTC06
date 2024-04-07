@@ -41,6 +41,9 @@
   <!-- Add category modal -->
   <div id="add_new_category_modal_container"></div>
 
+  <!-- Add quick recipe modal -->
+  <div id="add_quick_meal_modal_container"></div>
+
   <!-- Main Content -->
   <main class="pb-24 pt-20 max-w-md mx-auto">
     <h1 class="font-bold text-5xl text-center"><span id="recipeName"></span></h1>
@@ -86,52 +89,15 @@
       </div>
     </div>
 
-    <!-- Choose ingredients -->
-    <div class="max-w-md rounded-full shadow-lg my-4 mx-auto">
-      <div class="px-6 py-4" id="ChooseIngredientsDiv" onclick="redirectIngredientsPage()">
-        <div class="font-bold text-xl mb-2">Choose ingredients</div>
-      </div>
-    </div>
+    <!-- Bottom Navigation Bar -->
+    <nav id="footerPlaceholder"></nav>
 
-    <!-- Add ingredients -->
-    <div class="max-w-md rounded-full shadow-lg my-4 mx-auto">
-      <div class="px-6 py-4" id="AddIngredientsDiv" onclick="toggleModal()">
-        <div class="font-bold text-xl mb-2">Add new ingredients</div>
-      </div>
-    </div>
-
-    <!-- Modal Structure -->
-    <div id="ingredientModal"
-      class="hidden fixed z-10 left-0 top-0 w-full h-full overflow-auto bg-gray-500 bg-opacity-75">
-      <div class="modal-content container mx-auto p-5 border shadow-lg rounded-md bg-white mt-20">
-        <!-- Modal Header -->
-        <div class="modal-header flex justify-between items-center pb-3">
-          <p class="text-2xl font-bold">Ingredient Name?</p>
-          <div class="modal-close cursor-pointer z-50" onclick="toggleModal()">
-            <span class="text-2xl font-semibold">&times;</span>
-          </div>
-        </div>
-
-        <!-- Modal Body -->
-        <div class="modal-body">
-          <form id="newIngredientForm">
-            <input type="text" id="ingredientName" placeholder="Enter here" required class="input mb-2" />
-            <button type="button" onclick="submitIngredientName()" class="btn">Proceed</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <!-- Bottom Navigation Bar -->
-  <nav id="footerPlaceholder"></nav>
-
-  <!---------------------------------------------->
-  <!-- Your own JavaScript functions go here    -->
-  <!---------------------------------------------->
-  <script src="./scripts/firebaseAPI_TEAMDTC06.js"></script>
-  <script src="./scripts/general_skeleton.js"></script>
-  <script src="scripts/each_recipe.js"></script>
+    <!---------------------------------------------->
+    <!-- Your own JavaScript functions go here    -->
+    <!---------------------------------------------->
+    <script src="./scripts/firebaseAPI_TEAMDTC06.js"></script>
+    <script src="./scripts/general_skeleton.js"></script>
+    <script src="scripts/each_recipe.js"></script>
 
 </body>
 

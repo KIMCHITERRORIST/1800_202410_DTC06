@@ -14,8 +14,7 @@ async function fetchAndDisplayUserActivities() {
     const snapshot = await dailyActivitiesRef.get();
 
     if (snapshot.empty) {
-      console.log("No activities found.");
-      return;
+      document.getElementById("exercise-card-container").innerHTML = "<p class='text-center text-xl text-gray-500'>No activities found.</p>";
     }
 
     // Iterate over each activity document

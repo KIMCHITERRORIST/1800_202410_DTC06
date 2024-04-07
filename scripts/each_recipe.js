@@ -22,29 +22,24 @@ document.addEventListener('DOMContentLoaded', function () {
       const recipeID = localStorage.getItem('selectedRecipe');
       console.log(recipeID);
 
-      const recipeDocRef = await db.collection("Recipes").doc(uid).collection(categoryID).doc(recipeID).get();
-      if (recipeDocRef.exists) {
-        const doc = recipeDocRef.data();
-        console.log(doc);
+      const recipeDocRef = await db.collection("Recipes").doc(uid).collection(categoryID).get();
+      recipeDocRef.docs.forEach(docRecipe => {
+        if (docRecipe.data().name === recipeID && docRecipe.exists) {
+          const doc = docRecipe.data();
 
-        document.getElementById("recipeName").innerText = recipeID;
-        document.getElementById("calories").innerText = doc.calories;
-        document.getElementById("protein").innerText = doc.protein;
-        document.getElementById("carbs").innerText = doc.carbs;
-        document.getElementById("fats").innerText = doc.fats;
+          document.getElementById("recipeName").innerText = recipeID;
+          document.getElementById("calories").innerText = doc.calories;
+          document.getElementById("protein").innerText = doc.protein;
+          document.getElementById("carbs").innerText = doc.carbs;
+          document.getElementById("fats").innerText = doc.fats;
 
-        let ingredientsContainer = document.getElementById("ingredientsContainer");
-        // Clear existing content
-        ingredientsContainer.innerHTML = '';
-        Object.keys(doc).forEach(ingredientName => {
-          // Exclude the following keys from the ingredient list
-          const excludeKeys = ['carbs', 'fats', 'protein', 'calories'];
-          if (excludeKeys.includes(ingredientName)) {
-            return;
-          }
-          const ingredientDetails = doc[ingredientName];
+          let ingredientsContainer = document.getElementById("ingredientsContainer");
+          // Clear existing content
+          ingredientsContainer.innerHTML = '';
+          Object.keys(doc.ingredients).forEach(ingredientName => {
+            const ingredientDetails = doc.ingredients[ingredientName];
 
-          let ingredientDiv = `<div class="flex justify-between px-2 py-3 border-b border-gray-200">
+            let ingredientDiv = `<div class="flex justify-between px-2 py-3 border-b border-gray-200">
                           <span class="text-gray-700 font-semibold me-4">${ingredientName}</span>
                           <span class="flex text-center space-x-4">
                               <div class="text-gray-500">carbs<p class="flex-col container">${ingredientDetails.carbs}g</p></div>
@@ -54,11 +49,12 @@ document.addEventListener('DOMContentLoaded', function () {
                           </span>
                       </div>`;
 
-          ingredientsContainer.insertAdjacentHTML('beforeend', ingredientDiv);
-        });
-      } else {
-        console.log('No such document!')
-      }
+            ingredientsContainer.insertAdjacentHTML('beforeend', ingredientDiv);
+          });
+        } else {
+          console.log('No such document!')
+        }
+      });
     } catch (error) {
       console.error("Error displaying recipe info:", error);
     }
