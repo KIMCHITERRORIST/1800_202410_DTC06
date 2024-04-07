@@ -3,10 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
             // User is signed in, now you can safely call your functions
-            appendCategoriesToDropdownInPage()
-            categorySelector = document.getElementById('categoriesForMeals');
-            categorySelector.addEventListener('change', appendMealsToDropdownInPage);
-            document.getElementById('addMealButton').addEventListener('click', addRecipeToCalories);
+            fetchAndDisplaySubcategories();
         } else {
             // User is not signed in. Redirect or handle accordingly.
             console.log('User is not logged in.');
@@ -14,52 +11,59 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-async function fetchCategories() {
-    const uid = await fetchUID();
-    console.log(uid);
-    doc = await db.collection("Recipes").doc(uid).get();
-    if (doc.exists) {
-        console.log("Document data:", doc.data());
-        return doc.data().categories;
-    }
-    else {
-        console.log("No such document!");
-    }
-}
+function fetchAndDisplayRecipes(category) {
+    const uid = firebase.auth().currentUser.uid;
+    const recipesContainer = document.getElementById('recipesContainer');
+    recipesContainer.innerHTML = ''; // Clear previous recipes
 
-async function appendCategoriesToDropdownInPage() {
-    const categories = await fetchCategories();
-    const selectElement = document.getElementById('categoriesForMeals');
-
-    categories.forEach(category => {  // Iterate through each category and append it as an option
-        const option = document.createElement('option');
-        option.value = category;
-        option.textContent = category;
-        selectElement.appendChild(option);
-    });
-}
-
-async function appendMealsToDropdownInPage() {
-    const uid = await fetchUID();
-    const category = document.getElementById('categoriesForMeals').value;
-    recipesRef = db.collection("Recipes").doc(uid).collection(category).get()
-    recipes = await recipesRef;
-
-    recipes.forEach(recipe => {  // Iterate through each recipe and append it as an option
-        if (recipe.id === 'count') {
-            return;
+    db.collection("Recipes").doc(uid).collection(category).get().then(querySnapshot => {
+        if (!querySnapshot.empty) {
+            querySnapshot.forEach(doc => {
+                console.log(`Processing recipe: ${doc.id}`); // Log each recipe being processed
+                if (doc.id === "count") {
+                    return; // Skip the count document
+                }
+                const recipeElement = document.createElement('div');
+                recipeElement.classList.add("bg-slate-50", "border-2", "border-gray-200", "rounded-full", "p-2", "shadow-lg", "mb-2");
+                recipeElement.textContent = doc.id;
+                recipeElement.addEventListener('click', () => {
+                    addRecipeToCalories(category, doc.id);
+                });
+                recipesContainer.appendChild(recipeElement);
+            });
+        } else {
+            console.log(`No recipes found in the ${category} category.`);
         }
-        const option = document.createElement('option');
-        option.value = recipe.id;
-        option.textContent = recipe.id;
-        document.getElementById('meal').appendChild(option);
+    }).catch(error => {
+        console.error("Error fetching recipes:", error);
     });
 }
 
-// // Function to add a recipe to the Calories collection
-function addRecipeToCalories() {
-    category = document.getElementById('categoriesForMeals').value;
-    const recipeName = document.getElementById('meal').value;
+function fetchAndDisplaySubcategories() {
+    const uid = firebase.auth().currentUser.uid;
+    const subcategoriesContainer = document.getElementById('subcategoriesContainer');
+
+    db.collection("Recipes").doc(uid).get().then(doc => {
+        if (doc.exists && doc.data().categories) {
+            const categories = doc.data().categories;
+            categories.forEach(category => {
+                const categoryElement = document.createElement('div');
+                categoryElement.classList.add("bg-white", "border-2", "border-gray-200", "rounded-full", "p-2", "shadow-lg", "mb-2");
+                categoryElement.textContent = category;
+                categoryElement.addEventListener('click', () => {
+                    fetchAndDisplayRecipes(category);
+                });
+                subcategoriesContainer.appendChild(categoryElement);
+            });
+        } else {
+            console.log("No categories found for this user or document does not exist.");
+        }
+    }).catch(error => {
+        console.error("Error fetching categories:", error);
+    });
+}
+
+function addRecipeToCalories(category, recipeName) {
     const uid = firebase.auth().currentUser.uid;
     const selectedFraction = document.getElementById('recipeFraction').value;
 
@@ -90,7 +94,6 @@ function addRecipeToCalories() {
                 }
             }, { merge: true }).then(() => {
                 console.log(`${quantity} ${recipeName} added to Calories with date ${dateString} successfully.`);
-                alert(`${quantity} ${recipeName} added to Calories with date ${dateString} successfully.`);
             }).catch(error => {
                 console.error("Error adding recipe to Calories:", error);
             });

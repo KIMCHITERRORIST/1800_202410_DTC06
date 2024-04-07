@@ -82,8 +82,8 @@ function connectAddExercise() {
   window.location.href = 'add_exercise.html';
 }
 
-function loadAddNewMeal() {
-  ;
+function reconnectAddMeal() {
+  window.location.href = 'addCalories.html';
 }
 
 
