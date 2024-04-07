@@ -71,7 +71,10 @@ function addRecipeToCalories(category, recipeName) {
         if (recipeDoc.exists) {
             const recipeData = recipeDoc.data();
             const currentDate = new Date();
-            const dateString = currentDate.toISOString().split('T')[0];
+            // Generate a date string in local time zone
+            const dateString = currentDate.getFullYear() + '-' +
+                ('0' + (currentDate.getMonth() + 1)).slice(-2) + '-' +
+                ('0' + currentDate.getDate()).slice(-2);
 
             // Directly use the macros from the recipeData
             const fats = recipeData.fats;
