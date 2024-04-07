@@ -63,7 +63,7 @@ function connectAddExercise() {
 }
 
 function reconnectAddMeal() {
-  window.location.href = 'addCalories.html';
+  window.location.href = 'addMeal.html';
 }
 
 

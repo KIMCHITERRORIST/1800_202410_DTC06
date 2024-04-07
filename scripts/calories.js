@@ -1,28 +1,44 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Ensures the user is authenticated before fetching and displaying entries.
-    firebase.auth().onAuthStateChanged(function (user) {
-        if (user) {
-            // If the user is signed in, fetch and display their food entries.
-            fetchAndDisplayFoodEntries();
-        } else {
-            // If no user is signed in, handle accordingly (e.g., redirect to login page).
-            console.log('User is not signed in.');
-            // Optional: Redirect to login or another appropriate page
-            // window.location.href = 'login.html';
-        }
-    });
+  // Ensures the user is authenticated before fetching and displaying entries.
+  firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      // If the user is signed in, fetch and display their food entries.
+      fetchAndDisplayFoodEntries();
+    } else {
+      // If no user is signed in, handle accordingly (e.g., redirect to login page).
+      console.log('User is not signed in.');
+      // Optional: Redirect to login or another appropriate page
+      window.location.href = 'login.html';
+    }
+  });
 });
 
 function fetchAndDisplayFoodEntries() {
-    const uid = firebase.auth().currentUser.uid; // Assuming you have the user's UID
-    const foodCardContainer = document.getElementById('food-card-container');
+  const uid = firebase.auth().currentUser.uid; // Assuming you have the user's UID
+  const foodCardContainer = document.getElementById('food-card-container');
 
-    db.collection("calories").doc(uid).get().then(doc => {
-        if (doc.exists) {
-            const foodEntries = doc.data();
-            Object.keys(foodEntries).forEach(foodName => {
-                const entry = foodEntries[foodName];
-                const foodCard = `
+  db.collection("meals").doc(uid).get().then(doc => {
+    if (doc.exists) {
+      const foodEntries = doc.data();
+      const foodEntriesList = Object.entries(foodEntries).map(([recipeName, details]) => ({
+        recipeName,
+        ...details,
+        dateTime: `${details.date} ${details.time}`
+      }));
+
+      const sortedDateTimeMealEntries = foodEntriesList.sort((a, b) => {
+        if (b.dateTime > a.dateTime) {
+          return 1;
+        } else if (a.dateTime > b.dateTime) {
+          return -1;
+        } else {
+          return 0;
+        }
+      });
+
+      sortedDateTimeMealEntries.forEach(entry => {
+        const { recipeName, date, time, fats, carbs, protein, calories } = entry;
+        const foodCard = `
 <div class="bg-white p-4 rounded-lg shadow-lg w-full flex justify-between items-center">
   <div class="flex space-x-4 items-center">
     <!-- Food Icon -->
@@ -35,28 +51,29 @@ function fetchAndDisplayFoodEntries() {
     </svg>
     
     <!-- Nutrition Information -->
-    <div>
-      <div><span class="text-xl text-black font-medium"> ${foodName}</span></div>
-      <p class="text-black font-medium">Date: <span class="font-normal">${entry.date}</span></p>
-      <p class="text-black font-medium">Fats: <span class="font-normal">${entry.fats} g</span></p>
-      <p class="text-black font-medium">Carbs: <span class="font-normal">${entry.carbs} g</span></p>
-      <p class="text-black font-medium">Protein: <span class="font-normal">${entry.protein} g</span></p>
+    <div class="ml-4">
+      <div><span class="text-xl text-black font-medium">${recipeName}</span></div>
+      <p class="text-black font-medium">Date: <span class="font-normal">${date}</span></p>
+      <p class="text-black font-medium">Time: <span class="font-normal">${time}</span></p>
+      <p class="text-black font-medium">Fats: <span class="font-normal">${fats} g</span></p>
+      <p class="text-black font-medium">Carbs: <span class="font-normal">${carbs} g</span></p>
+      <p class="text-black font-medium">Protein: <span class="font-normal">${protein} g</span></p>
     </div>
   </div>
   
   <!-- Calorie Information -->
-  <div class="text-center">
-    <p class="text-black text-xl font-medium"><span class="font-normal">${entry.calories} kcal</span></p>
-    <img src="/images/kcal_icon.svg" alt="Calories Icon" class="w-20 h-20">
+  <div class="flex-col text-center">
+    <p class="text-black text-xl font-normal">${calories} kcal</p>
+    <img src="/images/cal_in icon.svg" alt="Calories in Icon" class="w-10 h-10">
   </div>
 </div>
 `;
-                foodCardContainer.insertAdjacentHTML("beforeend", foodCard);
-            });
-        } else {
-            foodCardContainer.innerHTML = "<p>No food entries found.</p>";
-        }
-    }).catch(error => {
-        console.error("Error fetching food entries:", error);
-    });
+        foodCardContainer.insertAdjacentHTML("beforeend", foodCard);
+      });
+    } else {
+      foodCardContainer.innerHTML = "<p>No food entries found.</p>";
+    }
+  }).catch(error => {
+    console.error("Error fetching food entries:", error);
+  });
 }

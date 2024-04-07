@@ -157,7 +157,7 @@ async function fetchAndDisplayTodaysFoodEntries() {
   const formattedToday = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
   const caloriesInCardContent = document.getElementById('caloriesInCardContent');
 
-  db.collection("calories").doc(uid).get().then(doc => {
+  db.collection("meals").doc(uid).get().then(doc => {
     if (doc.exists) {
       const data = doc.data();
       let totalCalories = 0;
