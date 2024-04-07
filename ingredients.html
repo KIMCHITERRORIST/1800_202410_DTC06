@@ -73,74 +73,10 @@
             </button>
         </form>
 
-        <div class="flex-col container mx-auto w-[95%] md:w-[75%]">
+        <div class="flex-col container mx-auto w-[95%] md:w-[75%] mb-20">
             <!-- List existing ingredients-->
             <div id="ingredientsContainer"></div>
             <!-- Create Your own -->
-            <div id='create-ingredient'
-                class="flex flex-col mx-auto h-24 justify-center items-center border-2 border-gray-300 shadow-md rounded-full my-4"
-                onclick="toggleModal()">
-                <div class="text-center">
-                    <p class="text-xl font-semibold">Add New Ingredient.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Amount Input Modal -->
-        <div id="ingredientAmountModal"
-            class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 justify-center items-center">
-            <div class="bg-white rounded-lg p-5">
-                <h2 class="text-lg">Enter the amount and select the unit:</h2>
-                <input type="number" id="ingredientAmountInput" class="border-gray-300 border rounded p-2" />
-                <!-- Add the unit selection dropdown -->
-                <select id="ingredientUnit" class="border-gray-300 border rounded p-2">
-                    <option value="ml">ml</option>
-                    <option value="grams">grams</option>
-                </select>
-                <!-- End of unit selection dropdown -->
-                <button id="confirmAmount"
-                    class="bg-[#2d58b1] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Confirm
-                </button>
-                <button onclick="toggleIngredientAmountModal(false)"
-                    class="bg-white hover:gray-100 text-[#2d58b1] font-bold py-2 px-4 rounded">
-                    Cancel
-                </button>
-            </div>
-        </div>
-
-        <!-- modal for ingredient name -->
-        <div id="ingredientModal" class="hidden fixed z-10 inset-0 overflow-y-auto">
-            <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center">
-                <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-                    <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-                </div>
-
-                <!-- modal content -->
-                <div
-                    class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                    <div class="bg-blue-700 border border-blue-700 rounded-t-lg px-5 py-2">
-                        <!-- Modal Header -->
-                        <div class="modal-header flex justify-between items-center">
-                            <p class="text-lg font-semibold text-white">Ingredient Name?</p>
-                            <button type="button" class="text-white" onclick="toggleModal()">
-                                <span class="text-2xl py-1">&times;</span>
-                            </button>
-                        </div>
-                    </div>
-                    <!-- Modal Body -->
-                    <div class="p-6">
-                        <form id="newIngredientForm">
-                            <input type="text" id="ingredientName" placeholder="Enter here" required
-                                class="input mb-2 border rounded-lg px-3 py-2 w-full focus:outline-none focus:border-blue-500" />
-                            <button type="button" onclick="submitIngredientName()"
-                                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                Save
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- our own footer goes here-->

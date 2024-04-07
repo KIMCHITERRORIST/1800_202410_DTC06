@@ -62,48 +62,12 @@
         <!-- recipe name -->
         <h1 class="font-bold text-5xl m-4 mb-6"><span id="recipeCategory"></span></h1>
 
-        <!-- container to store recipe categories and with create your own button at the end -->
-
-        <div id="recipes">
-            <div id="recipesContainer"></div>
-            <!-- Create Your own -->
-            <div id='create-recipe'
-                class="flex flex-col mx-auto h-24 justify-center items-center border-2 border-gray-300 shadow-md rounded-full my-2">
-                <div class="text-center">
-                    <p class="text-xl font-semibold">Create another Recipe.</p>
-                </div>
-            </div>
+        <!-- container to store recipe categories -->
+        <div class="mb-20" id="recipesContainer">
+            <p class="text-gray-500 text-center"> There is no recipe available...</p>
         </div>
     </main>
 
-    <!-- New Recipe Modal -->
-    <div id="newRecipeModal" class="hidden fixed z-10 inset-0 overflow-y-auto">
-        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center">
-            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-            </div>
-            <!-- Modal content -->
-            <div
-                class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                <div class="bg-blue-700 border border-blue-700 rounded-t-lg px-5 py-2">
-                    <!-- Modal Header -->
-                    <div class="modal-header flex justify-between items-center">
-                        <p class="text-lg font-semibold text-white">New Recipe Name</p>
-                        <button type="button" class="text-white" onclick="toggleNewRecipeModal(false)">
-                            <span class="text-2xl">&times;</span>
-                        </button>
-                    </div>
-                </div>
-                <!-- Modal Body -->
-                <div class="p-6">
-                    <input type="text" id="newRecipeName" placeholder="Enter Recipe Name" required
-                        class="input mb-2 border rounded-lg px-3 py-2 w-full focus:outline-none focus:border-blue-500" />
-                    <button type="button" onclick="submitNewRecipeName()"
-                        class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- our own footer goes here-->
     <nav id="footerPlaceholder"></nav>
 
@@ -113,7 +77,6 @@
     <script src="./scripts/firebaseAPI_TEAMDTC06.js"></script>
     <script src="./scripts/general_skeleton.js"></script>
     <script src="./scripts/each_category.js"></script>
-    <script src="./scripts/searchbar.js"></script>
 </body>
 
 </html>

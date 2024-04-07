@@ -468,7 +468,7 @@ async function saveRecipeInDB() {
     const uid = await fetchUID();
     const category = document.getElementById('categoriesForNewRecipes').value;
     const recipeName = document.getElementById('recipeName').value.trim();
-    const recipeRef = db.collection('Recipes').doc(uid).collection(category).doc(recipeName);
+    const recipeRef = db.collection('Recipes').doc(uid).collection(category);
     const ingredientsData = collectRecipeDataFromForm();
 
     let totalFat = 0,
@@ -489,6 +489,7 @@ async function saveRecipeInDB() {
     }
 
     const recipeNutritionTotals = {
+      name: recipeName,
       fats: totalFat,
       carbs: totalCarbs,
       calories: totalCalories,
@@ -496,7 +497,7 @@ async function saveRecipeInDB() {
       ingredients: ingredientsData
     };
 
-    await recipeRef.set(recipeNutritionTotals);
+    await recipeRef.add(recipeNutritionTotals);
     db.collection('Recipes').doc(uid).collection(category).doc('count').update({ count: firebase.firestore.FieldValue.increment(1) })
     localStorage.setItem('selectedCategory', category);
     window.location.href = '/each_category.html'; // Redirect after successful update

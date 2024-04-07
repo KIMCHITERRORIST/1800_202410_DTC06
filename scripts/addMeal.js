@@ -88,8 +88,8 @@ function appendMealsToDropdownInPage(uid) {
                 return;
             }
             const option = document.createElement('option');
-            option.value = doc.id;
-            option.textContent = doc.id;
+            option.value = doc.data().name;
+            option.textContent = doc.data().name;
             selectElement.appendChild(option);
         });
     })
@@ -110,39 +110,47 @@ function addRecipeToCalories(uid) {
     // Convert selectedFraction to a numerical value
     const quantity = convertFractionToDecimal(selectedFraction);
 
-    db.collection("Recipes").doc(uid).collection(category).doc(recipeName).get().then(recipeDoc => {
-        if (recipeDoc.exists) {
-            const recipeData = recipeDoc.data();
-            const currentDate = new Date();
-            const dateString = currentDate.toISOString().split('T')[0];
-            const hours = currentDate.getHours();
-            const minutes = currentDate.getMinutes();
-            const ampm = hours >= 12 ? 'PM' : 'AM';
-            const timeString = `${((hours + 11) % 12 + 1).toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')} ${ampm}`;
-
-            // Calculate macros and calories based on quantity
-            const fats = recipeData.fats * quantity;
-            const carbs = recipeData.carbs * quantity;
-            const protein = recipeData.protein * quantity;
-            const calories = recipeData.calories * quantity;
-
-            db.collection("meals").doc(uid).set({
-                [recipeName]: {
-                    fats: fats,
-                    carbs: carbs,
-                    protein: protein,
-                    calories: calories,
-                    date: dateString,
-                    time: timeString
+    db.collection("Recipes").doc(uid).collection(category).get().then(recipeDocRef => {
+        recipeDocRef.docs.forEach(recipeDoc => {
+            if (recipeDoc.exists) {
+                if (recipeDoc.id === "count") {
+                    return;
                 }
-            }, { merge: true }).then(() => {
-                alert(`${quantity} ${recipeName} added to Calories with date ${dateString} successfully.`);
-            }).catch(error => {
-                console.error("Error adding recipe to Calories:", error);
-            });
-        } else {
-            console.log("Recipe not found.");
-        }
+                const recipeData = recipeDoc.data();
+                console.log("Recipe data under recipe doc data NEW:", recipeData);
+                const currentDate = new Date();
+                const dateString = currentDate.toISOString().split('T')[0];
+                const hours = currentDate.getHours();
+                const minutes = currentDate.getMinutes();
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                const timeString = `${((hours + 11) % 12 + 1).toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+
+                // Calculate macros and calories based on quantity
+                const fats = recipeData.fats * quantity;
+                const carbs = recipeData.carbs * quantity;
+                const protein = recipeData.protein * quantity;
+                const calories = recipeData.calories * quantity;
+                console.log("Macros and calories:", fats, carbs, protein, calories);
+
+                db.collection("meals").doc(uid).set({
+                    [recipeName]: {
+                        fats: fats,
+                        carbs: carbs,
+                        protein: protein,
+                        calories: calories,
+                        date: dateString,
+                        time: timeString
+                    }
+                }, { merge: true }).then(() => {
+                    // window.location.href = "meal_log.html";
+
+                }).catch(error => {
+                    console.error("Error adding recipe to Calories:", error);
+                });
+            } else {
+                console.log("Recipe not found.");
+            }
+        });
     }).catch(error => {
         console.error("Error fetching recipe details:", error);
     });
