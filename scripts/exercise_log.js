@@ -124,21 +124,38 @@ async function saveActivityChanges() {
   const activityId = document.getElementById('editActivityId').value;
   const newName = document.getElementById('editExerciseName').value;
   const newCaloriesBurned = document.getElementById('editExerciseCalories').value;
-  const newTime = document.getElementById('editExerciseTime').value;
+  const newTime = document.getElementById('editExerciseDuration').value; // Get new time value
+
+  // Parse the new time into hours, minutes, and seconds
+  const [newHour, newMinute, newSecond] = newTime.split(':').map(Number);
+
+  // Calculate the total duration in seconds
+  const newTotalSeconds = (newHour * 3600) + (newMinute * 60) + newSecond;
+
+  // Convert the total duration back to hours, minutes, and seconds
+  const newHourAdjusted = Math.floor(newTotalSeconds / 3600);
+  const newMinuteAdjusted = Math.floor((newTotalSeconds % 3600) / 60);
+  const newSecondAdjusted = newTotalSeconds % 60;
 
   const activityRef = db.collection("exercises").doc(window.userUID).collection("dailyActivities").doc(activityId);
   await activityRef.update({
     name: newName,
     caloriesBurned: newCaloriesBurned,
-    time: newTime
+    // Update time with the new values
+    duration: {
+      hour: newHourAdjusted,
+      minute: newMinuteAdjusted,
+      second: newSecondAdjusted
+    }
   });
 
   document.getElementById('editExerciseModal').classList.add('hidden');
   fetchAndDisplayUserActivities(); // Refresh the list of activities
 }
 
+
 // Function to delete an activity
-async function deleteActivity() {
+async function deleteActivity(event) {
   event.preventDefault(); // Prevent form submission if invoked by a form
 
   const activityId = document.getElementById('editActivityId').value;
