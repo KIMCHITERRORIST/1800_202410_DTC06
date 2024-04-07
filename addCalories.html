@@ -56,26 +56,35 @@
                 </div>
             </div>
 
-            <!-- Optional: Form for additional input (e.g., quantity) -->
-            <div class="container flex text-xl font-semi-bold mx-auto w-[95%] md:w-[75%] p-4">
-                <form id="addCaloriesForm">
-                    <label for="quantity">Quantity:</label>
-                    <input class="border-2 p-2.5 border-gray-100" type="number" id="quantity" name="quantity"
-                        placeholder="g/ml (no unit needed)" required>
-                    <button class="bg-[#2d58b1] text-white p-2 rounded-lg" type="submit">Add to Calories</button>
-                </form>
-            </div>
-        </main>
+            <!-- Form for selecting fractional amount -->
+            <form id="addCaloriesForm">
+                <label for="fraction">Select Quantity:</label>
+                <select id="recipeFraction">
+                    <option value="1/4">One Fourth</option>
+                    <option value="1/2">Half</option>
+                    <option value="3/4">Three Fourth</option>
+                    <option value="1">One</option>
+                    <option value="1 1/4">One and One Fourth</option>
+                    <option value="1 1/2">One and Half</option>
+                    <option value="1 3/4">One and Three Fourth</option>
+                    <option value="2">Two</option>
+                    <option value="2 1/4">Two and One Fourth</option>
+                    <option value="2 1/2">Two and Half</option>
+                    <option value="2 3/4">Two and Three Fourth</option>
+                    <option value="3">Three</option>
+                    <!-- Add more options as needed -->
+                </select>
+            </form>
 
-        <!-- Bottom Navigation Bar -->
-        <nav id="footerPlaceholder"></nav>
+            <!-- Bottom Navigation Bar -->
+            <nav id="footerPlaceholder"></nav>
 
-        <!---------------------------------------------->
-        <!-- Your own JavaScript functions go here    -->
-        <!---------------------------------------------->
-        <script src="./scripts/firebaseAPI_TEAMDTC06.js"></script>
-        <script src="./scripts/general_skeleton.js"></script>
-        <script src="/scripts/addCalories.js"></script>
+            <!---------------------------------------------->
+            <!-- Your own JavaScript functions go here    -->
+            <!---------------------------------------------->
+            <script src="./scripts/firebaseAPI_TEAMDTC06.js"></script>
+            <script src="./scripts/general_skeleton.js"></script>
+            <script src="/scripts/addCalories.js"></script>
 
 </body>
 

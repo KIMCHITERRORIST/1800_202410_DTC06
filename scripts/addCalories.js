@@ -63,24 +63,26 @@ function fetchAndDisplaySubcategories() {
     });
 }
 
-// Function to add a recipe to the Calories collection
 function addRecipeToCalories(category, recipeName) {
     const uid = firebase.auth().currentUser.uid;
+    const selectedFraction = document.getElementById('recipeFraction').value;
+
+    // Convert selectedFraction to a numerical value
+    const quantity = convertFractionToDecimal(selectedFraction);
 
     db.collection("Recipes").doc(uid).collection(category).doc(recipeName).get().then(recipeDoc => {
         if (recipeDoc.exists) {
             const recipeData = recipeDoc.data();
             const currentDate = new Date();
-            // Generate a date string in local time zone
             const dateString = currentDate.getFullYear() + '-' +
                 ('0' + (currentDate.getMonth() + 1)).slice(-2) + '-' +
                 ('0' + currentDate.getDate()).slice(-2);
 
-            // Directly use the macros from the recipeData
-            const fats = recipeData.fats;
-            const carbs = recipeData.carbs;
-            const protein = recipeData.protein;
-            const calories = recipeData.calories;
+            // Calculate macros and calories based on quantity
+            const fats = recipeData.fats * quantity;
+            const carbs = recipeData.carbs * quantity;
+            const protein = recipeData.protein * quantity;
+            const calories = recipeData.calories * quantity;
 
             db.collection("calories").doc(uid).set({
                 [recipeName]: {
@@ -91,7 +93,7 @@ function addRecipeToCalories(category, recipeName) {
                     date: dateString
                 }
             }, { merge: true }).then(() => {
-                console.log(`${recipeName} added to Calories with date ${dateString} successfully.`);
+                console.log(`${quantity} ${recipeName} added to Calories with date ${dateString} successfully.`);
             }).catch(error => {
                 console.error("Error adding recipe to Calories:", error);
             });
@@ -101,4 +103,18 @@ function addRecipeToCalories(category, recipeName) {
     }).catch(error => {
         console.error("Error fetching recipe details:", error);
     });
+}
+
+// Function to convert fractional amount to decimal
+function convertFractionToDecimal(fraction) {
+    if (!fraction.includes('/')) {
+        return parseFloat(fraction); // If no fraction, return the number as it is
+    }
+    const parts = fraction.split(' ');
+    const whole = parts.length > 1 ? parseFloat(parts[0]) : 0;
+    const fractionParts = parts[parts.length - 1].split('/');
+    const numerator = parseFloat(fractionParts[0]);
+    const denominator = parseFloat(fractionParts[1]);
+    const decimal = whole + (numerator / denominator);
+    return decimal;
 }
