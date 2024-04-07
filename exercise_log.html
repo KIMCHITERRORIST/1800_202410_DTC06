@@ -45,6 +45,46 @@
     id="exercise-card-container">
   </div>
 
+  <!-- Edit Exercise Modal -->
+  <div id="editExerciseModal"
+    class="hidden fixed z-10 top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/4 bg-white rounded-lg shadow-lg w-4/5 md:w-3/5 lg:w-2/5">
+    <div class="bg-blue-500 text-white py-3 px-6 rounded-t-lg">
+      <p class="text-xl font-bold">Edit Workout</p>
+    </div>
+    <div class="p-6 pt-0">
+      <form id="exerciseEditForm">
+        <input type="hidden" id="editActivityId">
+        <div class="mt-4">
+          <label for="editExerciseName" class="text-lg font-bold">Name:</label>
+          <input type="text" id="editExerciseName" class="input-text border rounded p-2 mt-1 text-sm w-full">
+        </div>
+        <div class="mt-4">
+          <label for="editExerciseCalories" class="text-lg font-bold">Calories Burned:</label>
+          <input type="number" id="editExerciseCalories" class="input-text border rounded p-2 mt-1 text-sm w-full">
+        </div>
+        <div class="mt-4">
+          <label for="editExerciseDuration" class="text-lg font-bold">Duration:</label>
+          <input type="text" id="editExerciseDuration" placeholder="HH:MM:SS"
+            class="input-text border rounded p-2 mt-1 text-sm w-full">
+        </div>
+        <div class="flex justify-between items-center mt-6">
+          <button id="deleteExercise"
+            class="bg-red-500 text-white text-sm px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-red-300 hover:bg-red-700">
+            Delete
+          </button>
+          <button id="closeModal"
+            class="bg-gray-500 text-white text-sm px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-gray-300 hover:bg-gray-700">
+            Cancel
+          </button>
+          <button id="saveExerciseChanges"
+            class="bg-green-500 text-white text-sm px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-green-300 hover:bg-green-700">
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Bottom Navbar -->
   <nav id="footerPlaceholder"></nav>
 

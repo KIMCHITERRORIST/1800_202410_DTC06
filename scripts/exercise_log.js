@@ -1,3 +1,8 @@
+document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('saveExerciseChanges').addEventListener('click', saveActivityChanges);
+  document.getElementById('deleteExercise').addEventListener('click', deleteActivity);
+});
+
 async function fetchAndDisplayUserActivities() {
   userUID = await fetchUID();
   console.log("User UID:", userUID);
@@ -17,6 +22,7 @@ async function fetchAndDisplayUserActivities() {
     activities = [];
     snapshot.forEach(doc => {
       const activity = doc.data();
+      activity.id = doc.id; // Store document ID for later reference
       activity.dateTime = activity.date + " " + activity.time;
       activities.push(activity);
     });
@@ -33,13 +39,13 @@ async function fetchAndDisplayUserActivities() {
 
     const exerciseCardContainer = document.getElementById("exercise-card-container");
     sortedDateTimeActivities.forEach(activity => {
-      const { date, name, time, caloriesBurned } = activity;
+      const { id, date, name, time, caloriesBurned, duration } = activity;
       const { hour, minute, second } = activity.duration;
 
 
       // Generate HTML for each activity
       exerciseCard = `
-        <div class="bg-white p-4 rounded-lg shadow-lg w-full">
+        <div class="bg-white p-4 rounded-lg shadow-lg w-full" data-id="${id}" onclick="openEditModal('${id}')">
               <div class="flex items-center">
                 <div class="flex container space-x-10">
                   <div class="flex-shrink-0">
@@ -82,6 +88,88 @@ async function fetchAndDisplayUserActivities() {
   }
 }
 fetchAndDisplayUserActivities();
+
+// open the modal
+async function openEditModal(activityId) {
+  if (!window.userUID) {
+    window.userUID = await fetchUID();
+  }
+
+  const activityRef = db.collection("exercises").doc(window.userUID).collection("dailyActivities").doc(activityId);
+  activityRef.get().then(doc => {
+    if (doc.exists) {
+      const activity = doc.data();
+      document.getElementById('editActivityId').value = activityId;
+      document.getElementById('editExerciseName').value = activity.name;
+      document.getElementById('editExerciseCalories').value = activity.caloriesBurned;
+
+      // Format and set the duration in the modal
+      const duration = activity.duration;
+      const formattedDuration = `${duration.hour.toString().padStart(2, '0')}:${duration.minute.toString().padStart(2, '0')}:${duration.second.toString().padStart(2, '0')}`;
+      document.getElementById('editExerciseDuration').value = formattedDuration;
+
+      document.getElementById('editExerciseModal').classList.remove('hidden');
+    } else {
+      console.log("No such document!");
+    }
+  }).catch(error => {
+    console.error("Error getting document:", error);
+  });
+}
+
+// Function to save changes
+async function saveActivityChanges() {
+  event.preventDefault(); // Prevent form submission if invoked by a form
+
+  const activityId = document.getElementById('editActivityId').value;
+  const newName = document.getElementById('editExerciseName').value;
+  const newCaloriesBurned = document.getElementById('editExerciseCalories').value;
+  const newTime = document.getElementById('editExerciseDuration').value; // Get new time value
+
+  // Parse the new time into hours, minutes, and seconds
+  const [newHour, newMinute, newSecond] = newTime.split(':').map(Number);
+
+  // Calculate the total duration in seconds
+  const newTotalSeconds = (newHour * 3600) + (newMinute * 60) + newSecond;
+
+  // Convert the total duration back to hours, minutes, and seconds
+  const newHourAdjusted = Math.floor(newTotalSeconds / 3600);
+  const newMinuteAdjusted = Math.floor((newTotalSeconds % 3600) / 60);
+  const newSecondAdjusted = newTotalSeconds % 60;
+
+  const activityRef = db.collection("exercises").doc(window.userUID).collection("dailyActivities").doc(activityId);
+  await activityRef.update({
+    name: newName,
+    caloriesBurned: newCaloriesBurned,
+    // Update time with the new values
+    duration: {
+      hour: newHourAdjusted,
+      minute: newMinuteAdjusted,
+      second: newSecondAdjusted
+    }
+  });
+
+  document.getElementById('editExerciseModal').classList.add('hidden');
+  fetchAndDisplayUserActivities(); // Refresh the list of activities
+}
+
+
+// Function to delete an activity
+async function deleteActivity(event) {
+  event.preventDefault(); // Prevent form submission if invoked by a form
+
+  const activityId = document.getElementById('editActivityId').value;
+
+  const activityRef = db.collection("exercises").doc(window.userUID).collection("dailyActivities").doc(activityId);
+  await activityRef.delete();
+
+  document.getElementById('editExerciseModal').classList.add('hidden');
+  fetchAndDisplayUserActivities(); // Refresh the list of activities
+}
+
+document.getElementById('closeModal').addEventListener('click', function () {
+  document.getElementById('editExerciseModal').classList.add('hidden');
+});
 
 
 // Fetch UID function
