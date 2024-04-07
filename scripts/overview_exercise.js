@@ -12,24 +12,51 @@ async function initApp() {
       fetchAndDisplayTodaysFoodEntries();
       fetchAndDisplayTodaysExerciseEntries();
       checkAndUpdateWeight(uid);
-      const TDEE = await fetchTDEE(uid); // Fetch user's TDEE
-      const goalCalories = TDEE - 500; // Calculate goal calories
-      await renderDonutChart(uid, goalCalories); // Render the donut chart
+      const userData = await fetchUserData(uid); // Fetch user's data including TDEE and goalCalories
+      await renderDonutChart(uid, userData.goalCalories); // Pass goalCalories to renderDonutChart
     }
   } catch (error) {
     console.error("Initialization error:", error);
   }
 }
 
+async function fetchUserData(uid) {
+  const userDoc = await db.collection("users").doc(uid).get();
+  if (userDoc.exists) {
+    return userDoc.data(); // Return all user data
+  } else {
+    throw new Error("User data not found");
+  }
+}
+
 async function renderDonutChart(uid, goalCalories) {
   const { caloriesIn, caloriesOut } = await fetchCaloriesInAndOut(uid); // Fetch today's calories in and out
-  const remainingCalories = Math.max(0, goalCalories - caloriesIn); // Calculate remaining calories, ensure it's not negative
 
-  // Prepare chart options
+  // Calculate net calories (considering calories consumed and calories burned)
+  const netCalories = caloriesIn - caloriesOut;
+  const remainingCalories = Math.max(0, goalCalories - netCalories);
+
+  // Prepare base chart options
+  let colors;
+  let series;
+  let labels = ['Net Calories', 'Remaining Calories'];
+
+  // Determine chart appearance based on net calories relative to goal
+  if (netCalories >= goalCalories) {
+    // Goal surpassed: Highlight with red, showing only the net calories which now includes the excess
+    colors = ["#FF6347"]; // Red for net calories if over the goal
+    series = [netCalories]; // Show only net calories, indicating goal is surpassed
+    labels = ['Net Calories']; // Update labels to reflect current status
+  } else {
+    // Under goal: Show both net calories and remaining calories
+    colors = ["#FDBA8C", "#1C64F2"]; // Orange for net calories, Blue for remaining
+    series = [netCalories, remainingCalories];
+  }
+
   const chartOptions = {
-    series: [caloriesIn, remainingCalories],
-    labels: ['Calories In', 'Calories Remaining'],
-    colors: ["#1C64F2", "#FDBA8C"], // Custom colors: Calories In and Calories Remaining
+    series: series,
+    labels: labels,
+    colors: colors,
     chart: {
       type: 'donut',
       height: 320,
@@ -41,8 +68,10 @@ async function renderDonutChart(uid, goalCalories) {
             show: true,
             total: {
               showAlways: true,
-              label: 'Total',
-              formatter: () => `${goalCalories - remainingCalories} of ${goalCalories}`
+              label: 'Total Calories',
+              formatter: function () {
+                return `${netCalories} / ${goalCalories}`;
+              }
             }
           }
         }
@@ -51,7 +80,6 @@ async function renderDonutChart(uid, goalCalories) {
     legend: {
       position: "bottom",
     },
-    // Include other chart configurations as needed
   };
 
   // Render the chart
@@ -316,6 +344,6 @@ async function checkAndUpdateWeight(uid) {
 }
 
 function showModalToUpdateWeight() {
- 
+
   console.log("It's time to update your weight!");
 }
