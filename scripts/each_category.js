@@ -3,10 +3,9 @@ document.addEventListener("DOMContentLoaded", function () {
     if (user) {
       const uid = user.uid;
       const recipeCategory = localStorage.getItem('selectedCategory');
-      // Attach click event listener to the create-recipe div
+      // Modify this to show the modal instead of using prompt
       document.getElementById('create-recipe').addEventListener('click', function () {
-        // Call your function to create a new recipe
-        createNewRecipePrompt(uid, recipeCategory);
+        toggleNewRecipeModal(true);
       });
       if (recipeCategory) {
         document.getElementById("recipeCategory").innerText = recipeCategory;
@@ -18,6 +17,27 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+// Implement the modal toggle functionality
+function toggleNewRecipeModal(show) {
+  const modal = document.getElementById('newRecipeModal');
+  modal.style.display = show ? 'block' : 'none';
+}
+
+// Handle the new recipe submission from the modal
+function submitNewRecipeName() {
+  const uid = firebase.auth().currentUser.uid;
+  const recipeCategory = localStorage.getItem('selectedCategory');
+  const newRecipeName = document.getElementById('newRecipeName').value.trim();
+
+  if (newRecipeName) {
+    createNewRecipe(newRecipeName, recipeCategory, uid);
+    toggleNewRecipeModal(false); // Hide the modal
+  } else {
+    console.log("Recipe name cannot be empty.");
+  }
+}
+
 
 function displayRecipeInfo(uid, recipeCategory) {
   db.collection('Recipes')

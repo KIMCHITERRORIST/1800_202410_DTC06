@@ -19,6 +19,7 @@ document.getElementById('signup-form').addEventListener('submit', function (even
       db.collection("users").doc(user.uid).set({
         name: name,
         email: email,
+        Date: firebase.firestore.FieldValue.serverTimestamp()
         // Additional default information
       })
 

@@ -11,6 +11,7 @@ async function initApp() {
       fetchDataAndDisplayChart();
       fetchAndDisplayTodaysFoodEntries();
       fetchAndDisplayTodaysExerciseEntries();
+      checkAndUpdateWeight(uid);
       const TDEE = await fetchTDEE(uid); // Fetch user's TDEE
       const goalCalories = TDEE - 500; // Calculate goal calories
       await renderDonutChart(uid, goalCalories); // Render the donut chart
@@ -294,3 +295,27 @@ document.getElementById('cardHeaderCaloriesBurnt').addEventListener('click', fun
 </svg>`;
   }
 });
+
+async function checkAndUpdateWeight(uid) {
+  const userDoc = await db.collection("users").doc(uid).get();
+  if (userDoc.exists) {
+    const userData = userDoc.data();
+    if (userData.Date) {
+      const lastUpdate = userData.Date.toDate(); // Convert Firestore timestamp to JavaScript Date object
+      const today = new Date();
+      const oneWeekAgo = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
+
+      if (lastUpdate < oneWeekAgo) {
+        // A week has passed since the last update
+        showModalToUpdateWeight(); // Implement this function to show your modal
+      }
+    }
+  } else {
+    console.error("No user document found or no weight update date available.");
+  }
+}
+
+function showModalToUpdateWeight() {
+ 
+  console.log("It's time to update your weight!");
+}
