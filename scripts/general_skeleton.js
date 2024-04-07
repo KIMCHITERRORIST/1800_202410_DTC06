@@ -73,6 +73,7 @@ function loadSkeleton() {
     document.getElementById('open_add_ingredient_modal').addEventListener('click', loadIngredientsModalandOpen);
     document.getElementById('open_add_new_recipe_modal').addEventListener('click', loadAddNewRecipeModalandOpen);
     document.getElementById('open_add_new_category_modal').addEventListener('click', loadAddNewCategoryModalandOpen);
+    document.getElementById('open_add_quick_meal_modal').addEventListener('click', loadAddQuickMealModalandOpen);
   })
 
 };
@@ -299,6 +300,48 @@ function closeAddNewCategoryModal() {
   modal.classList.add('hidden');
   modal.setAttribute('aria-hidden', 'true');
 }
+
+
+//------------------------------------------------------------------//
+// -----------Functions related to Add Quick Meal Modal-------------//
+//------------------------------------------------------------------//
+function loadAddQuickMealModalandOpen() {
+  $('#add_quick_meal_modal_container').load('main_modals/quick_add_meal_modal.html', function () {
+    const quickAddMenu = document.getElementById("quickAddMenu");
+    const quickAddMenuBg = document.getElementById("quickAddMenuBackground");
+    quickAddMenu.classList.add("hidden");
+    quickAddMenuBg.classList.add("hidden");
+    openAddQuickMealModal(); // Open Add Quick meal modal
+
+    // Event listeners for Add Quick Meal modal
+    document.getElementById('close_add_quick_meal_modal').addEventListener('click',
+      closeAddQuickMealModal);
+
+    const addNewIngredientButton = document.getElementById('addQuickMealButton');
+    addNewIngredientButton.addEventListener('click', function (saveData) {
+      saveData.preventDefault(); // Prevent the default form submission
+      LogQuickMealInDB();
+    });
+  }
+  )
+};
+
+// Open Add Quick Meal modal
+function openAddQuickMealModal() {
+  const modal = document.getElementById('add_quick_meal_modal');
+  modal.classList.remove('hidden');
+  modal.setAttribute('aria-hidden', 'false');
+}
+
+// Close Add Quick Meal modal
+function closeAddQuickMealModal() {
+  const modal = document.getElementById('add_quick_meal_modal');
+  modal.classList.add('hidden');
+  modal.setAttribute('aria-hidden', 'true');
+}
+
+
+
 //---------------------------------------------------//
 //---------------------------------------------------//
 // -----------Functions related to DB----------------//
@@ -494,4 +537,36 @@ async function appendCategoryNameToArray() {
     .catch((error) => {
       console.error("Error updating categories array:", error);
     });
+}
+
+// ++++++ For add Quick Meal modal ++++++ //
+async function LogQuickMealInDB() {
+  const uid = await fetchUID();
+  const mealName = document.getElementById('mealName').value.trim();
+  const currentDate = new Date();
+  const dateString = currentDate.toISOString().split('T')[0];
+  const hours = currentDate.getHours();
+  const minutes = currentDate.getMinutes();
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const timeString = `${((hours + 11) % 12 + 1).toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+
+  const calories = Number(document.getElementById('calories').value);
+  const fats = Number(document.getElementById('fats').value);
+  const carbs = Number(document.getElementById('carbs').value);
+  const protein = Number(document.getElementById('protein').value);
+
+  db.collection("meals").doc(uid).set({
+    [mealName]: {
+      fats: fats,
+      carbs: carbs,
+      protein: protein,
+      calories: calories,
+      date: dateString,
+      time: timeString
+    }
+  }, { merge: true }).then(() => {
+    alert(`${mealName} of ${calories} is added to Meals successfully.`);
+  }).catch(error => {
+    console.error("Error adding recipe to Calories:", error);
+  });
 }
