@@ -26,6 +26,7 @@ document.getElementById('signup-form').addEventListener('submit', function (even
       db.collection("Recipes").doc(user.uid).collection("Breakfast").doc("count").set({ count: 0 });
       db.collection("Recipes").doc(user.uid).collection("Lunch").doc("count").set({ count: 0 });
       db.collection("Recipes").doc(user.uid).collection("Dinner").doc("count").set({ count: 0 });
+      db.collection("Recipes").doc(user.uid).set({ categories: ["Breakfast", "Lunch", "Dinner"] });
       db.collection("exercises").doc(user.uid).set({})
       db.collection("calories").doc(user.uid).set({})
       db.collection("ingredients").doc(user.uid).set({})
