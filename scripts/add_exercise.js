@@ -58,15 +58,12 @@ async function calculateCaloriesBurned(uid, hour, minute, second, heartrate) {
   const age = userData.data().age;
   const weight = userData.data().weight;
   const timeInMinutes = (Number(hour) * 60) + Number(minute) + (Number(second) / 60);
-
-  if (gender === "female") {
-    // Calculates calories burned depending on average heart rate and user's info
-    caloriesBurned = Math.round(Number(timeInMinutes * ((-10 + (0.45 * Number(heartrate)) - (0.1263 * weight) + (0.075 * age)) / 4.184)));
-  } else if (gender === "male") {
-    // Calculates calories burned depending on average heart rate and user's info
-    caloriesBurned = Math.round(Number(timeInMinutes * ((-25 + (0.635 * Number(heartrate)) - (0.1988 * weight) + (0.202 * age)) / 4.184)));
+  if (gender === "Female") {
+    caloriesBurned = Number(timeInMinutes * ((-10 + (0.45 * Number(heartrate)) - (0.1263 * weight) + (0.075 * age)) / 4.184));
+  } else if (gender === "Male") {
+    caloriesBurned = Number(timeInMinutes * ((-25 + (0.635 * Number(heartrate)) - (0.1988 * weight) + (0.202 * age)) / 4.184));
   }
-  return caloriesBurned;
+  return Math.round(caloriesBurned);
 }
 
 // Fetch UID function
