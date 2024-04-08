@@ -53,12 +53,13 @@ document.addEventListener('DOMContentLoaded', function () {
   </div>`;
 
     const button = categoryDiv.querySelector('.recipeButton');
-    button.addEventListener('click', () => {
+    button.addEventListener('click', (event) => {
+      event.stopPropagation(); // This stops the event from bubbling up to the parent element
       localStorage.setItem('selectedCategory', category);
       window.location.href = '/each_category.html';
     });
 
-    categoryDiv.addEventListener('dblclick', () => {
+    categoryDiv.addEventListener('click', () => {
       showDeleteConfirmationModal(category);
     });
 

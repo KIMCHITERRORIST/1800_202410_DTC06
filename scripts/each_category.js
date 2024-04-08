@@ -28,7 +28,7 @@ function displayRecipeInfo(uid, recipeCategory) {
         }
         var recipeData = recipeDocument.data()
         var recipeCardHTML = `
-          <div id ="${recipeDocument.id}" class="flex flex-col items-center justify-center w-full max-w-sm mx-auto my-4 border-2 border-gray-300 rounded-lg shadow-md" ondblclick="showDeleteConfirmationModal('${recipeDocument.id}', '${recipeCategory}')">
+          <div id ="${recipeDocument.id}" class="flex flex-col items-center justify-center w-full max-w-sm mx-auto my-4 border-2 border-gray-300 rounded-lg shadow-md" onclick="showDeleteConfirmationModal('${recipeDocument.id}', '${recipeCategory}')">
   <div class="p-5">
               <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">${recipeData.name}</h5>
               <ul class="mb-4 text-gray-600">
@@ -87,7 +87,8 @@ async function deleteRecipe(recipeID, recipeCategory) {
 }
 
 function cancelRecipeDeletion() {
-  window.history.back();
+  const modal = document.getElementById("deleteRecipeModal");
+  modal.classList.add("hidden");
 }
 
 

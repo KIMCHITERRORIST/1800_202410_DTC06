@@ -49,7 +49,7 @@ function fetchAndDisplayFoodEntries() {
       sortedDateTimeMealEntries.forEach(entry => {
         const { recipeName, date, time, fats, carbs, protein, calories } = entry;
         const foodCard = `
-<div class="bg-white p-4 rounded-lg shadow-lg w-full flex justify-between items-center" ondblclick="openEditMealModal('${recipeName}')">
+<div class="bg-white p-4 rounded-lg shadow-lg w-full flex justify-between items-center" onclick="openEditMealModal('${recipeName}')">
   <div class="flex space-x-4 items-center">
     <!-- Food Icon -->
     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-meat" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="none" stroke-linecap="round" stroke-linejoin="round">
