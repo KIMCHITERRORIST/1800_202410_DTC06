@@ -141,7 +141,7 @@ function addRecipeToCalories(uid) {
                         time: timeString
                     }
                 }, { merge: true }).then(() => {
-                    // window.location.href = "meal_log.html";
+                    window.location.href = "meal_log.html";
 
                 }).catch(error => {
                     console.error("Error adding recipe to Calories:", error);
