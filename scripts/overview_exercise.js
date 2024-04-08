@@ -10,7 +10,6 @@ async function initApp() {
       // User is logged in, now fetch data
       fetchAndDisplayTodaysFoodEntries();
       fetchAndDisplayTodaysExerciseEntries();
-      checkAndUpdateWeight(uid);
       const userData = await fetchUserData(uid); // Fetch user's data including TDEE and goalCalories
       await renderDonutChart(uid, userData.goalCalories); // Pass goalCalories to renderDonutChart
     }
@@ -262,26 +261,62 @@ document.getElementById('cardHeaderCaloriesBurnt').addEventListener('click', fun
   }
 });
 
-async function checkAndUpdateWeight(uid) {
-  const userDoc = await db.collection("users").doc(uid).get();
-  if (userDoc.exists) {
-    const userData = userDoc.data();
-    if (userData.Date) {
-      const lastUpdate = userData.Date.toDate(); // Convert Firestore timestamp to JavaScript Date object
-      const today = new Date();
-      const oneWeekAgo = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
+async function updateWeightAndCalories() {
+  // Prevent default form submission behavior if called within a form
+  if (event) event.preventDefault();
 
-      if (lastUpdate < oneWeekAgo) {
-        // A week has passed since the last update
-        showModalToUpdateWeight(); // Implement this function to show your modal
-      }
+  const newWeight = parseFloat(document.getElementById('updateWeightValue').value);
+  if (isNaN(newWeight) || newWeight <= 0) {
+    showMessageModal('Invalid Input', 'Please enter a valid weight.');
+    return;
+  }
+
+  try {
+    const uid = await fetchUID();
+    const userRef = db.collection('users').doc(uid);
+
+    const userData = await userRef.get();
+    if (!userData.exists) {
+      console.log('No user data found.');
+      return;
     }
-  } else {
-    console.error("No user document found or no weight update date available.");
+
+    const currentWeight = userData.data().weight;
+    const goalCalories = userData.data().goalCalories;
+
+    if (newWeight < currentWeight) {
+      // Congratulate for weight loss
+      showMessageModal('Success', 'Congratulations on losing weight!');
+      // Update the weight in Firestore without changing goalCalories
+      await userRef.update({ weight: newWeight });
+    } else if (newWeight === currentWeight) {
+      // Offer to reduce daily calories with a custom confirmation modal
+      // For simplicity, replacing the confirm() dialog with a direct call to showMessageModal()
+      // In practice, you might implement a custom modal for confirmations
+      await userRef.update({ goalCalories: goalCalories - 100 });
+      showMessageModal('Calories Update', 'Your daily calories have been reduced by 100.');
+    } else {
+      // Automatically reduce daily calories for weight gain
+      await userRef.update({
+        weight: newWeight,
+        goalCalories: goalCalories - 200 // Reduce goalCalories by 200
+      });
+      showMessageModal('Adjustment', 'We will adjust your calories intake to match your unique metabolism.');
+    }
+
+  } catch (error) {
+    console.error('Error updating weight and calories:', error);
+    showMessageModal('Error', 'Error updating weight and calories. Please try again.');
   }
 }
 
-function showModalToUpdateWeight() {
-
-  console.log("It's time to update your weight!");
+function showMessageModal(title, content) {
+  document.getElementById('modalMessageTitle').textContent = title;
+  document.getElementById('modalMessageContent').textContent = content;
+  document.getElementById('messageModal').classList.remove('hidden');
 }
+
+document.getElementById('closeMessageModal').addEventListener('click', function () {
+  document.getElementById('messageModal').classList.add('hidden');
+});
+
