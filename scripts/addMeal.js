@@ -130,7 +130,6 @@ function addRecipeToCalories(uid) {
                 const carbs = recipeData.carbs * quantity;
                 const protein = recipeData.protein * quantity;
                 const calories = recipeData.calories * quantity;
-                console.log("Macros and calories:", fats, carbs, protein, calories);
 
                 db.collection("meals").doc(uid).set({
                     [recipeName]: {

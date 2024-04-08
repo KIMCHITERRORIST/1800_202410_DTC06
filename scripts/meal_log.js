@@ -4,10 +4,19 @@ document.addEventListener('DOMContentLoaded', function () {
     if (user) {
       // If the user is signed in, fetch and display their food entries.
       fetchAndDisplayFoodEntries();
+      document.getElementById('saveMealChanges').addEventListener('click', (saveData) => {
+        saveData.preventDefault();
+        confirm("Are you sure you want to save changes?");
+        saveMealChanges();
+      });
+
+      document.getElementById('deleteMeal').addEventListener('click', (deleteData) => {
+        deleteData.preventDefault();
+        confirm("Are you sure you want to delete this meal?");
+        deleteMeal();
+      });
     } else {
-      // If no user is signed in, handle accordingly (e.g., redirect to login page).
       console.log('User is not signed in.');
-      // Optional: Redirect to login or another appropriate page
       window.location.href = 'login.html';
     }
   });
@@ -16,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function fetchAndDisplayFoodEntries() {
   const uid = firebase.auth().currentUser.uid; // Assuming you have the user's UID
   const foodCardContainer = document.getElementById('food-card-container');
+  foodCardContainer.innerHTML = "";
 
   db.collection("meals").doc(uid).get().then(doc => {
     if (doc.exists) {
@@ -39,7 +49,7 @@ function fetchAndDisplayFoodEntries() {
       sortedDateTimeMealEntries.forEach(entry => {
         const { recipeName, date, time, fats, carbs, protein, calories } = entry;
         const foodCard = `
-<div class="bg-white p-4 rounded-lg shadow-lg w-full flex justify-between items-center">
+<div class="bg-white p-4 rounded-lg shadow-lg w-full flex justify-between items-center" ondblclick="openEditMealModal('${recipeName}')">
   <div class="flex space-x-4 items-center">
     <!-- Food Icon -->
     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-meat" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2d58b1" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -75,5 +85,80 @@ function fetchAndDisplayFoodEntries() {
     }
   }).catch(error => {
     console.error("Error fetching food entries:", error);
+  });
+}
+
+
+async function openEditMealModal(mealName) {
+  uid = await fetchUID();
+  recipeDoc = await db.collection("meals").doc(uid).get()
+  recipeData = recipeDoc.data();
+  if (recipeData[mealName] === undefined) {
+    console.log("There is no such ingredient in the meal log.");
+  } else {
+    console.log(recipeData[mealName]);
+    // Set the values in the modal
+    document.getElementById('editMealName').value = mealName;
+    document.getElementById('editProtein').value = recipeData[mealName].protein;
+    document.getElementById('editCarbs').value = recipeData[mealName].carbs;
+    document.getElementById('editFat').value = recipeData[mealName].fats;
+    document.getElementById('editCalories').value = recipeData[mealName].calories;
+    document.getElementById('date').value = recipeData[mealName].date;
+    document.getElementById('time').value = recipeData[mealName].time;
+
+    // Unhide the modal
+    document.getElementById('editMealModal').classList.remove('hidden');
+  }
+}
+
+// Function to save changes
+async function saveMealChanges() {
+  const uid = await fetchUID();
+  const newMealName = document.getElementById('editMealName').value;
+  const newprotein = Number(document.getElementById('editProtein').value)
+  const newcarbs = Number(document.getElementById('editCarbs').value)
+  const newfat = Number(document.getElementById('editFat').value)
+  const newcalories = Number(document.getElementById('editCalories').value)
+  const date = document.getElementById('date').value;
+  const time = document.getElementById('time').value;
+
+
+  console.log(newMealName, newprotein, newcarbs, newfat, newcalories);
+  db.collection("meals").doc(uid).update({
+
+    [newMealName]: {
+      protein: newprotein,
+      carbs: newcarbs,
+      fats: newfat,
+      calories: newcalories,
+      date: date,
+      time: time
+    }
+  }).then(() => {
+    console.log("Document successfully updated!");
+    document.getElementById('editMealModal').classList.add('hidden');
+    fetchAndDisplayFoodEntries();
+  }).catch((error) => {
+    console.error("Error updating document: ", error);
+  });
+}
+// Function to cancel changes
+function cancelMealChanges() {
+  window.history.back();
+}
+
+// Function to delete Meal
+async function deleteMeal() {
+  uid = await fetchUID();
+  const mealName = document.getElementById('editMealName').value;
+
+  db.collection("meals").doc(uid).update({
+    [mealName]: firebase.firestore.FieldValue.delete()
+  }).then(() => {
+    console.log("Entry successfully deleted!");
+    document.getElementById('editMealModal').classList.add('hidden');
+    fetchAndDisplayFoodEntries();
+  }).catch((error) => {
+    console.error("Error deleting Meal: ", error);
   });
 }

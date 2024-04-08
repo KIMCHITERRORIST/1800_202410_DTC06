@@ -28,8 +28,8 @@ function displayRecipeInfo(uid, recipeCategory) {
         }
         var recipeData = recipeDocument.data()
         var recipeCardHTML = `
-          <div class="flex flex-col items-center justify-center w-full max-w-sm mx-auto my-4 border-2 border-gray-300 rounded-lg shadow-md">
-            <div class="p-5">
+          <div id ="${recipeDocument.id}" class="flex flex-col items-center justify-center w-full max-w-sm mx-auto my-4 border-2 border-gray-300 rounded-lg shadow-md" ondblclick="showDeleteConfirmationModal('${recipeDocument.id}', '${recipeCategory}')">
+  <div class="p-5">
               <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">${recipeData.name}</h5>
               <ul class="mb-4 text-gray-600">
                 <li>Calories: ${recipeData.calories}kcal</li>
@@ -51,6 +51,46 @@ function displayRecipeInfo(uid, recipeCategory) {
       console.error("Error fetching recipes:", error);
     });
 }
+
+async function showDeleteConfirmationModal(recipeID, recipeCategory) {
+  console.log("Recipe ID: ", recipeID, "Recipe Category: ", recipeCategory)
+  const uid = firebase.auth().currentUser.uid;
+  const recipeRef = await db.collection('Recipes').doc(uid).collection(recipeCategory).doc(recipeID).get();
+  document.getElementById("recipeName").innerText = recipeRef.data().name;
+
+  const modal = document.getElementById("deleteRecipeModal");
+  modal.classList.remove("hidden");
+
+  document.getElementById("deleteRecipe").addEventListener("click", async function (event) {
+    event.preventDefault();
+    await deleteRecipe(recipeID, recipeCategory);
+  });
+}
+
+async function deleteRecipe(recipeID, recipeCategory) {
+  try {
+    const uid = firebase.auth().currentUser.uid;
+    await db.collection('Recipes')
+      .doc(uid)
+      .collection(recipeCategory)
+      .doc(recipeID)
+      .delete();
+    console.log("Recipe deleted successfully!");
+    await db.collection('Recipes').doc(uid).collection(recipeCategory).doc("count").update({
+      count: firebase.firestore.FieldValue.increment(-1)
+    });
+    document.getElementById("deleteRecipeModal").classList.add("hidden");
+    displayRecipeInfo(uid, recipeCategory);
+  } catch (error) {
+    console.error("Error deleting recipe:", error);
+  }
+}
+
+function cancelRecipeDeletion() {
+  window.history.back();
+}
+
+
 
 //function when you click on view recipe
 function viewRecipeDetails(recipeName) {

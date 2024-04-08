@@ -41,26 +41,30 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Function to create, append, and display category divs
+
   function createCategoryDiv(category, count) {
     const container = document.getElementById('categories-container');
     const categoryDiv = document.createElement('div');
-    categoryDiv.className = 'flex flex-col mx-auto h-24 justify-center items-center border-2 border-gray-300 shadow-md rounded-full my-5 sm:px-6 lg:px-8';
-    categoryDiv.innerHTML =
-      `<div class="text-center">
-        <p class="text-2xl font-semibold">${category}</p>
-        <p class="text-lg"><span id="${category}-count">${count}</span> Recipes</p>
-      </div>`;
+    categoryDiv.id = `div${category}`;
+    categoryDiv.className = "flex flex-col mx-auto h-24 justify-center items-center border-2 border-gray-300 shadow-md rounded-md my-5 sm:px-6 lg:px-8";
+    categoryDiv.innerHTML = `<div class="text-center">
+    <p class="text-2xl font-semibold">${category}</p>
+    <button class="recipeButton bg-blue-700 text-white px-2 py-1 rounded-md shadow-lg text-lg mt-2" data-category="${category}"><span id="${category}-count">${count}</span> Recipes</button>
+  </div>`;
 
-    // Add click event listener to redirect to the category page
-    categoryDiv.addEventListener('click', () => {
-      // Store the selected category in local storage
+    const button = categoryDiv.querySelector('.recipeButton');
+    button.addEventListener('click', () => {
       localStorage.setItem('selectedCategory', category);
-      // Redirect to the next page
       window.location.href = '/each_category.html';
     });
-    container.insertBefore(categoryDiv, container.firstChild);
+
+    categoryDiv.addEventListener('dblclick', () => {
+      showDeleteConfirmationModal(category);
+    });
+
+    container.appendChild(categoryDiv);
   }
+
 
 
   // Function to fetch and display user's name
@@ -74,3 +78,35 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
+
+async function showDeleteConfirmationModal(category) {
+  document.getElementById("categoryName").textContent = category;
+  const modal = document.getElementById("deleteCategoryModal");
+  modal.classList.remove("hidden");
+  document.getElementById("cancelCategoryDeletion").addEventListener("click", cancelCategoryDeletion);
+  document.getElementById("deleteCategory").addEventListener("click", async function (event) {
+    event.preventDefault();
+    await deleteCategory(category);
+  });
+}
+
+
+async function deleteCategory(category) {
+  try {
+    const uid = firebase.auth().currentUser.uid;
+    const categoryRef = db.collection('Recipes').doc(uid).collection(category);
+
+    const snapshot = await categoryRef.get();
+    snapshot.docs.forEach(doc => {
+      doc.ref.delete()
+    });
+    document.getElementById('deleteCategoryModal').classList.add('hidden');
+    window.location.reload();
+  } catch (error) {
+    console.error("Error deleting document:", error)
+  }
+}
+
+function cancelCategoryDeletion() {
+  document.getElementById("deleteCategoryModal").classList.add("hidden");
+}

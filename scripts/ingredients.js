@@ -4,11 +4,13 @@ document.addEventListener('DOMContentLoaded', function () {
             // User is signed in, fetch user ID and run other functions
             var uid = user.uid;
             fetchAndDisplayIngredients(uid);
-            document.getElementById('saveIngredientChanges').addEventListener('click', () => {
+            document.getElementById('saveIngredientChanges').addEventListener('click', (event) => {
+                event.preventDefault();
                 confirm("Are you sure you want to save changes?");
                 saveIngredientChanges();
             });
-            document.getElementById('deleteIngredient').addEventListener('click', () => {
+            document.getElementById('deleteIngredient').addEventListener('click', (event) => {
+                event.preventDefault();
                 confirm("Are you sure you want to delete this ingredient?");
                 deleteIngredient();
             }
@@ -94,15 +96,14 @@ async function openEditIngredientModal(ingredientName) {
 
 // Function to save changes
 async function saveIngredientChanges() {
-    event.preventDefault();
     const uid = await fetchUID();
     const newingredientName = document.getElementById('editIngredientName').value;
-    const newprotein = Number(document.getElementById('editProtein').value).toFixed(2);
-    const newcarbs = Number(document.getElementById('editCarbs').value).toFixed(2);
-    const newfat = Number(document.getElementById('editFat').value).toFixed(2);
-    const newcalories = Number(document.getElementById('editCalories').value).toFixed(2);
+    const newprotein = Number(document.getElementById('editProtein').value);
+    const newcarbs = Number(document.getElementById('editCarbs').value);
+    const newfat = Number(document.getElementById('editFat').value);
+    const newcalories = Number(document.getElementById('editCalories').value);
     const newquantity = {
-        value: Number(document.getElementById('editQuantity').value).toFixed(2),
+        value: Number(document.getElementById('editQuantity').value),
         unit: document.getElementById('editUnit').value
     };
 

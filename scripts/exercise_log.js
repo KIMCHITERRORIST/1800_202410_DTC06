@@ -49,10 +49,8 @@ async function fetchAndDisplayUserActivities() {
       const { id, date, name, time, caloriesBurned, duration, heartrate } = activity;
       const { hour, minute, second } = activity.duration;
 
-
-      // Generate HTML for each activity
       exerciseCard = `
-<div class="bg-white p-4 rounded-lg shadow-lg w-full" data-id="${id}" onclick="openEditModal('${id}')">
+<div class="bg-white p-4 rounded-lg shadow-lg w-full" data-id="${id}" ondblclick="openEditModal('${id}')">
   <div class="flex items-center">
     <div class="flex container space-x-10">
       <div class="flex-shrink-0">

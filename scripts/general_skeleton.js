@@ -278,7 +278,7 @@ function loadAddNewCategoryModalandOpen() {
     quickAddMenuBg.classList.add("hidden");
     openAddAddNewCategoryModal();
     document.getElementById('close_add_new_category_modal').addEventListener('click',
-      closeAddNewRecipeModal);
+      closeAddNewCategoryModal);
 
     const addNewCategoryButton = document.getElementById('addNewCategoryButton');
     addNewCategoryButton.addEventListener('click', function (saveData) {
@@ -503,7 +503,7 @@ async function saveRecipeInDB() {
     window.location.href = '/each_category.html'; // Redirect after successful update
   } catch (error) {
     console.error('Error saving recipe:', error);
-    alert('Error saving the recipe') // Log any errors that occur
+    alert('Error saving the recipe. Fill all the fields and try again.')
   }
 }
 

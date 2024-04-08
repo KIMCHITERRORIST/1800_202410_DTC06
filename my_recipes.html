@@ -32,7 +32,6 @@
     <!-- Add quick recipe modal -->
     <div id="add_quick_meal_modal_container"></div>
 
-    <!-- have to link the firebase database to this and then make the graphs work with them. -->
     <main class="overflow-auto" style="height: calc(100vh - 112px);">
         <!-- avatar -->
         <div
@@ -46,7 +45,29 @@
         <h1 class="text-center p-3 font-sans font-bold text-2xl"><span id="name"></span>'s Recipes</h1>
 
         <!-- container to store recipe categories and with create your own button at the end -->
-        <div id="categories-container">
+        <div id="categories-container" class="max-w-[95%] md:[75%] mx-auto">
+        </div>
+
+        <div id="deleteCategoryModal"
+            class="hidden fixed z-30 top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/4 bg-white rounded-lg shadow-lg w-4/5 md:w-3/5 lg:w-2/5 max-h-[75%] overflow-auto ">
+            <div class="bg-blue-500 text-white py-3 px-6 rounded-t-lg">
+                <p class="text-xl font-bold">Delete Category?</p>
+            </div>
+            <div class="text-lg text-center font-normal p-4">
+                <p>You are attempting to delete <span id="categoryName"></span>. Do you want to proceed? All the recipes
+                    inside it will be deleted too.</p>
+            </div>
+            <div class="flex justify-between items-center mt-6 p-6">
+                <button id="deleteCategory"
+                    class="bg-red-500 text-white text-sm px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-red-300 hover:bg-red-700">
+                    Delete
+                </button>
+                <button id="cancelCategoryDeletion"
+                    class="bg-gray-500 text-white text-sm px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-gray-300 hover:bg-gray-700">
+                    Cancel
+                </button>
+            </div>
+            </form>
         </div>
 
     </main>

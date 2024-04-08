@@ -68,6 +68,28 @@
         </div>
     </main>
 
+    <div id="deleteRecipeModal"
+        class="hidden fixed z-30 top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/4 bg-white rounded-lg shadow-lg w-4/5 md:w-3/5 lg:w-2/5 max-h-[75%] overflow-auto ">
+        <div class="bg-blue-500 text-white py-3 px-6 rounded-t-lg">
+            <p class="text-xl font-bold">Delete Recipe?</p>
+        </div>
+        <div class="text-lg text-center font-normal p-4">
+            <p>You are attempting to delete <span id="recipeName"></span>. Do you want to proceed?</p>
+        </div>
+        <div class="flex justify-between items-center mt-6 p-6">
+            <button id="deleteRecipe"
+                class="bg-red-500 text-white text-sm px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-red-300 hover:bg-red-700">
+                Delete
+            </button>
+            <button id="cancelRecipeDeletion"
+                class="bg-gray-500 text-white text-sm px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-gray-300 hover:bg-gray-700"
+                onclick="cancelRecipeDeletion()">
+                Cancel
+            </button>
+        </div>
+        </form>
+    </div>
+
     <!-- our own footer goes here-->
     <nav id="footerPlaceholder"></nav>
 
