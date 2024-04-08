@@ -8,57 +8,95 @@ async function initApp() {
     const uid = await fetchUID();
     if (uid) {
       // User is logged in, now fetch data
-      fetchDataAndDisplayChart();
       fetchAndDisplayTodaysFoodEntries();
       fetchAndDisplayTodaysExerciseEntries();
       checkAndUpdateWeight(uid);
-      const TDEE = await fetchTDEE(uid); // Fetch user's TDEE
-      const goalCalories = TDEE - 500; // Calculate goal calories
-      await renderDonutChart(uid, goalCalories); // Render the donut chart
+      const userData = await fetchUserData(uid); // Fetch user's data including TDEE and goalCalories
+      await renderDonutChart(uid, userData.goalCalories); // Pass goalCalories to renderDonutChart
     }
   } catch (error) {
     console.error("Initialization error:", error);
   }
 }
 
-async function renderDonutChart(uid, goalCalories) {
-  const { caloriesIn, caloriesOut } = await fetchCaloriesInAndOut(uid); // Fetch today's calories in and out
-  const remainingCalories = Math.max(0, goalCalories - caloriesIn); // Calculate remaining calories, ensure it's not negative
+async function fetchUserData(uid) {
+  const userDoc = await db.collection("users").doc(uid).get();
+  if (userDoc.exists) {
+    return userDoc.data(); // Return all user data
+  } else {
+    throw new Error("User data not found");
+  }
+}
 
-  // Prepare chart options
+async function renderDonutChart(uid, goalCalories) {
+  const { caloriesIn, caloriesOut } = await fetchCaloriesInAndOut(uid);
+
+  const netCalories = Math.round(caloriesIn - caloriesOut);
+  const remainingCalories = Math.max(0, Math.round(goalCalories - netCalories));
+
+  let colors, series;
+
+  if (netCalories > goalCalories) {
+    colors = ["#FF6347", "#D3D3D3"]; // Goal surpassed: Highlight with red
+    series = [netCalories, 0]; // Since goal is surpassed, no remaining calories are shown
+  } else {
+    colors = ["#1C64F2", "#D3D3D3"]; // Under or equal to goal: Show net and remaining calories
+    series = [netCalories, remainingCalories];
+  }
+
   const chartOptions = {
-    series: [caloriesIn, remainingCalories],
-    labels: ['Calories In', 'Calories Remaining'],
-    colors: ["#1C64F2", "#FDBA8C"], // Custom colors: Calories In and Calories Remaining
+    series: series,
     chart: {
       type: 'donut',
       height: 320,
+      events: {
+        dataPointSelection: (event, chartContext, config) => {
+          const clickedIndex = config.dataPointIndex;
+          const label = clickedIndex === 0 ? `${netCalories} Net Calories` : `${remainingCalories} Remaining`;
+          chartContext.updateOptions({
+            plotOptions: {
+              pie: {
+                donut: {
+                  labels: {
+                    total: {
+                      formatter: () => label
+                    }
+                  }
+                }
+              }
+            }
+          }, false, true);
+        }
+      }
     },
+    labels: ['Net Calories', 'Remaining Calories'],
+    colors: colors,
     plotOptions: {
       pie: {
+        expandOnClick: false,
         donut: {
           labels: {
             show: true,
             total: {
               showAlways: true,
-              label: 'Total',
-              formatter: () => `${goalCalories - remainingCalories} of ${goalCalories}`
+              label: 'Total Calories',
+              formatter: () => `${remainingCalories} Remaining` // Set "Remaining Calories" as the default label
             }
           }
         }
       }
     },
     legend: {
-      position: "bottom",
+      position: 'bottom',
     },
-    // Include other chart configurations as needed
+    dataLabels: {
+      enabled: false,
+    },
   };
 
-  // Render the chart
-  const chart = new ApexCharts(document.getElementById("donut-chart"), chartOptions);
+  const chart = new ApexCharts(document.querySelector("#donut-chart"), chartOptions);
   chart.render();
 }
-
 async function fetchCaloriesInAndOut(uid) {
   const today = new Date();
   const formattedToday = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
@@ -87,70 +125,6 @@ async function fetchTDEE(uid) {
   const doc = await db.collection("users").doc(uid).get();
   return doc.exists ? doc.data().TDEE : null;
 }
-
-async function fetchDataAndDisplayChart() {
-  try {
-    const uid = await fetchUID();
-
-    // Get a reference to the dailyActivities collection
-    var activitiesRef = db.collection('exercises').doc(uid).collection('dailyActivities');
-    var today = new Date();
-    var formattedToday = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
-
-
-    // Data arrays for the chart
-    var caloriesBurned = [];
-    var times = [];
-
-    // Fetch data from Firebase
-    const activitiesSnapshot = await activitiesRef.get();
-    activitiesSnapshot.forEach(doc => {
-      var data = doc.data();
-      if (formattedToday === data.date) {
-        caloriesBurned.push(Number(data.caloriesBurned));
-        times.push(data.time);
-      }
-    });
-    times.sort()
-
-    // Chart configuration
-    var chartConfig = {
-      type: 'line',
-      data: {
-        labels: times,
-        datasets: [{
-          label: 'Calories Burned Today',
-          data: caloriesBurned,
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          borderColor: 'rgba(255, 99, 132, 1)',
-          borderWidth: 1
-        }]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Calories Burned'
-            }
-          },
-          x: {
-            title: {
-              display: true,
-              text: 'Time'
-            },
-          },
-        }
-      }
-    }
-    // Initialize the chart
-    var dailyCalorieBurntChart = document.getElementById('dailyCalorieBurntChart').getContext('2d');
-    var lineChart = new Chart(dailyCalorieBurntChart, chartConfig)
-  } catch (error) {
-    console.error("Error fetching data:", error)
-  }
-};
 
 async function fetchAndDisplayTodaysFoodEntries() {
   const uid = await fetchUID();
@@ -223,16 +197,13 @@ async function fetchAndDisplayTodaysExerciseEntries() {
         const exerciseEntryDiv = document.createElement('div');
         exerciseEntryDiv.classList.add('py-2', 'border-b', 'border-gray-200', 'last:border-b-0', 'flex', 'justify-between', 'items-center', 'bg-white');
         exerciseEntryDiv.innerHTML = `
-<div>
-  <p class="font-semibold text-green-600">${data.name}</p>
-  <p class="text-sm text-gray-600">Duration: ${data.duration.hour || 0}h ${data.duration.minute || 0}m ${data.duration.second || 0}s</p>
-  <p class="text-sm text-gray-600">Heart Rate: ${data.heartrate} bpm</p>
-</div>
-<p class="font-bold text-xl text-right text-green-600">${data.caloriesBurned} kcal</p>
-`;
-
-
-
+        <div>
+          <p class="font-semibold text-green-600">${data.name}</p>
+          <p class="text-sm text-gray-600">Duration: ${data.duration.hour || 0}h ${data.duration.minute || 0}m ${data.duration.second || 0}s</p>
+          <p class="text-sm text-gray-600">Heart Rate: ${data.heartrate} bpm</p>
+        </div>
+        <p class="font-bold text-xl text-right text-green-600">${data.caloriesBurned} kcal</p>
+        `;
         // Append the new div to the exerciseCardContent
         caloriesBurntCardContent.appendChild(exerciseEntryDiv);
       }
