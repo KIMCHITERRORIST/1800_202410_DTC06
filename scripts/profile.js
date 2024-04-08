@@ -15,6 +15,7 @@ function populateUserInfo() {
           let userHeight = userDoc.data().height;
           let userWeight = userDoc.data().weight;
           let userGender = userDoc.data().gender;
+          let userGoalWeight = userDoc.data().goalWeight;
 
           //if the data fields are not empty, then write them in to the form.
           if (userName != null) {
@@ -29,6 +30,9 @@ function populateUserInfo() {
           }
           if (userWeight != null) {
             document.getElementById("weight").value = userWeight;
+          }
+          if (userGoalWeight != null) {
+            document.getElementById("goalWeight").value = userGoalWeight;
           }
           if (userGender != null) {
             document.getElementById("gender").value = userGender;
@@ -51,6 +55,7 @@ function editUserInfo() {
   document.querySelector('#age').classList.add('ring-2', 'ring-[#ffcc6d]')
   document.querySelector('#weight').classList.add('ring-2', 'ring-[#ffcc6d]')
   document.querySelector('#height').classList.add('ring-2', 'ring-[#ffcc6d]')
+  document.querySelector('#goalWeight').classList.add('ring-2', 'ring-[#ffcc6d]')
   document.querySelector('#gender').classList.add('ring-2', 'ring-[#ffcc6d]')
 }
 
@@ -59,6 +64,7 @@ function saveUserInfo() {
   userAge = document.getElementById('age').value;
   userHeight = document.getElementById('height').value;
   userWeight = document.getElementById('weight').value;
+  userGoalWeight = document.getElementById('goalWeight').value;
   userGender = document.getElementById('gender').value;
 
   currentUser.update({
@@ -66,6 +72,7 @@ function saveUserInfo() {
     age: userAge,
     height: userHeight,
     weight: userWeight,
+    goalWeight: userGoalWeight,
     gender: userGender
   }).then(() => {
     console.log("User info updated");
