@@ -33,61 +33,50 @@ async function renderDonutChart(uid, goalCalories) {
 
   const netCalories = Math.round(caloriesIn - caloriesOut);
   const remainingCalories = Math.max(0, Math.round(goalCalories - netCalories));
-
-  let colors, series;
+  let series, colors, caloriesLabelText;
 
   if (netCalories > goalCalories) {
-    colors = ["#FF6347", "#D3D3D3"]; // Goal surpassed: Highlight with red
-    series = [netCalories, 0]; // Since goal is surpassed, no remaining calories are shown
+    colors = ["#FF6347", "#D3D3D3"];
+    series = [Math.round(netCalories - goalCalories), 0]; // Exceeding calories
+    caloriesLabelText = `${Math.round(netCalories - goalCalories)} Calories Over Goal`; // Displaying rounded exceeded calories
   } else {
-    colors = ["#1C64F2", "#D3D3D3"]; // Under or equal to goal: Show net and remaining calories
+    colors = ["#1C64F2", "#D3D3D3"];
     series = [netCalories, remainingCalories];
+    caloriesLabelText = `${Math.round(remainingCalories)} Calories to Burn`; // Displaying rounded calories to burn
   }
 
   const chartOptions = {
     series: series,
     chart: {
       type: 'donut',
-      height: 320,
-      events: {
-        dataPointSelection: (event, chartContext, config) => {
-          const clickedIndex = config.dataPointIndex;
-          const label = clickedIndex === 0 ? `${netCalories} Net Calories` : `${remainingCalories} Remaining`;
-          chartContext.updateOptions({
-            plotOptions: {
-              pie: {
-                donut: {
-                  labels: {
-                    total: {
-                      formatter: () => label
-                    }
-                  }
-                }
-              }
-            }
-          }, false, true);
-        }
-      }
+      height: 320
     },
-    labels: ['Net Calories', 'Remaining Calories'],
+    labels: ['Calories to Burn', 'Calories Left'], // Changed labels
     colors: colors,
     plotOptions: {
       pie: {
-        expandOnClick: false,
         donut: {
           labels: {
             show: true,
+            name: {
+              show: true,
+              fontSize: '20px',
+              fontFamily: 'Helvetica, Arial, sans-serif',
+              fontWeight: 600,
+            },
             total: {
-              showAlways: true,
-              label: 'Total Calories',
-              formatter: () => `${remainingCalories} Remaining` // Set "Remaining Calories" as the default label
+              showAlways: false,
+              label: 'Total',
+              formatter: function () {
+                return caloriesLabelText; // Updated formatter for dynamic label
+              }
             }
           }
         }
       }
     },
     legend: {
-      position: 'bottom',
+      show: false,
     },
     dataLabels: {
       enabled: false,
@@ -96,7 +85,10 @@ async function renderDonutChart(uid, goalCalories) {
 
   const chart = new ApexCharts(document.querySelector("#donut-chart"), chartOptions);
   chart.render();
-}
+};
+
+
+// gets calories in and out for the day to do calculations for graph
 async function fetchCaloriesInAndOut(uid) {
   const today = new Date();
   const formattedToday = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
@@ -108,6 +100,7 @@ async function fetchCaloriesInAndOut(uid) {
     return { caloriesIn: 0, caloriesOut: 0 }; // Default if no entry for today
   }
 }
+
 // Fetch UID function 
 async function fetchUID() {
   return new Promise((resolve, reject) => {
@@ -121,11 +114,13 @@ async function fetchUID() {
   });
 }
 
+// Fetch TDEE function for calculations
 async function fetchTDEE(uid) {
   const doc = await db.collection("users").doc(uid).get();
   return doc.exists ? doc.data().TDEE : null;
 }
 
+// Fetch goal calories function for calculations
 async function fetchAndDisplayTodaysFoodEntries() {
   const uid = await fetchUID();
   const today = new Date();

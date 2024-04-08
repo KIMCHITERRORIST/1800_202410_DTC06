@@ -43,12 +43,12 @@ function fetchAndDisplayIngredients(uid) {
                 const ingredient = ingredientNames[ingredientName];
                 // Assuming openAmountModal is a function you've defined to handle clicks.
                 var ingredientCardHTML = `
-                <div id="${ingredientName}" class="ingredient-card flex w-full mx-auto border-2 border-gray-300 shadow-lg rounded-lg mt-4 mb-6 p-4 items-center justify-between bg-white hover:bg-gray-50 transition-colors" onclick="openEditIngredientModal('${ingredientName}')">
-                    <div class="flex-1">
-                        <p class="text-xl font-bold mb-2 text-gray-800">${ingredientName}</p>
-                        <p class="text-sm text-gray-600">${ingredient.protein}g Protein | ${ingredient.carbs}g Carbs | ${ingredient.fat}g Fat | ${ingredient.calories} kcal</p>
-                    </div>
-                </div>`;
+    <div id="${ingredientName}" data-ingredient-name="${ingredientName.toLowerCase()}" class="ingredient-card flex w-full mx-auto border-2 border-gray-300 shadow-lg rounded-lg mt-4 mb-6 p-4 items-center justify-between bg-white hover:bg-gray-50 transition-colors" onclick="openEditIngredientModal('${ingredientName}')">
+        <div class="flex-1">
+            <p class="text-xl font-bold mb-2 text-gray-800">${ingredientName}</p>
+            <p class="text-sm text-gray-600">${ingredient.protein}g Protein | ${ingredient.carbs}g Carbs | ${ingredient.fat}g Fat | ${ingredient.calories} kcal</p>
+        </div>
+    </div>`;
                 ingredientsContainer.insertAdjacentHTML('afterbegin', ingredientCardHTML);
             });
         } else {
