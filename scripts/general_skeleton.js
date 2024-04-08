@@ -38,13 +38,11 @@ function loadSkeleton() {
     const closeQuickAddMenu = document.getElementById("closeQuickAddMenu");
 
     // Event listener for Home button
-    if (homeBtn) {
       homeBtn.addEventListener("click", () => {
         console.log("Redirecting to Home Page...");
         // Code to redirect to Home Page
         window.location.href = "../overview.html";
       });
-    } else { console.log("Home button not found"); }
 
     // Open menu
     plusBtn.addEventListener("click", () => {
@@ -306,25 +304,27 @@ function closeAddNewCategoryModal() {
 // -----------Functions related to Add Quick Meal Modal-------------//
 //------------------------------------------------------------------//
 function loadAddQuickMealModalandOpen() {
-  $('#add_quick_meal_modal_container').load('main_modals/quick_add_meal_modal.html', function () {
-    const quickAddMenu = document.getElementById("quickAddMenu");
-    const quickAddMenuBg = document.getElementById("quickAddMenuBackground");
-    quickAddMenu.classList.add("hidden");
-    quickAddMenuBg.classList.add("hidden");
-    openAddQuickMealModal(); // Open Add Quick meal modal
+    $('#add_quick_meal_modal_container').load('main_modals/quick_add_meal_modal.html', function () {
+        const quickAddMenu = document.getElementById("quickAddMenu");
+        const quickAddMenuBg = document.getElementById("quickAddMenuBackground");
+        quickAddMenu.classList.add("hidden");
+        quickAddMenuBg.classList.add("hidden");
+        openAddQuickMealModal(); // Open Add Quick meal modal
 
-    // Event listeners for Add Quick Meal modal
-    document.getElementById('close_add_quick_meal_modal').addEventListener('click',
-      closeAddQuickMealModal);
+        // Event listeners for Add Quick Meal modal
+        document.getElementById('close_add_quick_meal_modal').addEventListener('click', closeAddQuickMealModal);
 
-    const addNewIngredientButton = document.getElementById('addQuickMealButton');
-    addNewIngredientButton.addEventListener('click', function (saveData) {
-      saveData.preventDefault(); // Prevent the default form submission
-      LogQuickMealInDB();
+        const addQuickMealButton = document.getElementById('addQuickMealButton');
+        if(addQuickMealButton) {
+            addQuickMealButton.addEventListener('click', function (saveData) {
+                saveData.preventDefault(); // Prevent the default form submission
+                LogQuickMealInDB();
+            });
+        } else {
+            console.log('addQuickMealButton not found');
+        }
     });
-  }
-  )
-};
+}
 
 // Open Add Quick Meal modal
 function openAddQuickMealModal() {
