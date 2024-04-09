@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
   initApp();
 
   // Modal button event listeners
-  document.getElementById('okBtn')?.addEventListener('click', () => closeModal('congratulationsModal'));
+  document.getElementById('okBtn')?.addEventListener('click', () => closeModal('congratulationsModal') || window.location.reload());
   document.getElementById('noAdjustBtn')?.addEventListener('click', () => closeModal('goalAdjustmentModal'));
   document.getElementById('yesAdjustBtn')?.addEventListener('click', async () => {
     await adjustGoalCalories(); // Ensure this function exists and implements the adjustment logic
@@ -300,7 +300,7 @@ function showModalToUpdateWeight() {
 
 async function handleWeightUpdate() {
   const uid = await fetchUID();
-  const currentWeight = parseFloat(document.getElementById('currentWeight').value); // Get the user input weight
+  const currentWeight = parseFloat(document.getElementById('currentWeight').value).toFixed(1); // Get the user input weight
   const userRef = db.collection("users").doc(uid);
   const doc = await userRef.get();
 
@@ -319,7 +319,8 @@ async function handleWeightUpdate() {
     // Update the date of the weight check to avoid asking repeatedly
     const today = new Date();
     await userRef.update({
-      Date: today
+      Date: today,
+      weight: Number(currentWeight)
     });
   } else {
     console.error("No user document found.");
