@@ -119,7 +119,7 @@ function addRecipeToCalories(uid) {
                 const recipeData = recipeDoc.data();
                 console.log("Recipe data under recipe doc data NEW:", recipeData);
                 const currentDate = new Date();
-                const dateString = currentDate.toISOString().split('T')[0];
+                const dateString = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}`
                 const hours = currentDate.getHours();
                 const minutes = currentDate.getMinutes();
                 const ampm = hours >= 12 ? 'PM' : 'AM';

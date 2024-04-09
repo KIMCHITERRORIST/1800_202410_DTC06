@@ -547,6 +547,8 @@ async function LogQuickMealInDB() {
     }
   }, { merge: true }).then(() => {
     alert(`${mealName} of ${calories} is added to Meals successfully.`);
+    document.getElementById('add_quick_meal_modal').classList.add('hidden');
+    window.location.reload();
   }).catch(error => {
     console.error("Error adding recipe to Calories:", error);
   });
