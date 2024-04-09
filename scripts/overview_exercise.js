@@ -1,6 +1,13 @@
 document.addEventListener('DOMContentLoaded', function () {
-  // Initialize all functions that need the DOM to be fully loaded.
   initApp();
+
+  // Modal button event listeners
+  document.getElementById('okBtn')?.addEventListener('click', () => closeModal('congratulationsModal'));
+  document.getElementById('noAdjustBtn')?.addEventListener('click', () => closeModal('goalAdjustmentModal'));
+  document.getElementById('yesAdjustBtn')?.addEventListener('click', async () => {
+    await adjustGoalCalories(); // Ensure this function exists and implements the adjustment logic
+    closeModal('goalAdjustmentModal');
+  });
 });
 
 async function initApp() {
@@ -10,6 +17,7 @@ async function initApp() {
       // User is logged in, now fetch data
       fetchAndDisplayTodaysFoodEntries();
       fetchAndDisplayTodaysExerciseEntries();
+      checkAndUpdateWeight(uid);
       const userData = await fetchUserData(uid); // Fetch user's data including TDEE and goalCalories
       await renderDonutChart(uid, userData.goalCalories); // Pass goalCalories to renderDonutChart
     }
@@ -32,16 +40,20 @@ async function renderDonutChart(uid, goalCalories) {
 
   const netCalories = Math.round(caloriesIn - caloriesOut);
   const remainingCalories = Math.max(0, Math.round(goalCalories - netCalories));
-  let series, colors, caloriesLabelText;
+  let series, colors, labels, caloriesLabelText;
 
   if (netCalories > goalCalories) {
+    // Situation where goal calories are exceeded
     colors = ["#FF6347", "#D3D3D3"];
-    series = [Math.round(netCalories - goalCalories), 0]; // Exceeding calories
-    caloriesLabelText = `${Math.round(netCalories - goalCalories)} Calories Over Goal`; // Displaying rounded exceeded calories
+    series = [Math.round(netCalories - goalCalories), 0]; // Only show exceeded part
+    labels = ['Calories to burn', '']; // Only relevant label is for exceeded calories
+    caloriesLabelText = `${Math.round(netCalories - goalCalories)} Calories Over Goal`;
   } else {
+    // Normal situation (goal not exceeded)
     colors = ["#1C64F2", "#D3D3D3"];
     series = [netCalories, remainingCalories];
-    caloriesLabelText = `${Math.round(remainingCalories)} Calories to Burn`; // Displaying rounded calories to burn
+    labels = ['Net Calories', 'Remaining Calories']; // Showing both net and remaining calories
+    caloriesLabelText = netCalories <= goalCalories ? `${Math.round(remainingCalories)} Calories Remaining` : `${Math.round(netCalories)} Net Calories`;
   }
 
   const chartOptions = {
@@ -50,7 +62,7 @@ async function renderDonutChart(uid, goalCalories) {
       type: 'donut',
       height: 320
     },
-    labels: ['Calories to Burn', 'Calories Left'], // Changed labels
+    labels: labels, // Use dynamic labels based on situation
     colors: colors,
     plotOptions: {
       pie: {
@@ -59,7 +71,7 @@ async function renderDonutChart(uid, goalCalories) {
             show: true,
             name: {
               show: true,
-              fontSize: '20px',
+              fontSize: '18px',
               fontFamily: 'Helvetica, Arial, sans-serif',
               fontWeight: 600,
             },
@@ -67,7 +79,7 @@ async function renderDonutChart(uid, goalCalories) {
               showAlways: false,
               label: 'Total',
               formatter: function () {
-                return caloriesLabelText; // Updated formatter for dynamic label
+                return caloriesLabelText; // Dynamic label text based on the situation
               }
             }
           }
@@ -84,7 +96,7 @@ async function renderDonutChart(uid, goalCalories) {
 
   const chart = new ApexCharts(document.querySelector("#donut-chart"), chartOptions);
   chart.render();
-};
+}
 
 
 // gets calories in and out for the day to do calculations for graph
@@ -262,62 +274,92 @@ document.getElementById('cardHeaderCaloriesBurnt').addEventListener('click', fun
   }
 });
 
-async function updateWeightAndCalories() {
-  // Prevent default form submission behavior if called within a form
-  if (event) event.preventDefault();
+async function checkAndUpdateWeight(uid) {
+  const userDoc = await db.collection("users").doc(uid).get();
+  if (userDoc.exists) {
+    const userData = userDoc.data();
+    if (userData.Date) {
+      const lastUpdate = userData.Date.toDate(); // Convert Firestore timestamp to JavaScript Date object
+      const today = new Date();
+      const oneWeekAgo = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
 
-  const newWeight = parseFloat(document.getElementById('updateWeightValue').value);
-  if (isNaN(newWeight) || newWeight <= 0) {
-    showMessageModal('Invalid Input', 'Please enter a valid weight.');
-    return;
-  }
-
-  try {
-    const uid = await fetchUID();
-    const userRef = db.collection('users').doc(uid);
-
-    const userData = await userRef.get();
-    if (!userData.exists) {
-      console.log('No user data found.');
-      return;
+      if (lastUpdate < oneWeekAgo) {
+        // A week has passed since the last update
+        showModalToUpdateWeight(); // Implement this function to show your modal
+      }
     }
+  } else {
+    console.error("No user document found or no weight update date available.");
+  }
+}
 
-    const currentWeight = userData.data().weight;
-    const goalCalories = userData.data().goalCalories;
+function showModalToUpdateWeight() {
+  // Display the modal to the user
+  document.getElementById('weightUpdateModal').classList.remove('hidden');
+}
 
-    if (newWeight < currentWeight) {
-      // Congratulate for weight loss
-      showMessageModal('Success', 'Congratulations on losing weight!');
-      // Update the weight in Firestore without changing goalCalories
-      await userRef.update({ weight: newWeight });
-    } else if (newWeight === currentWeight) {
-      // Offer to reduce daily calories with a custom confirmation modal
-      // For simplicity, replacing the confirm() dialog with a direct call to showMessageModal()
-      // In practice, you might implement a custom modal for confirmations
-      await userRef.update({ goalCalories: goalCalories - 100 });
-      showMessageModal('Calories Update', 'Your daily calories have been reduced by 100.');
+async function handleWeightUpdate() {
+  const uid = await fetchUID();
+  const currentWeight = parseFloat(document.getElementById('currentWeight').value); // Get the user input weight
+  const userRef = db.collection("users").doc(uid);
+  const doc = await userRef.get();
+
+  if (doc.exists) {
+    const userData = doc.data();
+    const previousWeight = userData.weight;
+
+    // If the current weight is greater than or equal to the previous weight, ask about adjusting goal calories
+    if (currentWeight >= previousWeight) {
+      showModal('goalAdjustmentModal'); // Show the modal to ask the user
     } else {
-      // Automatically reduce daily calories for weight gain
-      await userRef.update({
-        weight: newWeight,
-        goalCalories: goalCalories - 200 // Reduce goalCalories by 200
-      });
-      showMessageModal('Adjustment', 'We will adjust your calories intake to match your unique metabolism.');
+      // If the user has lost weight, congratulate them
+      showModal('congratulationsModal');
     }
 
-  } catch (error) {
-    console.error('Error updating weight and calories:', error);
-    showMessageModal('Error', 'Error updating weight and calories. Please try again.');
+    // Update the date of the weight check to avoid asking repeatedly
+    const today = new Date();
+    await userRef.update({
+      Date: today
+    });
+  } else {
+    console.error("No user document found.");
   }
 }
 
-function showMessageModal(title, content) {
-  document.getElementById('modalMessageTitle').textContent = title;
-  document.getElementById('modalMessageContent').textContent = content;
-  document.getElementById('messageModal').classList.remove('hidden');
-}
+document.getElementById('yesAdjustBtn').addEventListener('click', async () => {
+  const uid = await fetchUID();
+  const userRef = db.collection("users").doc(uid);
+  const doc = await userRef.get();
 
-document.getElementById('closeMessageModal').addEventListener('click', function () {
-  document.getElementById('messageModal').classList.add('hidden');
+  if (doc.exists) {
+    let userData = doc.data();
+    let currentWeight = parseFloat(document.getElementById('currentWeight').value); // Assuming this is the latest weight input by the user
+    let previousWeight = userData.weight; // The last recorded weight
+    let newGoalCalories = userData.goalCalories;
+
+    // Adjust goal calories based on weight change
+    if (currentWeight > previousWeight) {
+      // User gained weight, adjust goal calories more aggressively
+      newGoalCalories -= 200;
+    } else if (currentWeight === previousWeight) {
+      // No weight change, adjust goal calories less aggressively
+      newGoalCalories -= 100;
+    }
+
+    // Update the user's goal calories in Firestore
+    await userRef.update({ goalCalories: newGoalCalories });
+
+    // Close the modal and refresh the page to reflect the changes
+    closeModal('goalAdjustmentModal'); // This function now only hides the modal without reloading
+    window.location.reload(); // Reload the page
+  }
 });
 
+function showModal(modalId) {
+  document.getElementById(modalId).classList.remove('hidden');
+}
+
+function closeModal(modalId) {
+  document.getElementById(modalId).classList.add('hidden')
+  window;
+}

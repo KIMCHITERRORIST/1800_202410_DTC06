@@ -56,10 +56,10 @@ document.getElementById("user-info-form").addEventListener("submit", function (e
     let goalCalories;
     if (goalWeightNumber < weight) {
       // If goal weight is less, user aims to lose weight, create a deficit of 500 calories
-      goalCalories = TDEE - 500;
+      goalCalories = TDEE - 400;
     } else if (goalWeightNumber > weight) {
       // If goal weight is more, user aims to gain weight, add a surplus of 500 calories
-      goalCalories = TDEE + 500;
+      goalCalories = TDEE + 400;
     } else {
       // If goal weight is equal to current weight, maintain the current TDEE
       goalCalories = TDEE;
