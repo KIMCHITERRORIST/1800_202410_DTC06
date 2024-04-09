@@ -170,6 +170,7 @@ async function fetchAndDisplayTodaysFoodEntries() {
   });
 }
 
+
 async function fetchAndDisplayTodaysExerciseEntries() {
   const uid = await fetchUID(); // Use the UID of the currently logged-in user
   const today = new Date();

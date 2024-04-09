@@ -38,11 +38,11 @@ function loadSkeleton() {
     const closeQuickAddMenu = document.getElementById("closeQuickAddMenu");
 
     // Event listener for Home button
-      homeBtn.addEventListener("click", () => {
-        console.log("Redirecting to Home Page...");
-        // Code to redirect to Home Page
-        window.location.href = "../overview.html";
-      });
+    homeBtn.addEventListener("click", () => {
+      console.log("Redirecting to Home Page...");
+      // Code to redirect to Home Page
+      window.location.href = "../overview.html";
+    });
 
     // Open menu
     plusBtn.addEventListener("click", () => {
@@ -304,26 +304,26 @@ function closeAddNewCategoryModal() {
 // -----------Functions related to Add Quick Meal Modal-------------//
 //------------------------------------------------------------------//
 function loadAddQuickMealModalandOpen() {
-    $('#add_quick_meal_modal_container').load('main_modals/quick_add_meal_modal.html', function () {
-        const quickAddMenu = document.getElementById("quickAddMenu");
-        const quickAddMenuBg = document.getElementById("quickAddMenuBackground");
-        quickAddMenu.classList.add("hidden");
-        quickAddMenuBg.classList.add("hidden");
-        openAddQuickMealModal(); // Open Add Quick meal modal
+  $('#add_quick_meal_modal_container').load('main_modals/quick_add_meal_modal.html', function () {
+    const quickAddMenu = document.getElementById("quickAddMenu");
+    const quickAddMenuBg = document.getElementById("quickAddMenuBackground");
+    quickAddMenu.classList.add("hidden");
+    quickAddMenuBg.classList.add("hidden");
+    openAddQuickMealModal(); // Open Add Quick meal modal
 
-        // Event listeners for Add Quick Meal modal
-        document.getElementById('close_add_quick_meal_modal').addEventListener('click', closeAddQuickMealModal);
+    // Event listeners for Add Quick Meal modal
+    document.getElementById('close_add_quick_meal_modal').addEventListener('click', closeAddQuickMealModal);
 
-        const addQuickMealButton = document.getElementById('addQuickMealButton');
-        if(addQuickMealButton) {
-            addQuickMealButton.addEventListener('click', function (saveData) {
-                saveData.preventDefault(); // Prevent the default form submission
-                LogQuickMealInDB();
-            });
-        } else {
-            console.log('addQuickMealButton not found');
-        }
-    });
+    const addQuickMealButton = document.getElementById('addQuickMealButton');
+    if (addQuickMealButton) {
+      addQuickMealButton.addEventListener('click', function (saveData) {
+        saveData.preventDefault(); // Prevent the default form submission
+        LogQuickMealInDB();
+      });
+    } else {
+      console.log('addQuickMealButton not found');
+    }
+  });
 }
 
 // Open Add Quick Meal modal
@@ -545,7 +545,7 @@ async function LogQuickMealInDB() {
   const uid = await fetchUID();
   const mealName = document.getElementById('mealName').value.trim();
   const currentDate = new Date();
-  const dateString = currentDate.toISOString().split('T')[0];
+  const dateString = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}`;
   const hours = currentDate.getHours();
   const minutes = currentDate.getMinutes();
   const ampm = hours >= 12 ? 'PM' : 'AM';
