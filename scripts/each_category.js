@@ -50,6 +50,10 @@ function displayRecipeInfo(uid, recipeCategory) {
     .catch((error) => {
       console.error("Error fetching recipes:", error);
     });
+  document.getElementById(`${recipeDocument.id}`).addEventListener("click", function (event) {
+    event.preventDefault();
+    showDeleteConfirmationModal(recipeDocument.id, recipeCategory)
+  })
 }
 
 async function showDeleteConfirmationModal(recipeID, recipeCategory) {
