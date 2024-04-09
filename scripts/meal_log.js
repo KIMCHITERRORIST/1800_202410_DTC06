@@ -103,8 +103,6 @@ async function openEditMealModal(mealName) {
     document.getElementById('editCarbs').value = recipeData[mealName].carbs;
     document.getElementById('editFat').value = recipeData[mealName].fats;
     document.getElementById('editCalories').value = recipeData[mealName].calories;
-    document.getElementById('date').value = recipeData[mealName].date;
-    document.getElementById('time').value = recipeData[mealName].time;
 
     // Unhide the modal
     document.getElementById('editMealModal').classList.remove('hidden');
@@ -119,8 +117,6 @@ async function saveMealChanges() {
   const newcarbs = Number(document.getElementById('editCarbs').value)
   const newfat = Number(document.getElementById('editFat').value)
   const newcalories = Number(document.getElementById('editCalories').value)
-  const date = document.getElementById('date').value;
-  const time = document.getElementById('time').value;
 
 
   console.log(newMealName, newprotein, newcarbs, newfat, newcalories);
@@ -131,8 +127,6 @@ async function saveMealChanges() {
       carbs: newcarbs,
       fats: newfat,
       calories: newcalories,
-      date: date,
-      time: time
     }
   }).then(() => {
     console.log("Document successfully updated!");
