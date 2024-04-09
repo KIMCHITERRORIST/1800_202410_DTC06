@@ -1,12 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
   fetchAndDisplayUserActivities();
   document.getElementById('saveExerciseChanges').addEventListener('click', () => {
-    confirm("Are you sure you want to save changes?");
-    saveActivityChanges();
+    saveActivityChanges()
   });
   document.getElementById('deleteExercise').addEventListener('click', () => {
-    confirm("Are you sure you want to delete this activity?");
-    deleteActivity();
+    deleteActivity()
   }
   );
 });
@@ -106,6 +104,7 @@ async function openEditModal(activityId) {
       document.getElementById('editActivityId').value = activityId;
       document.getElementById('editExerciseName').value = activity.name;
       document.getElementById('editHeartRate').value = activity.heartrate;
+      document.getElementById('editCaloriesBurned').value = activity.caloriesBurned;
 
       // Format and set the duration in the modal
       const duration = activity.duration;
@@ -129,58 +128,33 @@ async function saveActivityChanges() {
   const activityId = document.getElementById('editActivityId').value;
   const newName = document.getElementById('editExerciseName').value;
   const newHeartRate = document.getElementById('editHeartRate').value;
-  const newTime = document.getElementById('editExerciseDuration').value; // Get new time value
 
-  // Parse the new time into hours, minutes, and seconds
-  const [newHour, newMinute, newSecond] = newTime.split(':').map(Number);
+  // Get the new duration values
+  const newDuration = document.getElementById('editExerciseDuration').value;
+  const [newHour, newMinute, newSecond] = newDuration.split(':').map(Number);
 
-  // Calculate the total duration in seconds
-  const newTotalSeconds = (newHour * 3600) + (newMinute * 60) + newSecond;
+  // Get the new calories burned value
+  const newCaloriesBurned = document.getElementById('editCaloriesBurned').value;
 
-  // Convert the total duration back to hours, minutes, and seconds
-  const newHourAdjusted = Math.floor(newTotalSeconds / 3600);
-  const newMinuteAdjusted = Math.floor((newTotalSeconds % 3600) / 60);
-  const newSecondAdjusted = newTotalSeconds % 60;
-  const newCaloriesBurned = await calculateCaloriesBurned(uid, newHourAdjusted, newMinuteAdjusted, newSecondAdjusted,
-    newHeartRate);
-
+  // Reference to the specific activity document
   const activityRef = db.collection("exercises").doc(uid).collection("dailyActivities").doc(activityId);
+
   await activityRef.update({
     name: newName,
     heartrate: newHeartRate,
-    caloriesBurned: newCaloriesBurned,
-    // Update time with the new values
     duration: {
-      hour: newHourAdjusted,
-      minute: newMinuteAdjusted,
-      second: newSecondAdjusted
-    }
+      hour: newHour,
+      minute: newMinute,
+      second: newSecond
+    },
+    caloriesBurned: parseInt(newCaloriesBurned, 10) // Ensure this is saved as a number
   });
 
+  // After saving the changes, hide the modal and possibly refresh the data shown on the page
   document.getElementById('editExerciseModal').classList.add('hidden');
-  window.location.reload();
+  window.location.reload(); // Refresh the page to show the updated list of activities
 }
 
-// Function to recalculate calories burned
-async function calculateCaloriesBurned(uid, hour, minute, second, heartrate) {
-  let caloriesBurned = 0;
-  const userData = await db.collection('users').doc(uid).get();
-  const gender = userData.data().gender;
-  const age = userData.data().age;
-  const weight = userData.data().weight;
-  const timeInMinutes = (Number(hour) * 60) + Number(minute) + (Number(second) / 60);
-
-  if (gender === "female") {
-    // Calculates calories burned depending on average heart rate and user's info
-    caloriesBurned = Math.round(Number(timeInMinutes * ((-10 + (0.45 * Number(heartrate)) - (0.1263 * weight) + (0.075 *
-      age)) / 4.184)));
-  } else if (gender === "male") {
-    // Calculates calories burned depending on average heart rate and user's info
-    caloriesBurned = Math.round(Number(timeInMinutes * ((-25 + (0.635 * Number(heartrate)) - (0.1988 * weight) + (0.202 *
-      age)) / 4.184)));
-  }
-  return caloriesBurned;
-}
 
 
 // Function to delete an activity
