@@ -1,3 +1,4 @@
+// Store the activity levels and its respective index to do the calculations with
 const activityLevels = {
     "1.2": "Sedentary (little or no exercise, desk job)",
     "1.375": "Lightly active (light exercise/sports 1-3 days/week)",
@@ -6,22 +7,25 @@ const activityLevels = {
     "1.9": "Extra active (hard exercise 2 or more times per day)"
 };
 
-// Wait for the Firebase auth to initialize and check user state
+
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
+        // User is signed in and run other functions
         console.log("User is signed in.", user.uid);
-        fetchAndDisplayUserData(user.uid);
+        fetchAndDisplayUserData(user.uid); // Fetch and display user data
     } else {
         // No user is signed in.
         console.log("No user is signed in.");
     }
 });
 
+// Function to fetch and display user data
 function fetchAndDisplayUserData(uid) {
     db.collection("users").doc(uid).get().then((doc) => {
         if (doc.exists) {
             console.log("Document data:", doc.data());
             const userData = doc.data();
+            // Display fetched user data in the page
             document.getElementById("currentWeight").textContent = userData.weight + ' kg';
             document.getElementById("activityLevelText").textContent = activityLevels[userData.activityLevel];
         } else {
@@ -32,6 +36,7 @@ function fetchAndDisplayUserData(uid) {
     });
 }
 
+// Add event listener to the set goal button to set the goal weight and date
 document.getElementById("setGoal").addEventListener("click", function () {
     const user = firebase.auth().currentUser;
     if (user) {
@@ -41,6 +46,7 @@ document.getElementById("setGoal").addEventListener("click", function () {
         console.log("Setting goal:", goalWeight, goalDate);
 
         if (goalWeight && goalDate) {
+            // save the goals to the database
             db.collection("users").doc(user.uid).update({
                 goalWeight: Number(goalWeight),
                 goalDate: goalDate
@@ -53,26 +59,27 @@ document.getElementById("setGoal").addEventListener("click", function () {
     }
 });
 
-// Function to show the modal
+// Function to show the activity level modal
 function showModal(show) {
     document.getElementById("activityLevelModal").style.display = show ? "block" : "none";
 }
 
-// Trigger to open the modal
+// Trigger to open the activity level modal
 document.getElementById("activityLevelText").addEventListener("click", function () {
     showModal(true);
 });
 
-// Cancel button inside modal
+// Cancel button inside activity level modal
 document.getElementById("closeModal").addEventListener("click", function () {
     showModal(false);
 });
 
-// Save button inside modal
+// Save button inside activity level modal
 document.getElementById("saveActivityLevel").addEventListener("click", function () {
     const user = firebase.auth().currentUser;
     const newActivityLevel = document.getElementById("newActivityLevel").value;
 
+    // Update the activity level in the database
     if (user) {
         db.collection("users").doc(user.uid).update({
             activityLevel: newActivityLevel

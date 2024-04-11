@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   firebase.auth().onAuthStateChanged(user => {
     if (user) {
+      // User is signed in, fetch user ID and run other functions
       const uid = user.uid;
       const recipeCategory = localStorage.getItem('selectedCategory');
       if (recipeCategory) {
@@ -8,12 +9,15 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       displayRecipeInfo(uid, recipeCategory);
     } else {
+      // No user is signed in. Redirect to login page
       console.error('User is not logged in.');
       window.location.href = 'login.html';
     }
   });
 });
 
+
+//function to display recipe info
 function displayRecipeInfo(uid, recipeCategory) {
   db.collection('Recipes')
     .doc(uid)
@@ -24,7 +28,7 @@ function displayRecipeInfo(uid, recipeCategory) {
       recipesContainer.innerHTML = ""; // Clear the container before adding new recipes because it is repeated
       querySnapshot.forEach((recipeDocument) => {
         if (recipeDocument.id === "count") {
-          return;
+          return; // Skip the count document
         }
         var recipeData = recipeDocument.data()
         var recipeCardHTML = `
@@ -50,14 +54,18 @@ function displayRecipeInfo(uid, recipeCategory) {
     .catch((error) => {
       console.error("Error fetching recipes:", error);
     });
+
+  // Add event listener to the div element to show delete confirmation modal when clicked
   document.getElementById(`${recipeDocument.id}`).addEventListener("click", function (event) {
     event.preventDefault();
     showDeleteConfirmationModal(recipeDocument.id, recipeCategory)
   })
 }
 
+
+//function to show delete confirmation modal
 async function showDeleteConfirmationModal(recipeID, recipeCategory) {
-  console.log("Recipe ID: ", recipeID, "Recipe Category: ", recipeCategory)
+
   const uid = firebase.auth().currentUser.uid;
   const recipeRef = await db.collection('Recipes').doc(uid).collection(recipeCategory).doc(recipeID).get();
   document.getElementById("recipeName").innerText = recipeRef.data().name;
@@ -71,6 +79,8 @@ async function showDeleteConfirmationModal(recipeID, recipeCategory) {
   });
 }
 
+
+//function to delete recipe
 async function deleteRecipe(recipeID, recipeCategory) {
   try {
     const uid = firebase.auth().currentUser.uid;
@@ -78,7 +88,7 @@ async function deleteRecipe(recipeID, recipeCategory) {
       .doc(uid)
       .collection(recipeCategory)
       .doc(recipeID)
-      .delete();
+      .delete(); // Delete the recipe document
     console.log("Recipe deleted successfully!");
     await db.collection('Recipes').doc(uid).collection(recipeCategory).doc("count").update({
       count: firebase.firestore.FieldValue.increment(-1)
@@ -90,15 +100,16 @@ async function deleteRecipe(recipeID, recipeCategory) {
   }
 }
 
+
+//function to cancel recipe deletion
 function cancelRecipeDeletion() {
   const modal = document.getElementById("deleteRecipeModal");
   modal.classList.add("hidden");
 }
 
 
-
 //function when you click on view recipe
 function viewRecipeDetails(recipeName) {
-  localStorage.setItem('selectedRecipe', recipeName);
-  window.location.href = '/each_recipe.html';
+  localStorage.setItem('selectedRecipe', recipeName); // Store the selected recipe name in local storage
+  window.location.href = '/each_recipe.html'; // Redirect to each_recipe.html
 }

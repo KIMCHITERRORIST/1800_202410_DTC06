@@ -1,7 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-  //   document.querySelector('#chooseIngredientsDiv').addEventListener('click', loadIngredients);
-  // });
-
   // Fetch UID function
   async function fetchUID() {
     return new Promise((resolve, reject) => {
@@ -15,18 +12,22 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // Display the recipe information
   async function displayRecipeInfo() {
     try {
-      const uid = await fetchUID();
+      const uid = await fetchUID(); // Fetch the user's UID
+      // Get the selected category and recipe from local storage
       const categoryID = localStorage.getItem('selectedCategory');
       const recipeID = localStorage.getItem('selectedRecipe');
       console.log(recipeID);
 
+      // Fetch the recipe document from Database
       const recipeDocRef = await db.collection("Recipes").doc(uid).collection(categoryID).get();
       recipeDocRef.docs.forEach(docRecipe => {
         if (docRecipe.data().name === recipeID && docRecipe.exists) {
           const doc = docRecipe.data();
 
+          // Set the recipe information in the page
           document.getElementById("recipeName").innerText = recipeID;
           document.getElementById("calories").innerText = doc.calories;
           document.getElementById("protein").innerText = doc.protein;
@@ -36,6 +37,8 @@ document.addEventListener('DOMContentLoaded', function () {
           let ingredientsContainer = document.getElementById("ingredientsContainer");
           // Clear existing content
           ingredientsContainer.innerHTML = '';
+
+          // Iterate over each ingredient key-value pairs in the recipe
           Object.keys(doc.ingredients).forEach(ingredientName => {
             const ingredientDetails = doc.ingredients[ingredientName];
 
@@ -117,27 +120,3 @@ function submitIngredientName() {
     window.location.href = 'login.html';
   }
 }
-
-
-// // display the ingredients inside the modal
-// async function loadIngredients() {
-//   try {
-//     const uid = await fetchUID();
-//     const ingredientsRef = db.collection('ingredients').doc(uid);
-//     const snapshot = await ingredientsRef.get();
-
-//     if (snapshot.exists) {
-//       const ingredients = snapshot.data();
-//       const ingredientList = document.getElementById('ingredientList');
-//       ingredientList.innerHTML = ''; // Clear current list
-
-//       Object.keys(ingredients).forEach(key => {
-//         // For each ingredient, create a list item or similar element
-//         const ingredientElement = `<div class="ingredient-item p-2 hover:bg-gray-200 cursor-pointer" onclick="addIngredientToList('${key}')">${key}</div>`;
-//         ingredientList.insertAdjacentHTML('beforeend', ingredientElement);
-//       });
-//     }
-//   } catch (error) {
-//     console.error("Error loading ingredients:", error);
-//   }
-// }

@@ -1,41 +1,47 @@
-<!-- Menu Background -->
+<!-- Quick Add Menu Background -->
 <div id="quickAddMenuBackground" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-screen">
 </div>
 
-<!-- Menu -->
+<!-- Quick Add Menu -->
 <div id="quickAddMenu"
   class="hidden fixed top-[15%] left-[10%] right-[10%] md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2  bg-white rounded shadow-lg p-4 z-50 max-w-fit">
   <ul class="menu flex flex-col bg-white max-w-fit rounded-box">
+
     <!-- Add Ingredient modal toggle -->
     <button id="open_add_ingredient_modal"
       class="mb-3 block bg-slate-100 hover:bg-slate-200 shadow-md focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
       type="button">
       Add New Ingredient To Food Library
     </button>
+
     <!-- Add Recipe modal toggle -->
     <button id="open_add_new_recipe_modal"
       class="mb-3 block bg-slate-100 hover:bg-slate-200 shadow-md focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
       type="button">
       Add New Recipe To Food Library
     </button>
+
     <!-- Add New category modal toggle -->
     <button id="open_add_new_category_modal"
       class="mb-3 block bg-slate-100 hover:bg-slate-200 shadow-md focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
       type="button">
       Add New Category To Food Library
     </button>
+
     <!-- Add meal-->
     <button id="open_add_new_meal_modal"
       class="mb-3 block bg-slate-100 hover:bg-slate-200 shadow-md focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
       type="button" onclick="reconnectAddMeal()">
       Record Your Meal
     </button>
+
     <!-- Add quick meal-->
     <button id="open_add_quick_meal_modal"
       class="mb-3 block bg-slate-100 hover:bg-slate-200 shadow-md focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
       type="button">
       Add a Quick Meal
     </button>
+
     <!-- Add exercise button -->
     <button id="add_new_exercise_button"
       class="mb-3 block bg-slate-100 hover:bg-slate-200 shadow-md focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
@@ -43,6 +49,7 @@
       Record Your Exercise
     </button>
   </ul>
+
   <!-- Close Button -->
   <button id="closeQuickAddMenu"
     class="mt-4 px-4 py-2 bg-[#2d58b1] text-white rounded hover:bg-[#172d58] shadow-md transition duration-150">Close</button>

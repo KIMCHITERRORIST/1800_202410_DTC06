@@ -4,11 +4,15 @@ document.addEventListener('DOMContentLoaded', function () {
             // User is signed in, fetch user ID and run other functions
             var uid = user.uid;
             fetchAndDisplayIngredients(uid);
+
+            // Add event listener to save the changes when save button is clicked in the modal
             document.getElementById('saveIngredientChanges').addEventListener('click', (event) => {
                 event.preventDefault();
                 confirm("Are you sure you want to save changes?");
                 saveIngredientChanges();
             });
+
+            // Add event listener to cancel the changes when cancel button is clicked in the modal
             document.getElementById('deleteIngredient').addEventListener('click', (event) => {
                 event.preventDefault();
                 confirm("Are you sure you want to delete this ingredient?");
@@ -18,13 +22,19 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             // No user is signed in. Redirect to login page and show message
             console.log('User is not logged in. Redirecting to login page...');
-            // Redirect to login page
             window.location.href = 'login.html';
         }
     });
 
-    // Search bar event listener
+    // Search box (text box) event listener
     document.getElementById('simple-search').addEventListener('input', function (e) {
+        e.preventDefault(); // Prevent the form from submitting
+        const searchValue = e.target.value.toLowerCase();
+        filterDisplayedIngredients(searchValue);
+    });
+
+    // Search box (button) event listener
+    document.getElementById('search-button').addEventListener('click', function (e) {
         e.preventDefault(); // Prevent the form from submitting
         const searchValue = e.target.value.toLowerCase();
         filterDisplayedIngredients(searchValue);
@@ -41,7 +51,6 @@ function fetchAndDisplayIngredients(uid) {
 
             Object.keys(ingredientNames).forEach(ingredientName => {
                 const ingredient = ingredientNames[ingredientName];
-                // Assuming openAmountModal is a function you've defined to handle clicks.
                 var ingredientCardHTML = `
     <div id="${ingredientName}" data-ingredient-name="${ingredientName.toLowerCase()}" class="ingredient-card flex w-full mx-auto border-2 border-gray-300 shadow-lg rounded-lg mt-4 mb-6 p-4 items-center justify-between bg-white hover:bg-gray-50 transition-colors" onclick="openEditIngredientModal('${ingredientName}')">
         <div class="flex-1">
@@ -59,6 +68,7 @@ function fetchAndDisplayIngredients(uid) {
     });
 }
 
+// Function to filter displayed ingredients when user searches
 function filterDisplayedIngredients(searchValue) {
     const ingredientCards = document.querySelectorAll('.ingredient-card');
     ingredientCards.forEach(card => {
@@ -71,6 +81,7 @@ function filterDisplayedIngredients(searchValue) {
     });
 }
 
+// Function to open the modal to edit an ingredient
 async function openEditIngredientModal(ingredientName) {
     uid = await fetchUID();
     recipeDoc = await db.collection("ingredients").doc(uid).get()
@@ -120,7 +131,7 @@ async function saveIngredientChanges() {
     }).then(() => {
         console.log("Document successfully updated!");
         document.getElementById('editIngredientModal').classList.add('hidden');
-        fetchAndDisplayIngredients(uid);
+        fetchAndDisplayIngredients(uid); // Refresh the ingredients list
     }).catch((error) => {
         console.error("Error updating document: ", error);
     });
@@ -137,11 +148,11 @@ async function deleteIngredient() {
     const ingredientName = document.getElementById('editIngredientName').value;
 
     db.collection("ingredients").doc(uid).update({
-        [ingredientName]: firebase.firestore.FieldValue.delete()
+        [ingredientName]: firebase.firestore.FieldValue.delete() // Delete the ingredient
     }).then(() => {
         console.log("Document successfully deleted!");
         document.getElementById('editIngredientModal').classList.add('hidden');
-        fetchAndDisplayIngredients(uid);
+        fetchAndDisplayIngredients(uid); // Refresh the ingredients list
     }).catch((error) => {
         console.error("Error deleting document: ", error);
     });

@@ -1,3 +1,7 @@
+//---------------------------------------------------
+// This function loads the parts of your skeleton
+// (navbar, footer, and other things) into html doc.
+//---------------------------------------------------
 function loadSkeleton() {
   $('#navbarPlaceholder').load('./navbars/home_nav_top.html', function () {
     console.log('Navbar loaded');
@@ -5,9 +9,9 @@ function loadSkeleton() {
     let button = document.querySelector('button[data-collapse-toggle="navbar-hamburger"]');
     let menu = document.getElementById('navbar-hamburger');
 
-    //Add an event listener to the button
+    //Add an event listener to the hamburger menu button
     button.addEventListener('click', () => {
-      //Toggle the 'hidden' class on the menu div
+      //Toggle the 'hidden' class on the hamburger quick menu div
       menu.classList.toggle('hidden');
 
       //Toggle the aria-expanded attribute to reflect the state change
@@ -26,30 +30,31 @@ function loadSkeleton() {
     const quickAddMenuBg = document.getElementById("quickAddMenuBackground");
     const closeQuickAddMenu = document.getElementById("closeQuickAddMenu");
 
-    // Open menu
+    // Open quick menu
     plusBtn.addEventListener("click", () => {
       quickAddMenu.classList.remove("hidden");
       quickAddMenuBg.classList.remove("hidden");
     });
 
-    // Close menu 
+    // Close quick menu 
     closeQuickAddMenu.addEventListener("click", () => {
       quickAddMenu.classList.add("hidden");
       quickAddMenuBg.classList.add("hidden");
     });
 
-    // Close menu on outside click
+    // Close quick menu on outside click
     quickAddMenuBg.addEventListener("click", () => {
       quickAddMenu.classList.add("hidden");
       quickAddMenuBg.classList.add("hidden");
     });
 
-    // User button
+    // User button Event listener
     userBtn.addEventListener("click", () => {
       console.log("Redirecting to User Profile...");
       window.location.href = "../profile.html";
     });
 
+    // Event listener for the quick add menu buttons
     document.getElementById('open_add_ingredient_modal').addEventListener('click', loadIngredientsModalandOpen);
     document.getElementById('open_add_new_recipe_modal').addEventListener('click', loadAddNewRecipeModalandOpen);
     document.getElementById('open_add_new_category_modal').addEventListener('click', loadAddNewCategoryModalandOpen);
@@ -63,17 +68,18 @@ function connectAddExercise() {
   window.location.href = 'add_exercise.html';
 }
 
+// Redirect to add meal page
 function reconnectAddMeal() {
   window.location.href = 'addMeal.html';
 }
-
-
 
 loadSkeleton();
 
 //------------------------------------------------------------------//
 // -----------Functions related to Add Ingredient Modal-------------//
 //------------------------------------------------------------------//
+
+// Load Add Ingredient modal and open
 function loadIngredientsModalandOpen() {
   $('#add_ingredient_modal_container').load('main_modals/add_ingredients_modal.html', function () {
     const quickAddMenu = document.getElementById("quickAddMenu");
@@ -135,6 +141,7 @@ function loadAddNewRecipeModalandOpen() {
       saveRecipeInDB();
     });
 
+    // Event listener for adding new ingredient field
     const addIngredientFieldButton = document.getElementById('add-ingredient-field');
     addIngredientFieldButton.addEventListener('click', () => {
       addIngredientField(ingredientIndex);
@@ -158,7 +165,7 @@ function closeAddNewRecipeModal() {
   modal.setAttribute('aria-hidden', 'true');
 }
 
-
+// Function to add new ingredient field in Add Recipe modal
 function addIngredientField(ingredientIndex) {
   let ingredientFieldDiv = `
     <div class="container gap-4 flex flex-row justify-between items-center">
@@ -182,10 +189,11 @@ function addIngredientField(ingredientIndex) {
     </div>`;
 
   document.getElementById('ingredientsAdditionForNewRecipe').insertAdjacentHTML('beforeend', ingredientFieldDiv);
+
   // Append ingredients and associated unit to dropdowns in modal
   appendIngredientsToDropdownInModal(ingredientIndex);
   changeUnitAfterIngredientSelected(ingredientIndex);
-  ingredientIndex++;
+  ingredientIndex++; // Increment the ingredient index for the next field
 }
 
 function changeUnitAfterIngredientSelected(ingredientIndex) {
@@ -196,6 +204,8 @@ function changeUnitAfterIngredientSelected(ingredientIndex) {
 }
 
 // ====== For saving data in DB for new recipe (calculating nutritional values)====== //
+
+// Function to get the base values of an ingredient to calculate ratios
 async function getBaseValues(ingredientName) {
   const uid = await fetchUID();
   const ingredientRef = db.collection('ingredients').doc(uid);
@@ -205,6 +215,7 @@ async function getBaseValues(ingredientName) {
   return ingredientSnapshot;
 }
 
+// Function to calculate nutrition values based on the quantity of the ingredient
 function calculateNutrition(baseValues, inputQuantity) {
   const ratio = inputQuantity / baseValues.quantity.value;
   return {
@@ -215,6 +226,7 @@ function calculateNutrition(baseValues, inputQuantity) {
   };
 }
 
+// Function to collect recipe data from the form
 function collectRecipeDataFromForm() {
   const ingredientsDataForAddingToRecipe = {};
   let ingredientIndex = 0;
@@ -233,6 +245,7 @@ function collectRecipeDataFromForm() {
     const quantityValue = quantity.value;
     const unitValue = unit.value;
 
+    // Add the ingredient quantity data to data object
     ingredientsDataForAddingToRecipe[ingredientName] = {
       quantity: {
         unit: unitValue,
@@ -240,7 +253,7 @@ function collectRecipeDataFromForm() {
       }
     };
 
-    ingredientIndex++;
+    ingredientIndex++; // Increment the ingredient index to get the next field
   }
   return ingredientsDataForAddingToRecipe;
 }
@@ -275,6 +288,7 @@ function openAddAddNewCategoryModal() {
   modal.setAttribute('aria-hidden', 'false');
 }
 
+// Close Add Category modal
 function closeAddNewCategoryModal() {
   const modal = document.getElementById('add_new_category_modal');
   modal.classList.add('hidden');
@@ -345,6 +359,7 @@ async function fetchUID() {
 async function saveIngredientInDB() {
   const uid = await fetchUID();
   console.log(uid);
+  // Get the values from the form
   const ingredientName = document.getElementById('ingredientName').value.trim();
   const fat = Number(document.getElementById('fats').value);
   const carbs = Number(document.getElementById('carbs').value);
@@ -468,6 +483,7 @@ async function saveRecipeInDB() {
       totalProtein += nutrition.protein;
     }
 
+    // Add the recipe to the database
     const recipeNutritionTotals = {
       name: recipeName,
       fats: totalFat,
@@ -505,6 +521,7 @@ async function saveNewCategoryInDB() {
     });
 }
 
+// Function to append category name to the categories array in the user's document
 async function appendCategoryNameToArray() {
   const uid = await fetchUID();
   const categoryName = document.getElementById('categoryName').value.trim();

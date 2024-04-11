@@ -10,9 +10,22 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
+// Fetch UID function 
+async function fetchUID() {
+  return new Promise((resolve, reject) => {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        resolve(user.uid);
+      } else {
+        reject('User is not logged in.');
+      }
+    });
+  });
+}
+
 async function initApp() {
   try {
-    const uid = await fetchUID();
+    const uid = await fetchUID(); // Fetch the user's UID
     if (uid) {
       // User is logged in, now fetch data
       fetchAndDisplayTodaysFoodEntries();
@@ -29,12 +42,13 @@ async function initApp() {
 async function fetchUserData(uid) {
   const userDoc = await db.collection("users").doc(uid).get();
   if (userDoc.exists) {
-    return userDoc.data(); // Return all user data
+    return userDoc.data(); // Return all user data from user document
   } else {
     throw new Error("User data not found");
   }
 }
 
+// function to create the donut chart
 async function renderDonutChart(uid, goalCalories) {
   const { caloriesIn, caloriesOut } = await fetchCaloriesInAndOut(uid);
 
@@ -43,7 +57,7 @@ async function renderDonutChart(uid, goalCalories) {
   let series, colors, labels, caloriesLabelText;
 
   if (netCalories > goalCalories) {
-    // Situation where goal calories are exceeded
+    // Situation where goal calories are exceeded the graph will go red
     colors = ["#FF6347", "#D3D3D3"];
     series = [Math.round(netCalories - goalCalories), 0]; // Only show exceeded part
     labels = ['Calories to burn', '']; // Only relevant label is for exceeded calories
@@ -112,43 +126,36 @@ async function fetchCaloriesInAndOut(uid) {
   }
 }
 
-// Fetch UID function 
-async function fetchUID() {
-  return new Promise((resolve, reject) => {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        resolve(user.uid);
-      } else {
-        reject('User is not logged in.');
-      }
-    });
-  });
-}
-
 // Fetch TDEE function for calculations
 async function fetchTDEE(uid) {
   const doc = await db.collection("users").doc(uid).get();
   return doc.exists ? doc.data().TDEE : null;
 }
 
-// Fetch goal calories function for calculations
+// Fetch and append today's food entries to the cards in the overview page
 async function fetchAndDisplayTodaysFoodEntries() {
   const uid = await fetchUID();
+  // Get today's date in the format "YYYY-MM-DD"
   const today = new Date();
+  // Use toString().padStart(2, '0') to ensure double digits for month and date and avoid UTC issues
   const formattedToday = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+
   const caloriesInCardContent = document.getElementById('caloriesInCardContent');
 
+  // Get data from Firestore
   db.collection("meals").doc(uid).get().then(doc => {
     if (doc.exists) {
       const data = doc.data();
       let totalCalories = 0;
-      let contentHTML = '';
+      let contentHTML = ''; // Clear previous content
 
+      // Loop through each food entry mapped by food name
       Object.keys(data).forEach(foodName => {
         const entry = data[foodName];
         // Check if entry date matches today's date
         if (entry.date === formattedToday) {
           totalCalories += parseInt(entry.calories, 10); // Update total calories
+
           // Create HTML content for each food entry
           contentHTML += `
           <div class="py-2 border-b border-gray-200 last:border-b-0 flex justify-between items-center bg-white">
@@ -162,13 +169,15 @@ async function fetchAndDisplayTodaysFoodEntries() {
         }
       });
 
-      // Check if contentHTML is not empty, then update the DOM
+      // Check if contentHTML card then update the DOM accordingly
       if (contentHTML !== '') {
         caloriesInCardContent.innerHTML = contentHTML;
         document.getElementById('cardHeaderCaloriesIn').querySelector('p').textContent = `You have eaten ${totalCalories} calories today!`;
       } else {
         document.getElementById('cardHeaderCaloriesIn').querySelector('p').textContent = 'No food entries found for today.';
       }
+
+      // Update the total "calories in" in Firestore
       db.collection('calories').doc(uid).set({
         [formattedToday]: {
           caloriesIn: totalCalories
@@ -183,8 +192,9 @@ async function fetchAndDisplayTodaysFoodEntries() {
 }
 
 
+// Fetch and append today's exercise entries to the cards in the overview page
 async function fetchAndDisplayTodaysExerciseEntries() {
-  const uid = await fetchUID(); // Use the UID of the currently logged-in user
+  const uid = await fetchUID();
   const today = new Date();
   const formattedToday = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
   const caloriesBurntCardContent = document.getElementById('caloriesBurntCardContent');
@@ -216,11 +226,14 @@ async function fetchAndDisplayTodaysExerciseEntries() {
       }
     });
 
+    // Check if contentHTML card then update the DOM accordingly
     if (caloriesBurntCardContent.innerHTML !== '') {
       document.getElementById('cardHeaderCaloriesBurnt').querySelector('p').textContent = `You have burned ${totalCaloriesBurned} calories today!`;
     } else {
       document.getElementById('cardHeaderCaloriesBurnt').querySelector('p').textContent = 'No exercise entries found for today.';
     }
+
+    // Update the total "calories out" in Firestore
     db.collection('calories').doc(uid).set({
       [formattedToday]: {
         caloriesOut: totalCaloriesBurned
@@ -231,6 +244,7 @@ async function fetchAndDisplayTodaysExerciseEntries() {
   });
 }
 
+// Event listeners for the Chevron in the collapsible cards
 document.getElementById('cardHeaderCaloriesIn').addEventListener('click', function () {
   const contentsCaloriesIn = document.getElementById('caloriesInCardContent');
   const chevronCaloriesIn = document.getElementById('toggleChevronDownSymbolCaloriesIn');
@@ -254,6 +268,7 @@ document.getElementById('cardHeaderCaloriesIn').addEventListener('click', functi
   }
 });
 
+// Event listeners for the Chevron in the collapsible cards
 document.getElementById('cardHeaderCaloriesBurnt').addEventListener('click', function () {
   const contentsCaloriesBurnt = document.getElementById('caloriesBurntCardContent');
   const chevronCaloriesOut = document.getElementById('toggleChevronDownSymbolCaloriesBurnt');
@@ -274,6 +289,8 @@ document.getElementById('cardHeaderCaloriesBurnt').addEventListener('click', fun
   }
 });
 
+
+// Function to check and update weight weekly
 async function checkAndUpdateWeight(uid) {
   const userDoc = await db.collection("users").doc(uid).get();
   if (userDoc.exists) {
@@ -285,7 +302,7 @@ async function checkAndUpdateWeight(uid) {
 
       if (lastUpdate < oneWeekAgo) {
         // A week has passed since the last update
-        showModalToUpdateWeight(); // Implement this function to show your modal
+        showModalToUpdateWeight(); // Implement this function to show weight update modal
       }
     }
   } else {
@@ -334,7 +351,7 @@ document.getElementById('yesAdjustBtn').addEventListener('click', async () => {
 
   if (doc.exists) {
     let userData = doc.data();
-    let currentWeight = parseFloat(document.getElementById('currentWeight').value); // Assuming this is the latest weight input by the user
+    let currentWeight = parseFloat(document.getElementById('currentWeight').value); // The current weight got from the user input
     let previousWeight = userData.weight; // The last recorded weight
     let newGoalCalories = userData.goalCalories;
 
@@ -356,6 +373,7 @@ document.getElementById('yesAdjustBtn').addEventListener('click', async () => {
   }
 });
 
+// Modal toggler functions using their IDs
 function showModal(modalId) {
   document.getElementById(modalId).classList.remove('hidden');
 }

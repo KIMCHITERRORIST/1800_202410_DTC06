@@ -1,8 +1,8 @@
-<!-- Menu Background -->
+<!-- Quick Add Menu Background -->
 <div id="quickAddMenuBackground" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-screen">
 </div>
 
-<!-- Menu -->
+<!-- Quick Add Menu -->
 <div id="quickAddMenu"
   class="hidden fixed top-[15%] left-[10%] right-[10%] md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2  bg-white rounded shadow-lg p-4 z-50 max-w-fit">
   <ul class="menu flex flex-col bg-white max-w-fit rounded-box">
@@ -24,13 +24,13 @@
       type="button">
       Add New Category To Food Library
     </button>
-    <!-- Add meal-->
+    <!-- Add meal modal toggle-->
     <button id="open_add_new_meal_modal"
       class="mb-6 block bg-slate-100 hover:bg-slate-200 shadow-md focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
       type="button" onclick="reconnectAddMeal()">
       Record Your Meal
     </button>
-    <!-- Add quick meal-->
+    <!-- Add quick meal modal toggle-->
     <button id="open_add_quick_meal_modal"
       class="mb-6 block bg-slate-100 hover:bg-slate-200 shadow-md focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
       type="button">
@@ -51,6 +51,7 @@
 <!-- Bottom Navigation Bar -->
 <footer id="general-bottom-nav" class="fixed bottom-0 inset-x-0 bg-[#2d58b1] text-white rounded-t-xl">
   <div class="flex justify-between items-center px-4 py-2">
+
     <!-- Home Icon -->
     <button id="home-btn" class="p-2" aria-label="Home">
       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24"
@@ -62,6 +63,7 @@
         <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
       </svg>
     </button>
+
     <!-- Plus Icon -->
     <button id="plus-btn" class="p-2" aria-label="Add">
       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle-plus" width="24" height="24"

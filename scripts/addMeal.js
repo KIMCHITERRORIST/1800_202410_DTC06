@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Your code to run after the DOM is fully loaded
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
-            // User is signed in, now you can safely call your functions
+            // User is signed in, get the user ID and run other functions
             const uid = user.uid;
             appendCategoriesToDropdownInPage(uid)
 
+            // Add event listener to the category dropdown to fetch meals for the selected category in the modal
             document.getElementById('categoriesForMeals').addEventListener('change', () => {
                 if (document.getElementById('categoriesForMeals').value) {
                     appendMealsToDropdownInPage(uid)
@@ -13,11 +13,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 else { alert('Please select a category first') }
             })
 
+            // Add event listener to the add meal button to add the selected meal to the meals collection
             document.getElementById('addMealButton').addEventListener('click', (event) => {
                 event.preventDefault(); // Prevent the default form submit behavior
                 if (document.getElementById('categoriesForMeals').value && document.getElementById('meal').value && document.getElementById('quantity').value) {
-                    console.log('Adding meal to Calories...');
-                    addRecipeToCalories(uid);
+                    addRecipeToMeals(uid);
                 } else {
                     alert('Please select a category, meal, and quantity first.');
                 }
@@ -100,12 +100,11 @@ function appendMealsToDropdownInPage(uid) {
 
 
 // // Function to add a recipe to the Calories collection
-function addRecipeToCalories(uid) {
+function addRecipeToMeals(uid) {
     console.log("Adding recipe to Calories...");
     const category = document.getElementById('categoriesForMeals').value;
     const recipeName = document.getElementById('meal').value;
     const selectedFraction = document.getElementById('quantity').value;
-    console.log(category, recipeName, selectedFraction)
 
     // Convert selectedFraction to a numerical value
     const quantity = convertFractionToDecimal(selectedFraction);
@@ -114,10 +113,13 @@ function addRecipeToCalories(uid) {
         recipeDocRef.docs.forEach(recipeDoc => {
             if (recipeDoc.exists) {
                 if (recipeDoc.id === "count") {
-                    return;
+                    return; // Skip the count document
                 }
+
+                // Get the recipe data
                 const recipeData = recipeDoc.data();
-                console.log("Recipe data under recipe doc data NEW:", recipeData);
+
+                // Get the current date and time and format in DD-MM-YYYY and HH:MM AM/PM
                 const currentDate = new Date();
                 const dateString = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}`
                 const hours = currentDate.getHours();
@@ -131,6 +133,7 @@ function addRecipeToCalories(uid) {
                 const protein = recipeData.protein * quantity;
                 const calories = recipeData.calories * quantity;
 
+                // Add the recipe to the meals collection
                 db.collection("meals").doc(uid).set({
                     [recipeName]: {
                         fats: fats,

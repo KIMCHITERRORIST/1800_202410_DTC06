@@ -1,41 +1,49 @@
 document.addEventListener('DOMContentLoaded', function () {
-  // Ensures the user is authenticated before fetching and displaying entries.
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
-      // If the user is signed in, fetch and display their food entries.
+      // If the user is signed in, fetch and display their food entries
       fetchAndDisplayFoodEntries();
+
+      // Add event listner to save the changes when save button is clicked in the modal
       document.getElementById('saveMealChanges').addEventListener('click', (saveData) => {
         saveData.preventDefault();
         confirm("Are you sure you want to save changes?");
         saveMealChanges();
       });
 
+      // Add event listner to cancel the changes when cancel button is clicked in the modal
       document.getElementById('deleteMeal').addEventListener('click', (deleteData) => {
         deleteData.preventDefault();
         confirm("Are you sure you want to delete this meal?");
         deleteMeal();
       });
     } else {
+      // If no user is signed in, redirect to the login page
       console.log('User is not signed in.');
       window.location.href = 'login.html';
     }
   });
 });
 
-function fetchAndDisplayFoodEntries() {
-  const uid = firebase.auth().currentUser.uid; // Assuming you have the user's UID
-  const foodCardContainer = document.getElementById('food-card-container');
-  foodCardContainer.innerHTML = "";
 
+// Function to fetch user's meals entries and display as cards in the page
+function fetchAndDisplayFoodEntries() {
+  const uid = firebase.auth().currentUser.uid; // Get the user ID
+  const foodCardContainer = document.getElementById('food-card-container');
+  foodCardContainer.innerHTML = ""; // Clear the container before adding new cards
+
+  // Fetch the food entries from the meals collection in the database
   db.collection("meals").doc(uid).get().then(doc => {
     if (doc.exists) {
       const foodEntries = doc.data();
+      // Make an array of all the food entries in the meals collection and add dateTime key and value
       const foodEntriesList = Object.entries(foodEntries).map(([recipeName, details]) => ({
         recipeName,
         ...details,
         dateTime: `${details.date} ${details.time}`
       }));
 
+      // Sort the food entries by dateTime in descending order
       const sortedDateTimeMealEntries = foodEntriesList.sort((a, b) => {
         if (b.dateTime > a.dateTime) {
           return 1;
@@ -46,6 +54,7 @@ function fetchAndDisplayFoodEntries() {
         }
       });
 
+      // Create a card for each food entry which is sorted and add it to the page
       sortedDateTimeMealEntries.forEach(entry => {
         const { recipeName, date, time, fats, carbs, protein, calories } = entry;
         const foodCard = `
@@ -89,6 +98,7 @@ function fetchAndDisplayFoodEntries() {
 }
 
 
+// Function to open the edit meal modal
 async function openEditMealModal(mealName) {
   uid = await fetchUID();
   recipeDoc = await db.collection("meals").doc(uid).get()
@@ -97,7 +107,7 @@ async function openEditMealModal(mealName) {
     console.log("There is no such ingredient in the meal log.");
   } else {
     console.log(recipeData[mealName]);
-    // Set the values in the modal
+    // Set the values in the modal from the recipeData
     document.getElementById('editMealName').value = mealName;
     document.getElementById('editProtein').value = recipeData[mealName].protein;
     document.getElementById('editCarbs').value = recipeData[mealName].carbs;
@@ -122,6 +132,7 @@ async function saveMealChanges() {
   console.log(newMealName, newprotein, newcarbs, newfat, newcalories);
   db.collection("meals").doc(uid).update({
 
+    // Update the meal with the new values key: value pair
     [newMealName]: {
       protein: newprotein,
       carbs: newcarbs,
@@ -130,8 +141,8 @@ async function saveMealChanges() {
     }
   }).then(() => {
     console.log("Document successfully updated!");
-    document.getElementById('editMealModal').classList.add('hidden');
-    fetchAndDisplayFoodEntries();
+    document.getElementById('editMealModal').classList.add('hidden'); // Hide the modal
+    fetchAndDisplayFoodEntries(); // Refetch and display the food entries
   }).catch((error) => {
     console.error("Error updating document: ", error);
   });
@@ -147,11 +158,11 @@ async function deleteMeal() {
   const mealName = document.getElementById('editMealName').value;
 
   db.collection("meals").doc(uid).update({
-    [mealName]: firebase.firestore.FieldValue.delete()
+    [mealName]: firebase.firestore.FieldValue.delete() // Delete the meal from the meals collection
   }).then(() => {
     console.log("Entry successfully deleted!");
     document.getElementById('editMealModal').classList.add('hidden');
-    fetchAndDisplayFoodEntries();
+    fetchAndDisplayFoodEntries(); // Refetch and display the food entries
   }).catch((error) => {
     console.error("Error deleting Meal: ", error);
   });

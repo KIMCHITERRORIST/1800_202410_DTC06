@@ -1,14 +1,37 @@
 document.addEventListener('DOMContentLoaded', function () {
-  fetchAndDisplayUserActivities();
-  document.getElementById('saveExerciseChanges').addEventListener('click', () => {
-    saveActivityChanges()
+  firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      // User is signed in, fetch user ID and run other functions
+      fetchAndDisplayUserActivities();
+
+      document.getElementById('saveExerciseChanges').addEventListener('click', () => {
+        saveActivityChanges()
+      });
+
+      document.getElementById('deleteExercise').addEventListener('click', () => {
+        deleteActivity()
+      });
+    } else {
+      // No user is signed in. Redirect to login page
+      window.location.href = 'login.html';
+    }
   });
-  document.getElementById('deleteExercise').addEventListener('click', () => {
-    deleteActivity()
-  }
-  );
 });
 
+// Fetch UID function
+async function fetchUID() {
+  return new Promise((resolve, reject) => {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        resolve(user.uid);
+      } else {
+        reject('User is not logged in.');
+      }
+    });
+  });
+}
+
+// Function to fetch and display user activities
 async function fetchAndDisplayUserActivities() {
   uid = await fetchUID();
   console.log("User UID:", uid);
@@ -24,14 +47,15 @@ async function fetchAndDisplayUserActivities() {
     }
 
     // Iterate over each activity document
-    activities = [];
+    let activities = [];
     snapshot.forEach(doc => {
       const activity = doc.data();
-      activity.id = doc.id; // Store document ID for later reference
-      activity.dateTime = activity.date + " " + activity.time;
+      activity.id = doc.id;  // Save the document auto-generated ID for later use
+      activity.dateTime = activity.date + " " + activity.time; // Combine date and time for sorting
       activities.push(activity);
     });
 
+    // Sort the activities by date and time
     sortedDateTimeActivities = activities.sort((a, b) => {
       if (b.dateTime > a.dateTime) {
         return -1;
@@ -42,6 +66,7 @@ async function fetchAndDisplayUserActivities() {
       }
     });
 
+    // Display the activities on the page
     const exerciseCardContainer = document.getElementById("exercise-card-container");
     sortedDateTimeActivities.forEach(activity => {
       const { id, date, name, time, caloriesBurned, duration, heartrate } = activity;
@@ -93,7 +118,7 @@ async function fetchAndDisplayUserActivities() {
 }
 
 
-// open the modal
+// open the modal to edit an activity
 async function openEditModal(activityId) {
   uid = await fetchUID();
 
@@ -121,9 +146,9 @@ async function openEditModal(activityId) {
   });
 }
 
-// Function to save changes
+// Function to save changes to the activity
 async function saveActivityChanges() {
-  event.preventDefault(); // Prevent form submission if invoked by a form
+  event.preventDefault(); // Prevent default form submission
   uid = await fetchUID();
   const activityId = document.getElementById('editActivityId').value;
   const newName = document.getElementById('editExerciseName').value;
@@ -139,6 +164,7 @@ async function saveActivityChanges() {
   // Reference to the specific activity document
   const activityRef = db.collection("exercises").doc(uid).collection("dailyActivities").doc(activityId);
 
+  // Update the activity document with the new values
   await activityRef.update({
     name: newName,
     heartrate: newHeartRate,
@@ -165,7 +191,7 @@ async function deleteActivity(event) {
   const activityId = document.getElementById('editActivityId').value;
 
   const activityRef = db.collection("exercises").doc(uid).collection("dailyActivities").doc(activityId);
-  await activityRef.delete();
+  await activityRef.delete(); // Delete the activity document
   window.location.reload();
 
   document.getElementById('editExerciseModal').classList.add('hidden');
@@ -174,17 +200,3 @@ async function deleteActivity(event) {
 document.getElementById('closeModal').addEventListener('click', function () {
   document.getElementById('editExerciseModal').classList.add('hidden');
 });
-
-
-// Fetch UID function
-async function fetchUID() {
-  return new Promise((resolve, reject) => {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        resolve(user.uid);
-      } else {
-        reject('User is not logged in.');
-      }
-    });
-  });
-}

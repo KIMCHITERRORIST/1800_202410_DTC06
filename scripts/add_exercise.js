@@ -1,3 +1,17 @@
+// Fetch UID function
+async function fetchUID() {
+  return new Promise((resolve, reject) => {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        resolve(user.uid);
+      } else {
+        reject('User is not logged in.');
+      }
+    });
+  });
+}
+
+// Function to add an exercise to the Exercises collection
 async function saveActivity() {
   const uid = await fetchUID();
   const activityName = document.getElementById('activity_name').value.trim();
@@ -6,13 +20,15 @@ async function saveActivity() {
   const second = document.getElementById('second').value.trim();
   const heartrate = document.getElementById('heart_rate').value.trim();
 
-
+  // check if the user has entered all the required fields or alert the user to do so
   if (!activityName || !hour || !minute || !second || !heartrate) {
     alert("Please fill out all fields: activity name, hour, minute, second, and heart rate.");
     return;
   }
 
+
   try {
+    // Get the current date and time and format in YYYY-MM-DD and HH:MM AM/PM
     const today = new Date();
     const formattedDate = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
     const hours = today.getHours();
@@ -51,6 +67,7 @@ document.getElementById('cancel').addEventListener('click', () => {
   window.history.back();
 });
 
+// Function to calculate calories burned using Heart Rate
 async function calculateCaloriesBurned(uid, hour, minute, second, heartrate) {
   let caloriesBurned = 0;
   const userData = await db.collection('users').doc(uid).get();
@@ -59,23 +76,11 @@ async function calculateCaloriesBurned(uid, hour, minute, second, heartrate) {
   const weight = userData.data().weight;
   const timeInMinutes = (Number(hour) * 60) + Number(minute) + (Number(second) / 60);
 
+  // Calculate calories burnt according to gender
   if (gender === "Female") {
     caloriesBurned = Number(timeInMinutes * ((-10 + (0.45 * Number(heartrate)) - (0.1263 * weight) + (0.075 * age)) / 4.184));
   } else if (gender === "Male") {
     caloriesBurned = Number(timeInMinutes * ((-25 + (0.635 * Number(heartrate)) - (0.1988 * weight) + (0.202 * age)) / 4.184));
   }
   return Math.round(caloriesBurned);
-}
-
-// Fetch UID function
-async function fetchUID() {
-  return new Promise((resolve, reject) => {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        resolve(user.uid);
-      } else {
-        reject('User is not logged in.');
-      }
-    });
-  });
 }

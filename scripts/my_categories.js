@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
-      // User is signed in, fetch user ID and run other functions
+      // User is signed in, fetch user ID and run functions
       const uid = user.uid;
       fetchAndDisplayUserName(uid);
       fetchAndDisplayCategories(uid);
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-
+  // Function to create a category div and append it to the categories container div
   function createCategoryDiv(category, count) {
     const container = document.getElementById('categories-container');
     const categoryDiv = document.createElement('div');
@@ -49,16 +49,18 @@ document.addEventListener('DOMContentLoaded', function () {
     categoryDiv.className = "flex flex-col mx-auto h-24 justify-center items-center border-2 border-gray-300 shadow-md rounded-md my-5 sm:px-6 lg:px-8";
     categoryDiv.innerHTML = `<div class="text-center">
     <p class="text-2xl font-semibold">${category}</p>
-    <button class="recipeButton bg-blue-700 text-white px-2 py-1 rounded-md shadow-lg text-lg mt-2" data-category="${category}"><span id="${category}-count">${count}</span> Recipes</button>
+    <button class="bg-blue-700 text-white px-2 py-1 rounded-md shadow-lg text-lg mt-2" data-category="${category}"><span id="${category}-count">${count}</span> Recipes</button>
   </div>`;
 
-    const button = categoryDiv.querySelector('.recipeButton');
-    button.addEventListener('click', (event) => {
-      event.stopPropagation(); // This stops the event from bubbling up to the parent element
+    // Add event listener to each category's button to redirect to each_category.html
+    const button = categoryDiv.querySelector(`#${category}-count`);
+    button.addEventListener('click', () => {
+      // Save the selected category in localStorage and redirect to each_category.html
       localStorage.setItem('selectedCategory', category);
       window.location.href = '/each_category.html';
     });
 
+    // Add event listener to open delete confirmation modal when category div is clicked
     categoryDiv.addEventListener('click', () => {
       showDeleteConfirmationModal(category);
     });
@@ -80,6 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
+// Function to show delete confirmation modal
 async function showDeleteConfirmationModal(category) {
   document.getElementById("categoryName").textContent = category;
   const modal = document.getElementById("deleteCategoryModal");
@@ -91,7 +94,7 @@ async function showDeleteConfirmationModal(category) {
   });
 }
 
-
+// Function to delete category and all its recipes
 async function deleteCategory(category) {
   try {
     const uid = firebase.auth().currentUser.uid;
@@ -108,6 +111,7 @@ async function deleteCategory(category) {
   }
 }
 
+// Function to cancel category deletion
 function cancelCategoryDeletion() {
   document.getElementById("deleteCategoryModal").classList.add("hidden");
 }

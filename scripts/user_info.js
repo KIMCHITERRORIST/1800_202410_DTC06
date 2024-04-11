@@ -49,7 +49,7 @@ document.getElementById("user-info-form").addEventListener("submit", function (e
       BMR = 10 * weight + 6.25 * height - 5 * age - 161;
     }
 
-    // find tdee
+    // find TDEE
     const TDEE = BMR * activityLevel;
 
     // Determine goal calories based on goal weight
@@ -76,7 +76,7 @@ document.getElementById("user-info-form").addEventListener("submit", function (e
       activityLevel: activity,
       TDEE: TDEE,
       goalWeight: goalWeightNumber,
-      goalCalories: goalCalories 
+      goalCalories: goalCalories
 
     }, { merge: true }).then(() => {
       console.log("Document successfully written!");
