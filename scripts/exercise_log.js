@@ -4,12 +4,14 @@ document.addEventListener('DOMContentLoaded', function () {
       // User is signed in, fetch user ID and run other functions
       fetchAndDisplayUserActivities();
 
-      document.getElementById('saveExerciseChanges').addEventListener('click', () => {
-        saveActivityChanges()
+      document.getElementById('saveExerciseChanges').addEventListener('click', (event) => {
+        event.preventDefault();
+        saveActivityChanges();
       });
 
-      document.getElementById('deleteExercise').addEventListener('click', () => {
-        deleteActivity()
+      document.getElementById('deleteExercise').addEventListener('click', (event) => {
+        event.preventDefault();
+        deleteActivity();
       });
     } else {
       // No user is signed in. Redirect to login page
@@ -148,7 +150,6 @@ async function openEditModal(activityId) {
 
 // Function to save changes to the activity
 async function saveActivityChanges() {
-  event.preventDefault(); // Prevent default form submission
   uid = await fetchUID();
   const activityId = document.getElementById('editActivityId').value;
   const newName = document.getElementById('editExerciseName').value;
@@ -184,17 +185,16 @@ async function saveActivityChanges() {
 
 
 // Function to delete an activity
-async function deleteActivity(event) {
-  event.preventDefault(); // Prevent form submission if invoked by a form
+async function deleteActivity() {
   uid = await fetchUID();
 
   const activityId = document.getElementById('editActivityId').value;
 
   const activityRef = db.collection("exercises").doc(uid).collection("dailyActivities").doc(activityId);
   await activityRef.delete(); // Delete the activity document
-  window.location.reload();
 
   document.getElementById('editExerciseModal').classList.add('hidden');
+  window.location.reload();
 }
 
 document.getElementById('closeModal').addEventListener('click', function () {
