@@ -7,15 +7,19 @@ document.addEventListener('DOMContentLoaded', function () {
       // Add event listner to save the changes when save button is clicked in the modal
       document.getElementById('saveMealChanges').addEventListener('click', (saveData) => {
         saveData.preventDefault();
-        confirm("Are you sure you want to save changes?");
-        saveMealChanges();
+        let confirmation = confirm("Are you sure you want to save changes?");
+        if (confirmation) {
+          saveMealChanges();
+        }
       });
 
       // Add event listner to cancel the changes when cancel button is clicked in the modal
       document.getElementById('deleteMeal').addEventListener('click', (deleteData) => {
         deleteData.preventDefault();
-        confirm("Are you sure you want to delete this meal?");
-        deleteMeal();
+        confirmation = confirm("Are you sure you want to delete this meal?");
+        if (confirmation) {
+          deleteMeal();
+        }
       });
     } else {
       // If no user is signed in, redirect to the login page

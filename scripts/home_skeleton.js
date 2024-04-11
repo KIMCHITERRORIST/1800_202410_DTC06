@@ -514,7 +514,7 @@ async function saveNewCategoryInDB() {
     .then(() => {
       console.log('Category created with id:', categoryName);
       appendCategoryNameToArray();
-      window.location.href = 'my_recipes.html';
+      window.location.href = 'my_categories.html';
     })
     .catch((error) => {
       console.error('Error adding new document:', error);

@@ -8,15 +8,19 @@ document.addEventListener('DOMContentLoaded', function () {
             // Add event listener to save the changes when save button is clicked in the modal
             document.getElementById('saveIngredientChanges').addEventListener('click', (event) => {
                 event.preventDefault();
-                confirm("Are you sure you want to save changes?");
-                saveIngredientChanges();
+                let confirmation = confirm("Are you sure you want to save changes?");
+                if (confirmation) {
+                    saveIngredientChanges();
+                }
             });
 
             // Add event listener to cancel the changes when cancel button is clicked in the modal
             document.getElementById('deleteIngredient').addEventListener('click', (event) => {
                 event.preventDefault();
-                confirm("Are you sure you want to delete this ingredient?");
-                deleteIngredient();
+                let confirmation = confirm("Are you sure you want to delete this ingredient?");
+                if (confirmation) {
+                    deleteIngredient();
+                }
             }
             );
         } else {
@@ -28,13 +32,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Search box (text box) event listener
     document.getElementById('simple-search').addEventListener('input', function (e) {
-        e.preventDefault(); // Prevent the form from submitting
-        const searchValue = e.target.value.toLowerCase();
-        filterDisplayedIngredients(searchValue);
-    });
-
-    // Search box (button) event listener
-    document.getElementById('search-button').addEventListener('click', function (e) {
         e.preventDefault(); // Prevent the form from submitting
         const searchValue = e.target.value.toLowerCase();
         filterDisplayedIngredients(searchValue);
@@ -143,7 +140,6 @@ function cancelIngredientChanges() {
 
 // Function to delete ingredient
 async function deleteIngredient() {
-    event.preventDefault();
     uid = await fetchUID();
     const ingredientName = document.getElementById('editIngredientName').value;
 

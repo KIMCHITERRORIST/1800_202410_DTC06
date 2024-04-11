@@ -53,8 +53,9 @@ document.addEventListener('DOMContentLoaded', function () {
   </div>`;
 
     // Add event listener to each category's button to redirect to each_category.html
-    const button = categoryDiv.querySelector(`#${category}-count`);
-    button.addEventListener('click', () => {
+    const button = categoryDiv.querySelector(`[data-category="${category}"]`);
+    button.addEventListener('click', (event) => {
+      event.stopPropagation(); // Prevent the click event from bubbling up to the parent div
       // Save the selected category in localStorage and redirect to each_category.html
       localStorage.setItem('selectedCategory', category);
       window.location.href = '/each_category.html';
