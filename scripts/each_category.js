@@ -32,8 +32,8 @@ function displayRecipeInfo(uid, recipeCategory) {
         }
         var recipeData = recipeDocument.data()
         var recipeCardHTML = `
-          <div id ="${recipeDocument.id}" class="flex flex-col items-center justify-center w-full max-w-sm mx-auto my-4 border-2 border-gray-300 rounded-lg shadow-md" onclick="showDeleteConfirmationModal('${recipeDocument.id}', '${recipeCategory}')">
-  <div class="p-5">
+          <div id="${recipeDocument.id}" class="flex flex-col items-center justify-center w-full max-w-sm mx-auto my-4 border-2 border-gray-300 rounded-lg shadow-md" onclick="showDeleteConfirmationModal('${recipeDocument.id}', '${recipeCategory}')">
+            <div class="p-5">
               <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">${recipeData.name}</h5>
               <ul class="mb-4 text-gray-600">
                 <li>Calories: ${recipeData.calories}kcal</li>
@@ -50,14 +50,18 @@ function displayRecipeInfo(uid, recipeCategory) {
         `;
         recipesContainer.insertAdjacentHTML('afterbegin', recipeCardHTML);
       });
+
     })
     .catch((error) => {
       console.error("Error fetching recipes:", error);
     });
 
+  // Add event listener to the view recipe button
+
   // Add event listener to the div element to show delete confirmation modal when clicked
   document.getElementById(`${recipeDocument.id}`).addEventListener("click", function (event) {
     event.preventDefault();
+    event.stopPropagation();
     showDeleteConfirmationModal(recipeDocument.id, recipeCategory)
   })
 }
