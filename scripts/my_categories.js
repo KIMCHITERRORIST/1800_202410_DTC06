@@ -13,6 +13,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
+  /**Function to fetch and display categories from firebase in the page
+   * @param {string} uid - User ID
+   * @returns {void}
+   */
   function fetchAndDisplayCategories(uid) {
     // Read the categories array from the UID document under 'Recipes' collection
     db.collection('Recipes').doc(uid).get().then(doc => {
@@ -42,6 +46,11 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Function to create a category div and append it to the categories container div
+  /**Function to create a category div and append it to the categories container div
+   * @param {string} category - Category name
+   * @param {number} count - Number of recipes in the category
+   * @returns {void}
+   * */
   function createCategoryDiv(category, count) {
     const container = document.getElementById('categories-container');
     const categoryDiv = document.createElement('div');
@@ -72,6 +81,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   // Function to fetch and display user's name
+  /**Function to fetch and display user's name in the page
+   * @param {string} uid - User ID
+   * @returns {void}
+   */
   function fetchAndDisplayUserName(uid) {
     db.collection('users').doc(uid).get().then(doc => {
       if (doc.exists) {
@@ -84,6 +97,10 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Function to show delete confirmation modal
+/**Function to show delete confirmation modal
+ * @param {string} category - Category name
+ * @returns {void}
+ */
 async function showDeleteConfirmationModal(category) {
   document.getElementById("categoryName").textContent = category;
   const modal = document.getElementById("deleteCategoryModal");
@@ -96,6 +113,10 @@ async function showDeleteConfirmationModal(category) {
 }
 
 // Function to delete category and all its recipes
+/**Function to delete category and all its recipes
+ * @param {string} category - Category name
+ * @returns {void}
+ */
 async function deleteCategory(category) {
   try {
     const uid = firebase.auth().currentUser.uid;

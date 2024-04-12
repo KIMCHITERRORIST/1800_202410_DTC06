@@ -1,4 +1,6 @@
-// Fetch UID function
+/**Fetch user UID from firebase
+ * @returns {Promise<string>} - Returns the user ID
+ */
 async function fetchUID() {
   return new Promise((resolve, reject) => {
     firebase.auth().onAuthStateChanged(user => {
@@ -12,6 +14,7 @@ async function fetchUID() {
 }
 
 // Function to add an exercise to the Exercises collection
+
 async function saveActivity() {
   const uid = await fetchUID();
   const activityName = document.getElementById('activity_name').value.trim();
@@ -67,7 +70,15 @@ document.getElementById('cancel').addEventListener('click', () => {
   window.history.back();
 });
 
-// Function to calculate calories burned using Heart Rate
+// Function to calculate calories burned
+/**calculate calories burned 
+ * @param {string} uid - User ID
+ * @param {number} hour - Duration in hours
+ * @param {number} minute - Duration in minutes
+ * @param {number} second - Duration in seconds
+ * @param {number} heartrate - Heart rate
+ * @returns {number} - Returns the calculated calories burned
+ * */
 async function calculateCaloriesBurned(uid, hour, minute, second, heartrate) {
   let caloriesBurned = 0;
   const userData = await db.collection('users').doc(uid).get();

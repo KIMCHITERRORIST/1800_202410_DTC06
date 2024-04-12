@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
   // Fetch UID function
+  /**Function to fetch user's UID
+   * @returns {Promise<string>} - Returns the user's UID
+   **/
   async function fetchUID() {
     return new Promise((resolve, reject) => {
       firebase.auth().onAuthStateChanged(user => {
@@ -13,6 +16,9 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Display the recipe information
+  /** Function to fetch and display the recipe info from keys carried over from previous page
+   * @returns {void}
+   */
   async function displayRecipeInfo() {
     try {
       const uid = await fetchUID(); // Fetch the user's UID
@@ -66,12 +72,19 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Function to toggle the modal visibility
+/** Function to toggle the modal visibility
+ * @returns {void}
+ */
+
 function toggleModal() {
   const modal = document.getElementById('ingredientModal');
   modal.classList.toggle('hidden');
 }
 
 // Function to redirect to ingredients.html
+/** Function to redirect to ingredients.html using local storage
+ * @returns {void}
+*/
 function redirectIngredientsPage() {
   window.location.href = 'ingredients.html';
 }

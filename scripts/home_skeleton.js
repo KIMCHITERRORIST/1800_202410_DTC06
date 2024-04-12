@@ -3,6 +3,9 @@
 // (navbar, footer, and other things) into html doc.
 //---------------------------------------------------
 function loadSkeleton() {
+  /**Function to load navbar and footer htmls to the document
+   * @returns {void}
+   **/
   $('#navbarPlaceholder').load('./navbars/home_nav_top.html', function () {
     console.log('Navbar loaded');
     //Select the button and the menu div
@@ -80,6 +83,9 @@ loadSkeleton();
 //------------------------------------------------------------------//
 
 // Load Add Ingredient modal and open
+/**Function to load Add ingredients modal to html and open it
+ * @returns {void}
+ */
 function loadIngredientsModalandOpen() {
   $('#add_ingredient_modal_container').load('main_modals/add_ingredients_modal.html', function () {
     const quickAddMenu = document.getElementById("quickAddMenu");
@@ -102,6 +108,9 @@ function loadIngredientsModalandOpen() {
 };
 
 // Open Add Ingredient modal
+/**Function to open Add Ingredient modal
+ * @returns {void}
+ * */
 function openAddIngredientModal() {
   const modal = document.getElementById('add_ingredient_modal');
   modal.classList.remove('hidden');
@@ -109,6 +118,9 @@ function openAddIngredientModal() {
 }
 
 // Close Add Ingredient modal
+/**Function to close Add Ingredient modal
+ * @returns {void}
+ * */
 function closeAddIngredientModal() {
   const modal = document.getElementById('add_ingredient_modal');
   modal.classList.add('hidden');
@@ -119,6 +131,10 @@ function closeAddIngredientModal() {
 // -----------Functions related to Add Recipe Modal-------------//
 //--------------------------------------------------------------//
 
+// Load Add Recipe modal and open
+/**Function to load Add Recipe modal to html and open it
+ * @returns {void}
+ */
 function loadAddNewRecipeModalandOpen() {
   $('#add_new_recipe_modal_container').load('main_modals/add_new_recipe_modal.html', function () {
     const quickAddMenu = document.getElementById("quickAddMenu");
@@ -152,6 +168,9 @@ function loadAddNewRecipeModalandOpen() {
 };
 
 // Open Add Recipe modal
+/**Function to open Add Recipe modal
+ * @returns {void}
+ * */
 function openAddNewRecipeModal() {
   const modal = document.getElementById('add_new_recipe_modal');
   modal.classList.remove('hidden');
@@ -159,6 +178,9 @@ function openAddNewRecipeModal() {
 }
 
 // Close Add Recipe modal
+/**Function to close Add Recipe modal
+ * @returns {void}
+ * */
 function closeAddNewRecipeModal() {
   const modal = document.getElementById('add_new_recipe_modal');
   modal.classList.add('hidden');
@@ -166,6 +188,10 @@ function closeAddNewRecipeModal() {
 }
 
 // Function to add new ingredient field in Add Recipe modal
+/**Function to add new ingredient field in Add Recipe modal
+ * @param {number} ingredientIndex - Index of the ingredient field
+ * @returns {void}
+ * */
 function addIngredientField(ingredientIndex) {
   let ingredientFieldDiv = `
     <div class="container gap-4 flex flex-row justify-between items-center">
@@ -196,6 +222,11 @@ function addIngredientField(ingredientIndex) {
   ingredientIndex++; // Increment the ingredient index for the next field
 }
 
+// Function to change unit after ingredient selected
+/**Function to change unit after ingredient selected
+ * @param {number} ingredientIndex - Index of the ingredient field
+ * @returns {void}
+ * */
 function changeUnitAfterIngredientSelected(ingredientIndex) {
   document.getElementById(`ingredientForNewRecipes${ingredientIndex}`).addEventListener('change', async () => {
     const unit = await fetchUnitForIngredient(ingredientIndex);
@@ -206,6 +237,10 @@ function changeUnitAfterIngredientSelected(ingredientIndex) {
 // ====== For saving data in DB for new recipe (calculating nutritional values)====== //
 
 // Function to get the base values of an ingredient to calculate ratios
+/**Function to get the base values of an ingredient to calculate ratios
+ * @param {string} ingredientName - Name of the ingredient
+ * @returns {object} - Object containing the base values of the ingredient
+ * */
 async function getBaseValues(ingredientName) {
   const uid = await fetchUID();
   const ingredientRef = db.collection('ingredients').doc(uid);
@@ -216,6 +251,11 @@ async function getBaseValues(ingredientName) {
 }
 
 // Function to calculate nutrition values based on the quantity of the ingredient
+/**Function to calculate nutrition values based on the quantity of the ingredient
+ * @param {object} baseValues - Base values of the ingredient
+ * @param {number} inputQuantity - Quantity of the ingredient
+ * @returns {object} - Object containing the calculated nutrition values
+ * */
 function calculateNutrition(baseValues, inputQuantity) {
   const ratio = inputQuantity / baseValues.quantity.value;
   return {
@@ -227,6 +267,9 @@ function calculateNutrition(baseValues, inputQuantity) {
 }
 
 // Function to collect recipe data from the form
+/**Function to collect recipe data from the form
+ * @returns {object} - Object containing the recipe data
+ * */
 function collectRecipeDataFromForm() {
   const ingredientsDataForAddingToRecipe = {};
   let ingredientIndex = 0;
@@ -263,6 +306,10 @@ function collectRecipeDataFromForm() {
 // -----------Functions related to Add New Category Modal-------------//
 //------------------------------------------------------------------//
 
+// Load Add Category modal and open
+/**Function to load Add Category modal to html and open it
+ * @returns {void}
+ * */
 function loadAddNewCategoryModalandOpen() {
   $('#add_new_category_modal_container').load('main_modals/add_new_category_modal.html', function () {
     const quickAddMenu = document.getElementById("quickAddMenu");
@@ -282,6 +329,9 @@ function loadAddNewCategoryModalandOpen() {
 };
 
 // Open Add Category modal
+/**Function to open Add Category modal
+ * @returns {void}
+ * */
 function openAddAddNewCategoryModal() {
   const modal = document.getElementById('add_new_category_modal');
   modal.classList.remove('hidden');
@@ -289,6 +339,9 @@ function openAddAddNewCategoryModal() {
 }
 
 // Close Add Category modal
+/**Function to close Add Category modal
+ * @returns {void}
+ * */
 function closeAddNewCategoryModal() {
   const modal = document.getElementById('add_new_category_modal');
   modal.classList.add('hidden');
@@ -299,6 +352,11 @@ function closeAddNewCategoryModal() {
 //------------------------------------------------------------------//
 // -----------Functions related to Add Quick Meal Modal-------------//
 //------------------------------------------------------------------//
+
+// Load Add Quick Meal modal and open
+/**Function to load Add Quick Meal modal to html and open it
+ * @returns {void}
+ * */
 function loadAddQuickMealModalandOpen() {
   $('#add_quick_meal_modal_container').load('main_modals/quick_add_meal_modal.html', function () {
     const quickAddMenu = document.getElementById("quickAddMenu");
@@ -321,6 +379,9 @@ function loadAddQuickMealModalandOpen() {
 };
 
 // Open Add Quick Meal modal
+/**Function to open Add Quick Meal modal
+ * @returns {void}
+ * */
 function openAddQuickMealModal() {
   const modal = document.getElementById('add_quick_meal_modal');
   modal.classList.remove('hidden');
@@ -328,6 +389,9 @@ function openAddQuickMealModal() {
 }
 
 // Close Add Quick Meal modal
+/**Function to close Add Quick Meal modal
+ * @returns {void}
+ * */
 function closeAddQuickMealModal() {
   const modal = document.getElementById('add_quick_meal_modal');
   modal.classList.add('hidden');
@@ -343,6 +407,9 @@ function closeAddQuickMealModal() {
 //---------------------------------------------------//
 
 // Fetch UID function
+/**Function to fetch the UID of the user
+ * @returns {Promise<string>} - Returns a promise that resolves with the user's UID
+ * */
 async function fetchUID() {
   return new Promise((resolve, reject) => {
     firebase.auth().onAuthStateChanged(user => {
@@ -356,6 +423,10 @@ async function fetchUID() {
 }
 
 // ++++++ For add Ingredient modal ++++++ //
+// Function to save ingredient in DB
+/**Function to save ingredient in DB
+ * @returns {void}
+ *  */
 async function saveIngredientInDB() {
   const uid = await fetchUID();
   console.log(uid);
@@ -394,6 +465,11 @@ async function saveIngredientInDB() {
 }
 
 // ++++++ For add new recipe modal ++++++ //
+// Function to fetch categories for new recipes
+/**Function to fetch categories for new recipes
+ * @returns {Promise<string[]>} - Returns a promise that resolves with an array of categories
+ * */
+
 async function fetchCategoriesForNewRecipes() {
   const uid = await fetchUID();
   console.log(uid);
@@ -407,6 +483,10 @@ async function fetchCategoriesForNewRecipes() {
   }
 }
 
+// Function to append categories to dropdown in modal
+/**Function to append categories to dropdown in modal
+ * @returns {void}
+ * */
 async function appendCategoriesToDropdownInModal() {
   const categories = await fetchCategoriesForNewRecipes();
   const selectElement = document.getElementById("categoriesForNewRecipes");
@@ -419,6 +499,10 @@ async function appendCategoriesToDropdownInModal() {
   });
 }
 
+// Function to fetch ingredients for new recipes
+/**Function to fetch ingredients for new recipes
+ * @returns {Promise<string[]>} - Returns a promise that resolves with an array of ingredients
+ * */
 async function fetchIngredientsForNewRecipes() {
   const uid = await fetchUID();
   console.log(uid);
@@ -432,6 +516,11 @@ async function fetchIngredientsForNewRecipes() {
   }
 }
 
+// Function to append ingredients to dropdown in modal
+/**Function to append ingredients to dropdown in modal
+ * @param {number} ingredientIndex - Index of the ingredient field
+ * @returns {void}
+ * */
 async function appendIngredientsToDropdownInModal(ingredientIndex) {
   const ingredients = await fetchIngredientsForNewRecipes();
   const selectElement = document.getElementById(`ingredientForNewRecipes${ingredientIndex}`);
@@ -444,6 +533,11 @@ async function appendIngredientsToDropdownInModal(ingredientIndex) {
   });
 }
 
+// Function to fetch unit for ingredient
+/**Function to fetch unit for ingredient
+ * @param {number} ingredientIndex - Index of the ingredient field
+ * @returns {Promise<string>} - Returns a promise that resolves with the unit of the ingredient
+ * */
 async function fetchUnitForIngredient(ingredientIndex) {
   const uid = await fetchUID();
   console.log("ingredientIndex in fetch unit function:", ingredientIndex)
@@ -458,6 +552,10 @@ async function fetchUnitForIngredient(ingredientIndex) {
 }
 
 // ++++++ Function to save data in DB for new recipe ++++++ //
+// Function to save recipe in DB
+/**Function to save recipe in DB
+ * @returns {void}
+ * */
 async function saveRecipeInDB() {
   try {
     const uid = await fetchUID();
@@ -504,6 +602,10 @@ async function saveRecipeInDB() {
 }
 
 // ++++++ For add Category modal ++++++ //
+// Function to save new category in DB
+/**Function to save new category in DB
+ * @returns {void}
+ * */
 async function saveNewCategoryInDB() {
   const uid = await fetchUID();
   const categoryName = document.getElementById('categoryName').value.trim();
@@ -522,6 +624,9 @@ async function saveNewCategoryInDB() {
 }
 
 // Function to append category name to the categories array in the user's document
+/**Function to append category name to the categories array in the user's document
+ * @returns {void}
+ * */
 async function appendCategoryNameToArray() {
   const uid = await fetchUID();
   const categoryName = document.getElementById('categoryName').value.trim();
@@ -538,6 +643,10 @@ async function appendCategoryNameToArray() {
 }
 
 // ++++++ For add Quick Meal modal ++++++ //
+// Function to log quick meal in DB
+/**Function to log quick meal in DB
+ * @returns {void}
+ * */
 async function LogQuickMealInDB() {
   const uid = await fetchUID();
   const mealName = document.getElementById('mealName').value.trim();

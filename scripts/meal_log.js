@@ -31,6 +31,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 // Function to fetch user's meals entries and display as cards in the page
+/** Function to fetch user's meals entries and display as cards in the page
+ * @returns {void}
+ */
 function fetchAndDisplayFoodEntries() {
   const uid = firebase.auth().currentUser.uid; // Get the user ID
   const foodCardContainer = document.getElementById('food-card-container');
@@ -103,6 +106,10 @@ function fetchAndDisplayFoodEntries() {
 
 
 // Function to open the edit meal modal
+/** Function to open the edit meal modal
+ * @param {string} mealName - Name of the meal to edit
+ * @returns {void}
+ */
 async function openEditMealModal(mealName) {
   uid = await fetchUID();
   recipeDoc = await db.collection("meals").doc(uid).get()
@@ -124,6 +131,9 @@ async function openEditMealModal(mealName) {
 }
 
 // Function to save changes
+/** Function to save the changes made to the meal
+ * @returns {void}
+ */
 async function saveMealChanges() {
   const uid = await fetchUID();
   const newMealName = document.getElementById('editMealName').value;
@@ -157,6 +167,9 @@ function cancelMealChanges() {
 }
 
 // Function to delete Meal
+/** Function to delete the meal from the meals collection
+ * @returns {void}
+ */
 async function deleteMeal() {
   uid = await fetchUID();
   const mealName = document.getElementById('editMealName').value;

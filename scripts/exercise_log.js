@@ -21,6 +21,9 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Fetch UID function
+/**Function to fetch user's UID
+ * @returns {Promise<string>} - Returns a promise that resolves with the user's UID
+ **/
 async function fetchUID() {
   return new Promise((resolve, reject) => {
     firebase.auth().onAuthStateChanged(user => {
@@ -34,6 +37,9 @@ async function fetchUID() {
 }
 
 // Function to fetch and display user activities
+/**Function to fetch and display user activities in the page
+ * @returns {void}
+ **/
 async function fetchAndDisplayUserActivities() {
   uid = await fetchUID();
   console.log("User UID:", uid);
@@ -121,6 +127,10 @@ async function fetchAndDisplayUserActivities() {
 
 
 // open the modal to edit an activity
+/**Function to open edit activity modal
+ * @param {string} activityId
+ * @returns {void}
+ */
 async function openEditModal(activityId) {
   uid = await fetchUID();
 
@@ -149,6 +159,9 @@ async function openEditModal(activityId) {
 }
 
 // Function to save changes to the activity
+/**Function to save changes made by edit Activity modal to database
+ * @returns {void}
+ */
 async function saveActivityChanges() {
   uid = await fetchUID();
   const activityId = document.getElementById('editActivityId').value;
@@ -185,6 +198,9 @@ async function saveActivityChanges() {
 
 
 // Function to delete an activity
+/**Function to delete an activity from the database
+ * @returns {void}
+ */
 async function deleteActivity() {
   uid = await fetchUID();
 

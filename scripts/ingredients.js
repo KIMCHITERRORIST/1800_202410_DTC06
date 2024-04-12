@@ -38,7 +38,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-
+/** Function to fetch and display ingredients
+ * @param {string} uid - User ID
+ * @returns {void}
+ **/
 function fetchAndDisplayIngredients(uid) {
     db.collection("ingredients").doc(uid).get().then(documentSnapshot => {
         if (documentSnapshot.exists) {
@@ -66,6 +69,10 @@ function fetchAndDisplayIngredients(uid) {
 }
 
 // Function to filter displayed ingredients when user searches
+/**Function to filter displayed ingredients when user type in search box
+ * @param {string} searchValue - Search value entered by the user
+ * @returns {void}
+ */
 function filterDisplayedIngredients(searchValue) {
     const ingredientCards = document.querySelectorAll('.ingredient-card');
     ingredientCards.forEach(card => {
@@ -79,6 +86,10 @@ function filterDisplayedIngredients(searchValue) {
 }
 
 // Function to open the modal to edit an ingredient
+/** Function to open the modal to edit an ingredient
+ * @param {string} ingredientName - Name of the ingredient to edit
+ * @returns {void}
+ */
 async function openEditIngredientModal(ingredientName) {
     uid = await fetchUID();
     recipeDoc = await db.collection("ingredients").doc(uid).get()
@@ -103,6 +114,9 @@ async function openEditIngredientModal(ingredientName) {
 }
 
 // Function to save changes
+/** Function to save changes made by edit ingredient modal to database
+ * @returns {void}
+ */
 async function saveIngredientChanges() {
     const uid = await fetchUID();
     const newingredientName = document.getElementById('editIngredientName').value;
@@ -139,6 +153,9 @@ function cancelIngredientChanges() {
 }
 
 // Function to delete ingredient
+/** Function to delete an ingredient from the database
+ * @returns {void}
+ */
 async function deleteIngredient() {
     uid = await fetchUID();
     const ingredientName = document.getElementById('editIngredientName').value;

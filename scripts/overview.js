@@ -10,7 +10,10 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-// Fetch UID function 
+// Fetch UID function
+/**Function to fetch user's UID
+ * @returns {Promise<string>} - Returns a promise that resolves with the user's UID
+ **/
 async function fetchUID() {
   return new Promise((resolve, reject) => {
     firebase.auth().onAuthStateChanged(user => {
@@ -23,6 +26,9 @@ async function fetchUID() {
   });
 }
 
+/**Function to initialize the app
+ * @returns {void}
+ * */
 async function initApp() {
   try {
     const uid = await fetchUID(); // Fetch the user's UID
@@ -49,6 +55,11 @@ async function fetchUserData(uid) {
 }
 
 // function to create the donut chart
+/**Function to render the donut chart
+ * @param {string} uid - User ID
+ * @param {number} goalCalories - User's goal calories
+ * @returns {void}
+ * */
 async function renderDonutChart(uid, goalCalories) {
   const { caloriesIn, caloriesOut } = await fetchCaloriesInAndOut(uid);
 
@@ -114,6 +125,10 @@ async function renderDonutChart(uid, goalCalories) {
 
 
 // gets calories in and out for the day to do calculations for graph
+/**Function to fetch calories in and out for the day
+ * @param {string} uid - User ID
+ * @returns {Promise<{caloriesIn: number, caloriesOut: number}>} - Returns a promise that resolves with an object containing caloriesIn and caloriesOut
+ * */
 async function fetchCaloriesInAndOut(uid) {
   const today = new Date();
   const formattedToday = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
@@ -127,12 +142,19 @@ async function fetchCaloriesInAndOut(uid) {
 }
 
 // Fetch TDEE function for calculations
+/**Function to fetch TDEE from the database
+ * @param {string} uid - User ID
+ * @returns {Promise<number>} - Returns a promise that resolves with the user's TDEE
+ * */
 async function fetchTDEE(uid) {
   const doc = await db.collection("users").doc(uid).get();
   return doc.exists ? doc.data().TDEE : null;
 }
 
 // Fetch and append today's food entries to the cards in the overview page
+/**Function to fetch and display today's food entries in the page
+ * @returns {void}
+ * */
 async function fetchAndDisplayTodaysFoodEntries() {
   const uid = await fetchUID();
   // Get today's date in the format "YYYY-MM-DD"
@@ -193,6 +215,9 @@ async function fetchAndDisplayTodaysFoodEntries() {
 
 
 // Fetch and append today's exercise entries to the cards in the overview page
+/**Function to fetch and display today's exercise entries in the page
+ * @returns {void}
+ * */
 async function fetchAndDisplayTodaysExerciseEntries() {
   const uid = await fetchUID();
   const today = new Date();
@@ -291,6 +316,10 @@ document.getElementById('cardHeaderCaloriesBurnt').addEventListener('click', fun
 
 
 // Function to check and update weight weekly
+/**Function to check and update weight weekly
+ * @param {string} uid - User ID
+ * @returns {void}
+ * */
 async function checkAndUpdateWeight(uid) {
   const userDoc = await db.collection("users").doc(uid).get();
   if (userDoc.exists) {
@@ -310,11 +339,19 @@ async function checkAndUpdateWeight(uid) {
   }
 }
 
+// Function to show the weight update modal
+/**Function to show the weight update modal
+ * @returns {void}
+ * */
 function showModalToUpdateWeight() {
   // Display the modal to the user
   document.getElementById('weightUpdateModal').classList.remove('hidden');
 }
 
+// Function to handle weight update
+/**Function to handle weight update
+ * @returns {void}
+ * */
 async function handleWeightUpdate() {
   const uid = await fetchUID();
   const currentWeight = parseFloat(document.getElementById('currentWeight').value).toFixed(1); // Get the user input weight
@@ -374,10 +411,18 @@ document.getElementById('yesAdjustBtn').addEventListener('click', async () => {
 });
 
 // Modal toggler functions using their IDs
+/**Function to show a modal
+ * @param {string} modalId - The ID of the modal to show
+ * @returns {void}
+ * */
 function showModal(modalId) {
   document.getElementById(modalId).classList.remove('hidden');
 }
 
+/**Function to close a modal
+ * @param {string} modalId - The ID of the modal to close
+ * @returns {void}
+ * */
 function closeModal(modalId) {
   document.getElementById(modalId).classList.add('hidden')
   window;

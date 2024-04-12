@@ -18,6 +18,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 //function to display recipe info
+/**Function to fetch and display recipe info from the databae in a card 
+ * @param {string} uid - User ID
+ * @param {string} recipeCategory - Recipe category
+ * @returns {void}
+ **/
 function displayRecipeInfo(uid, recipeCategory) {
   db.collection('Recipes')
     .doc(uid)
@@ -68,6 +73,11 @@ function displayRecipeInfo(uid, recipeCategory) {
 
 
 //function to show delete confirmation modal
+/**Function to show delete confirmation modal 
+ * @param {string} recipeID - Recipe ID
+ * @param {string} recipeCategory - Recipe category
+ * @returns {void}
+ **/
 async function showDeleteConfirmationModal(recipeID, recipeCategory) {
 
   const uid = firebase.auth().currentUser.uid;
@@ -85,6 +95,11 @@ async function showDeleteConfirmationModal(recipeID, recipeCategory) {
 
 
 //function to delete recipe
+/**Function to delete a recipe from the database
+ * @param {string} recipeID - Recipe ID
+ * @param {string} recipeCategory - Recipe category
+ * @returns {void}
+ **/
 async function deleteRecipe(recipeID, recipeCategory) {
   try {
     const uid = firebase.auth().currentUser.uid;
@@ -106,6 +121,9 @@ async function deleteRecipe(recipeID, recipeCategory) {
 
 
 //function to cancel recipe deletion
+/**Function to cancel the recipe deletion
+ * @returns {void}
+ **/
 function cancelRecipeDeletion() {
   const modal = document.getElementById("deleteRecipeModal");
   modal.classList.add("hidden");
@@ -113,6 +131,10 @@ function cancelRecipeDeletion() {
 
 
 //function when you click on view recipe
+/**Function to store the selected recipe name in local storage and redirect to each_recipe.html
+ * @param {string} recipeName - Recipe name
+ * @returns {void}
+ **/
 function viewRecipeDetails(recipeName) {
   localStorage.setItem('selectedRecipe', recipeName); // Store the selected recipe name in local storage
   window.location.href = '/each_recipe.html'; // Redirect to each_recipe.html

@@ -1,4 +1,9 @@
-var currentUser;               //points to the document of the user who is logged in
+var currentUser; //points to the document of the user who is logged in
+
+//Function to populate the user info in the form fields
+/**Function to populate the user info in the form fields
+ * @returns {void}
+ * */
 function populateUserInfo() {
   firebase.auth().onAuthStateChanged(user => {
     // Check if user is signed in:
@@ -46,6 +51,10 @@ function populateUserInfo() {
 //call the function to run it 
 populateUserInfo();
 
+//Function to edit the user info
+/**Function to edit the user info
+ * @returns {void}
+ * */
 function editUserInfo() {
   //Enable the form fields
   document.getElementById('personal_info').disabled = false;
@@ -58,6 +67,10 @@ function editUserInfo() {
   document.querySelector('#gender').classList.add('ring-2', 'ring-[#ffcc6d]')
 }
 
+//Function to save the user info
+/**Function to save the user info
+ * @returns {void}
+ * */
 function saveUserInfo() {
   //Get the values from the form fields
   userName = document.getElementById('nameField').value;

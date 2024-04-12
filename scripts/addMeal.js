@@ -31,6 +31,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+/**Function to fetch categories from the firebase using UID
+ * @param {string} uid
+ * @returns {Promise<Array>} - Returns an array of categories
+ **/
 function fetchCategories(uid) {
     console.log(uid);
     return db.collection("Recipes").doc(uid).get().then(doc => {
@@ -48,6 +52,10 @@ function fetchCategories(uid) {
     });
 }
 
+/**Function to append the fetched categories to the dropdown in the page
+ * @param {string} uid
+ * @returns {void}
+ **/
 function appendCategoriesToDropdownInPage(uid) {
     console.log("Appending categories to dropdown...");
     const selectElement = document.getElementById('categoriesForMeals');
@@ -65,6 +73,9 @@ function appendCategoriesToDropdownInPage(uid) {
     });
 }
 
+/**Function to clear the Dropdown except for the "recipe" text to avoid overlapping recipes
+ * @returns {void}
+ */
 function clearDropdownExceptRecipe() {
     const selectElement = document.getElementById('meal');
     const options = Array.from(selectElement.options);
@@ -76,6 +87,10 @@ function clearDropdownExceptRecipe() {
     });
 }
 
+/**Function to append meal/recipe user have in database to the dropdown
+ * @param {string} uid
+ * @returns {void}
+ **/
 function appendMealsToDropdownInPage(uid) {
     const category = document.getElementById('categoriesForMeals').value;
     console.log("Appending meals to dropdown for category:", category);
@@ -99,7 +114,11 @@ function appendMealsToDropdownInPage(uid) {
 }
 
 
-// // Function to add a recipe to the Calories collection
+// Function to add a recipe to the Calories collection
+/**Function to add meal user made/had to the database
+ * @param {string} uid
+ * @returns {void}
+ */
 function addRecipeToMeals(uid) {
     console.log("Adding recipe to Calories...");
     const category = document.getElementById('categoriesForMeals').value;
@@ -159,6 +178,10 @@ function addRecipeToMeals(uid) {
 }
 
 // Function to convert fractional amount to decimal
+/**Function to convert fraction to decimal
+ * @param {string} fraction
+ * @returns {number} - Returns a decimal number
+ */
 function convertFractionToDecimal(fraction) {
     if (!fraction.includes('/')) {
         return parseFloat(fraction); // If no fraction, return the number as it is

@@ -20,6 +20,10 @@ firebase.auth().onAuthStateChanged(function (user) {
 });
 
 // Function to fetch and display user data
+/**Function to fetch and display user data from the database
+ * @param {string} uid - User ID
+ * @returns {void}
+ **/
 function fetchAndDisplayUserData(uid) {
     db.collection("users").doc(uid).get().then((doc) => {
         if (doc.exists) {
@@ -60,6 +64,10 @@ document.getElementById("setGoal").addEventListener("click", function () {
 });
 
 // Function to show the activity level modal
+/** Function to show the activity level modal
+ * @param {boolean} show - Show or hide the modal
+ * @returns {void}
+ **/
 function showModal(show) {
     document.getElementById("activityLevelModal").style.display = show ? "block" : "none";
 }
